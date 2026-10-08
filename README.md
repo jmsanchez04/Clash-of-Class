@@ -5,7 +5,7 @@ App para desconectarte del celular mientras estudias. Cada sesión planta un ár
 ## Publicar en GitHub Pages
 
 1. Crea un repositorio público en GitHub llamado `clash-of-class`.
-2. En el repositorio: **Add file → Upload files**, arrastra todos los archivos de esta carpeta (index.html, manifest.webmanifest, sw.js, icon-192.png, icon-512.png, README.md) y aprieta **Commit changes**.
+2. En el repositorio: **Add file → Upload files**, arrastra todos los archivos de esta carpeta y aprieta **Commit changes**.
 3. Ve a **Settings → Pages**. En *Source* elige **Deploy from a branch**, rama **main**, carpeta **/(root)** y guarda.
 4. Espera 1 o 2 minutos. La app queda en `https://TU-USUARIO.github.io/clash-of-class/`.
 

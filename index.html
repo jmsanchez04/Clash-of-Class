@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#1f2a17">
+<meta name="theme-color" content="#1b2440">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -16,188 +16,237 @@
 <body>
 <title>Clash of Class</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@700;800&family=Lilita+One&family=Alegreya+Sans:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
 <style>
-/* Layout: juego de una columna. HUD arriba, mapa isométrico de la aldea, ficha del edificio + lanzador de sesión, y pestañas (21 días, pase, edificios, progreso). Un solo look diurno medieval. */
+/* Layout: juego de una columna con estética samurái. Fondo índigo con olas seigaiha, papel washi para los paneles, franjas de tinta sumi en los títulos y laca bermellón en los botones. Un solo look, sin modo oscuro. */
 :root{
-  --night:#1f2a17; --grass:#7cc04b; --grass-dk:#4f8a2e; --wood:#7a4a24; --wood-dk:#4a2c14;
-  --parch:#f6ead0; --parch-dk:#e4d1a6; --ink:#2b1a0b; --ink-soft:#6a5236;
-  --gold:#ffc83d; --gold-dk:#c28a12; --green:#6fcf3a; --green-dk:#3d8a1c; --red:#d8452e; --blue:#3a8be0; --purple:#7a4fd1;
-  --brand:"Grenze Gotisch",Georgia,serif; --ui:"Lilita One","Arial Black",Impact,sans-serif; --body:"Alegreya Sans","Trebuchet MS",system-ui,sans-serif;
+  --ai:#1b2440; --ai-dk:#121933; --ai-lt:#2c3a6b; --sumi:#1b140c; --washi:#f4ecd9; --washi-dk:#e3d5b5;
+  --shu:#b8322a; --shu-dk:#8a2219; --kin:#d4a640; --kin-dk:#9c7524; --sakura:#f2b5c7; --matcha:#6f8f3e; --ink-soft:#6b5a43;
+  --brush:"Yuji Syuku","Shippori Mincho B1",serif; --head:"Shippori Mincho B1","Hiragino Mincho ProN",Georgia,serif; --body:"Zen Kaku Gothic New","Hiragino Sans",system-ui,sans-serif;
   color-scheme:light;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-html,body{background:var(--night);color:var(--ink)}
-body{font-family:var(--body);font-size:16px;line-height:1.45;padding:0 12px;padding-block:10px 48px;
-  background:radial-gradient(ellipse at 50% -10%,#3f6a2a 0,var(--night) 60%) fixed}
-.app{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
-button{font-family:var(--ui);cursor:pointer;letter-spacing:.3px}
-button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-.out{color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.55),0 0 2px rgba(0,0,0,.7)}
+html,body{background:var(--ai);color:var(--sumi)}
+body{font-family:var(--body);font-size:16px;line-height:1.5;padding:0 12px;padding-block:10px 48px;
+  background-color:var(--ai);
+  background-image:
+    radial-gradient(circle at 50% 100%,transparent 0 8px,rgba(212,166,64,.07) 8px 9.5px,transparent 9.5px 13px,rgba(212,166,64,.07) 13px 14.5px,transparent 14.5px 18px,rgba(212,166,64,.07) 18px 19.5px,transparent 19.5px),
+    radial-gradient(circle at 50% 100%,transparent 0 8px,rgba(212,166,64,.07) 8px 9.5px,transparent 9.5px 13px,rgba(212,166,64,.07) 13px 14.5px,transparent 14.5px 18px,rgba(212,166,64,.07) 18px 19.5px,transparent 19.5px);
+  background-size:40px 20px;background-position:0 0,20px 10px}
+.app{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+button{font-family:var(--head);cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--kin);outline-offset:2px}
 
 /* HUD */
 .hud{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.brand{font-family:var(--brand);font-weight:800;font-size:clamp(30px,8vw,42px);line-height:.9;margin:0;color:var(--gold);text-shadow:0 3px 0 #5a3a0a,0 0 2px #000}
+.brandwrap{display:flex;align-items:center;gap:10px}
+.brand{font-family:var(--brush);font-weight:400;font-size:clamp(30px,8vw,44px);line-height:1;margin:0;color:var(--washi);letter-spacing:1px;text-shadow:0 2px 0 #000}
+.hanko{width:42px;height:42px;flex:none;border-radius:8px;background:var(--shu);color:var(--washi);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:24px;
+  box-shadow:inset 0 0 0 2px var(--washi),inset 0 0 0 4px var(--shu);transform:rotate(-4deg)}
 .pills{display:flex;gap:6px;flex-wrap:wrap}
-.pill{display:flex;align-items:center;gap:6px;background:rgba(0,0,0,.45);border:2px solid rgba(0,0,0,.6);border-radius:12px;padding:3px 10px 3px 4px;
-  font-family:var(--ui);font-size:17px;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 2px 0 #000}
+.pill{display:flex;align-items:center;gap:7px;background:var(--ai-dk);border:2px solid var(--kin-dk);border-radius:10px;padding:3px 10px 3px 5px;
+  font-family:var(--head);font-weight:800;font-size:17px;color:var(--washi);font-variant-numeric:tabular-nums;box-shadow:inset 0 0 0 1px rgba(212,166,64,.35)}
 .pill svg{width:26px;height:26px;flex:none}
-.pill small{font-family:var(--body);font-size:11px;opacity:.8;display:block;line-height:1;text-shadow:none}
+.pill small{font-family:var(--body);font-weight:500;font-size:11px;color:#c9bfa6;display:block;line-height:1}
 .pill.bump{animation:bump .5s}
 @keyframes bump{40%{transform:scale(1.15)}}
 
 /* Mapa */
-.mapwrap{position:relative;border-radius:18px;overflow:hidden;border:4px solid var(--wood);box-shadow:0 6px 0 var(--wood-dk),inset 0 0 40px rgba(0,0,0,.35);
-  background:radial-gradient(ellipse at 50% 55%,#3e7a2a 0,#24481a 75%);height:clamp(340px,58vh,560px)}
+.mapwrap{position:relative;border-radius:14px;overflow:hidden;border:3px solid var(--sumi);height:clamp(360px,62vh,600px);
+  box-shadow:0 0 0 3px var(--kin-dk),0 8px 0 3px #0b1024;background:radial-gradient(ellipse at 50% 45%,#3d5f3a 0,#1d3324 60%,#121d1a 100%)}
 #map{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
 #map:active{cursor:grabbing}
 #map .b{cursor:pointer}
-#map .b.sel{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 7px var(--gold))}
+#map .b.sel{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px var(--kin))}
 .mapctl{position:absolute;right:10px;bottom:10px;display:flex;flex-direction:column;gap:6px}
-.mapctl button{width:40px;height:40px;border-radius:10px;border:2px solid #000;background:#f6ead0;color:var(--ink);font-size:22px;line-height:1;box-shadow:0 3px 0 #000}
-.maptag{position:absolute;left:10px;top:10px;font-family:var(--ui);font-size:15px;background:rgba(0,0,0,.45);padding:4px 10px;border-radius:10px}
+.mapctl button{width:40px;height:40px;border-radius:8px;border:2px solid var(--sumi);background:var(--washi);color:var(--sumi);font-size:22px;line-height:1;box-shadow:0 3px 0 var(--sumi)}
+.maptag{position:absolute;left:10px;top:10px;font-family:var(--head);font-weight:700;font-size:14px;color:var(--washi);background:rgba(18,25,51,.75);border:1px solid var(--kin-dk);padding:4px 10px;border-radius:8px}
 .updot{animation:hop 1.2s infinite}
 @keyframes hop{50%{transform:translateY(-4px)}}
 
-/* Paneles pergamino */
+/* Papel washi */
 .duo{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
 @media (min-width:760px){.duo{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
-.card{background:var(--parch);border:3px solid var(--wood);border-radius:16px;padding:14px;box-shadow:0 5px 0 var(--wood-dk);min-width:0}
-.card h2,.card h3{font-family:var(--ui);font-weight:400;margin:0;line-height:1.1;color:var(--ink)}
-.card h2{font-size:24px}.card h3{font-size:20px}
+.card{position:relative;min-width:0;border-radius:6px;padding:16px;color:var(--sumi);
+  background:repeating-linear-gradient(115deg,rgba(120,90,50,.035) 0 2px,transparent 2px 7px),repeating-linear-gradient(25deg,rgba(120,90,50,.03) 0 1px,transparent 1px 9px),var(--washi);
+  border:2px solid var(--sumi);box-shadow:inset 0 0 0 4px var(--washi),inset 0 0 0 5px var(--kin-dk),0 6px 0 #0b1024}
+.brush{display:inline-block;margin:0 0 6px -4px;padding:6px 26px 7px 14px;background:var(--sumi);color:var(--washi);font-family:var(--head);font-weight:800;font-size:20px;line-height:1.15;
+  clip-path:polygon(0 14%,3% 2%,30% 8%,62% 0,96% 6%,100% 34%,97% 64%,100% 96%,66% 92%,34% 100%,4% 94%,1% 62%)}
+.card h3{font-family:var(--head);font-weight:800;font-size:18px;margin:12px 0 4px}
 .card p{margin:6px 0}
 .muted{color:var(--ink-soft);font-size:14px}
-.tag{display:inline-block;font-family:var(--ui);font-size:12px;padding:2px 8px;border-radius:8px;background:var(--wood);color:var(--parch);letter-spacing:.5px}
+.tag{display:inline-block;font-family:var(--head);font-weight:700;font-size:12px;padding:2px 9px;border-radius:4px;background:var(--shu);color:var(--washi)}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .spread{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 
-.btn{border:2px solid #000;border-radius:12px;padding:10px 16px;font-size:18px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.6);
-  background:linear-gradient(#ffd25a,#f0a91c);box-shadow:inset 0 -4px 0 rgba(0,0,0,.2),0 3px 0 #000;display:inline-flex;align-items:center;gap:8px}
-.btn:active{transform:translateY(2px);box-shadow:inset 0 -4px 0 rgba(0,0,0,.2),0 1px 0 #000}
-.btn.go{background:linear-gradient(#8ee04f,#4fa82a)}
-.btn.blue{background:linear-gradient(#6ab4ff,#2f78d0)}
-.btn.red{background:linear-gradient(#ff7a5c,#c8361f)}
-.btn.small{font-size:15px;padding:6px 12px}
-.btn[disabled]{background:linear-gradient(#cfc6b2,#a89e88);color:#efe9dc;cursor:not-allowed}
+.btn{border:2px solid var(--sumi);border-radius:8px;padding:10px 16px;font-size:17px;font-weight:800;color:#fff6e0;
+  background:linear-gradient(#cd4a39,#9e2a1f);box-shadow:inset 0 0 0 2px rgba(212,166,64,.55),0 3px 0 var(--sumi);display:inline-flex;align-items:center;gap:8px}
+.btn:active{transform:translateY(2px);box-shadow:inset 0 0 0 2px rgba(212,166,64,.55),0 1px 0 var(--sumi)}
+.btn.gold{background:linear-gradient(#e6bf5c,#b88a2a);color:var(--sumi)}
+.btn.ai{background:linear-gradient(#3b4b82,#24305a)}
+.btn.small{font-size:14px;padding:6px 12px}
+.btn[disabled]{background:linear-gradient(#cfc4ab,#a99d84);color:#f2ecdd;cursor:not-allowed}
 .btn svg{width:22px;height:22px}
-.big{width:100%;justify-content:center;font-size:22px;padding:14px}
+.big{width:100%;justify-content:center;font-size:21px;padding:14px}
 
-.perk{background:#fff7e2;border:2px dashed var(--parch-dk);border-radius:10px;padding:8px 10px;font-size:15px;margin:8px 0}
-.perk b{font-family:var(--ui);font-weight:400}
+.perk{background:rgba(255,255,255,.5);border:1px solid var(--washi-dk);border-left:4px solid var(--shu);border-radius:0;padding:8px 10px;font-size:15px;margin:8px 0}
+.perk b{font-family:var(--head);font-weight:800}
 .unl{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-.unl span{background:var(--green-dk);color:#fff;border-radius:8px;padding:2px 8px;font-size:13px;font-weight:700}
+.unl span{background:var(--ai-lt);color:var(--washi);border-radius:4px;padding:2px 8px;font-size:13px;font-weight:700}
 
 /* Lanzador */
 .blocks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0}
-.blk{border:2px solid #000;border-radius:10px;background:#e9dcbd;color:var(--ink);padding:6px 0;font-size:20px;box-shadow:0 3px 0 #000}
-.blk small{display:block;font-family:var(--body);font-size:11px}
-.blk[aria-pressed="true"]{background:var(--gold)}
-.field{width:100%;border:2px solid var(--parch-dk);border-radius:10px;padding:8px 10px;font:inherit;background:#fffaf0;color:var(--ink)}
+.blk{border:2px solid var(--sumi);border-radius:6px;background:#efe2c2;color:var(--sumi);padding:6px 0;font-size:21px;font-weight:800;box-shadow:0 3px 0 var(--sumi)}
+.blk small{display:block;font-family:var(--body);font-size:11px;font-weight:500}
+.blk[aria-pressed="true"]{background:var(--sumi);color:var(--washi)}
+.field{width:100%;border:1px solid var(--washi-dk);border-bottom:2px solid var(--sumi);border-radius:4px;padding:8px 10px;font:inherit;background:#fffaf0;color:var(--sumi)}
 .rew{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:6px 0 10px;font-size:15px}
-.rew b{font-family:var(--ui);font-weight:400;color:var(--gold-dk);font-size:18px}
+.rew b{font-family:var(--head);font-weight:800;color:var(--shu-dk);font-size:18px}
 .chk{display:flex;align-items:center;gap:6px;font-size:14px}
-.chk input{width:18px;height:18px;accent-color:var(--green-dk)}
-.warn{font-size:13px;color:var(--ink-soft);margin-top:8px}
+.chk input{width:18px;height:18px;accent-color:var(--shu)}
+.warn{font-size:13px;color:var(--shu-dk);margin:8px 0 0;font-weight:700}
 .demotools{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 
-/* Pestañas */
-.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-.tab{border:2px solid #000;border-radius:12px 12px 6px 6px;background:#c9b48a;color:var(--ink);padding:8px 4px;font-size:15px;box-shadow:0 3px 0 #000}
-.tab[aria-selected="true"]{background:var(--parch);transform:translateY(-2px)}
+/* Pestañas como tablillas ema */
+.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.tab{position:relative;border:none;background:linear-gradient(#d9b57e,#b88d55);color:var(--sumi);padding:16px 2px 8px;font-size:14px;font-weight:800;
+  clip-path:polygon(0 24%,50% 0,100% 24%,100% 100%,0 100%);filter:drop-shadow(0 3px 0 var(--sumi))}
+.tab::before{content:"";position:absolute;left:50%;top:7px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:var(--sumi)}
+.tab[aria-selected="true"]{background:linear-gradient(#f4ecd9,#e3d5b5)}
+.tab[aria-selected="true"]::before{background:var(--shu)}
 
 /* 21 días */
 .days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:10px}
-.day{position:relative;aspect-ratio:1/1.15;border-radius:10px;border:2px solid #000;background:#e7d7b3;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-family:var(--ui);font-size:15px;color:var(--ink);text-align:center;padding:2px;min-width:0}
+.day{position:relative;aspect-ratio:1/1.15;border-radius:4px;border:2px solid var(--sumi);background:#efe2c2;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:var(--head);font-weight:800;font-size:16px;color:var(--sumi);text-align:center;padding:2px;min-width:0}
 .day small{font-family:var(--body);font-size:10px;line-height:1.1;font-weight:700}
-.day.done{background:var(--green);color:#fff;text-shadow:0 1px 0 #000}
-.day.now{background:var(--gold);box-shadow:0 0 0 3px #fff,0 0 12px var(--gold)}
-.day.chest{background:#b98be8}
-.day.chest.done{background:var(--purple)}
+.day.done{background:var(--matcha);color:var(--washi)}
+.day.now{background:var(--kin);box-shadow:0 0 0 3px var(--washi),0 0 0 5px var(--shu)}
+.day.chest{background:var(--sakura)}
+.day.chest.done{background:var(--shu);color:var(--washi)}
 .phase{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:10px}
-.phase div{background:#fff7e2;border-radius:10px;padding:6px 8px;font-size:13px;border:2px solid var(--parch-dk)}
-.phase b{display:block;font-family:var(--ui);font-weight:400;font-size:14px}
-.bar{height:16px;border-radius:999px;background:#d9c69c;border:2px solid #000;overflow:hidden}
-.bar i{display:block;height:100%;background:linear-gradient(#9be860,#4fa82a)}
-.bar.xp i{background:linear-gradient(#7fc4ff,#2f78d0)}
+.phase div{background:rgba(255,255,255,.5);border:1px solid var(--washi-dk);padding:6px 8px;font-size:13px}
+.phase b{display:block;font-family:var(--head);font-weight:800;font-size:14px}
+.bar{height:14px;border-radius:2px;background:#d9c9a3;border:2px solid var(--sumi);overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(#e0605a,var(--shu))}
+.bar.xp i{background:linear-gradient(#5a6fb0,var(--ai-lt))}
 
 /* Pase */
 .track{overflow-x:auto;margin-top:10px;padding-bottom:6px}
-.trk{display:grid;grid-auto-flow:column;grid-auto-columns:76px;grid-template-rows:auto auto auto;gap:6px}
-.tl{font-family:var(--ui);text-align:center;font-size:14px}
-.tl.on{color:var(--green-dk)}
-.rw{border:2px solid #000;border-radius:10px;min-height:74px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px;text-align:center;font-size:12px;font-weight:700;line-height:1.1}
+.trk{display:grid;grid-auto-flow:column;grid-auto-columns:78px;grid-template-rows:auto auto auto;gap:6px}
+.tl{font-family:var(--head);font-weight:800;text-align:center;font-size:14px}
+.tl.on{color:var(--shu)}
+.rw{border:2px solid var(--sumi);border-radius:4px;min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px;text-align:center;font-size:12px;font-weight:700;line-height:1.1}
 .rw svg{width:28px;height:28px}
-.rw.free{background:#e9dcbd}
-.rw.gold{background:linear-gradient(#ffe48a,#f2b632)}
+.rw.free{background:#efe2c2}
+.rw.gold{background:linear-gradient(#f3d98a,#d4a640)}
 .rw.got{opacity:.55;position:relative}
-.rw.got::after{content:"✓";position:absolute;font-family:var(--ui);font-size:30px;color:var(--green-dk);text-shadow:0 2px 0 #fff}
-.rw.lock{filter:grayscale(.6)}
+.rw.got::after{content:"済";position:absolute;font-family:var(--head);font-weight:800;font-size:28px;color:var(--shu);transform:rotate(-10deg)}
+.rw.lock{filter:grayscale(.65)}
 .lbls{display:flex;gap:10px;font-size:13px;margin-top:4px}
 
-/* Tabla de costos y edificios */
+/* Edificios */
 .blist{display:flex;flex-direction:column;gap:6px;margin-top:8px}
-.bi{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;background:#fff7e2;border-radius:10px;padding:6px 10px;border:2px solid var(--parch-dk);text-align:left;font-family:var(--body);color:var(--ink);font-size:14px}
-.bi b{font-family:var(--ui);font-weight:400;font-size:16px}
-.bi .lv{font-family:var(--ui);font-size:16px;background:var(--wood);color:var(--gold);border-radius:8px;padding:2px 8px}
+.bi{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;background:rgba(255,255,255,.55);border:1px solid var(--washi-dk);border-radius:4px;padding:6px 10px;text-align:left;font-family:var(--body);color:var(--sumi);font-size:14px}
+.bi b{font-family:var(--head);font-weight:800;font-size:16px}
+.bi .lv{font-family:var(--head);font-weight:800;font-size:15px;background:var(--sumi);color:var(--kin);border-radius:4px;padding:2px 8px;min-width:32px;text-align:center}
 .bi.lk{opacity:.6}
 .tablewrap{overflow-x:auto;margin-top:8px}
 table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
-th,td{padding:4px 8px;border-bottom:1px solid var(--parch-dk);text-align:left;white-space:nowrap}
-th{font-family:var(--ui);font-weight:400}
-tr.cur td{background:#ffe9a8}
+th,td{padding:4px 8px;border-bottom:1px solid var(--washi-dk);text-align:left;white-space:nowrap}
+th{font-family:var(--head);font-weight:800}
+tr.cur td{background:rgba(212,166,64,.35)}
 
 /* Progreso */
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:8px}
-.stat{background:#fff7e2;border-radius:10px;padding:6px;text-align:center;border:2px solid var(--parch-dk)}
-.stat b{display:block;font-family:var(--ui);font-weight:400;font-size:22px}
+.stat{background:rgba(255,255,255,.55);border:1px solid var(--washi-dk);padding:6px;text-align:center}
+.stat b{display:block;font-family:var(--head);font-weight:800;font-size:22px}
 .stat span{font-size:12px;color:var(--ink-soft)}
 .clan{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:5px}
-.clan li{display:grid;grid-template-columns:24px 1fr auto;gap:8px;background:#fff7e2;border-radius:8px;padding:5px 10px;font-size:15px}
-.clan li.me{background:var(--gold);font-weight:800}
+.clan li{display:grid;grid-template-columns:24px 1fr auto;gap:8px;background:rgba(255,255,255,.55);padding:5px 10px;font-size:15px;border:1px solid var(--washi-dk)}
+.clan li.me{background:var(--kin);font-weight:800}
 .diary{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:5px}
-.diary li{background:#fffaf0;border-left:4px solid var(--green-dk);border-radius:6px;padding:6px 10px;font-size:15px}
+.diary li{background:#fffaf0;border-left:4px solid var(--shu);padding:6px 10px;font-size:15px}
 .diary time{display:block;font-size:12px;color:var(--ink-soft)}
-.sw{width:34px;height:34px;border-radius:8px;border:3px solid #fff;box-shadow:0 0 0 2px #000}
-.sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--gold),0 0 0 5px #000}
-.skin{border:2px solid #000;border-radius:10px;padding:4px 10px;font-family:var(--ui);font-size:14px;color:#fff;text-shadow:0 1px 0 #000}
-.skin[aria-pressed="true"]{outline:3px solid var(--gold)}
+.sw{width:34px;height:34px;border-radius:4px;border:3px solid var(--washi);box-shadow:0 0 0 2px var(--sumi)}
+.sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--kin),0 0 0 5px var(--sumi)}
+.skin{border:2px solid var(--sumi);border-radius:4px;padding:4px 10px;font-weight:800;font-size:14px;color:#fff6e0}
+.skin[aria-pressed="true"]{outline:3px solid var(--kin)}
 .skin[disabled]{opacity:.35;cursor:not-allowed}
 
-/* Enfoque (modelo Forest) */
-.focus{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;
-  padding:calc(20px + env(safe-area-inset-top,0px)) 20px calc(20px + env(safe-area-inset-bottom,0px));
-  background:linear-gradient(#1b3350,#14261a 70%);color:#fff;overflow:auto}
-.focus h2{font-family:var(--ui);font-weight:400;font-size:22px;margin:0}
-.treebox{position:relative;width:min(240px,62vw);aspect-ratio:1/1}
+/* Hoy: tasa, misiones y racha */
+.rateseg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;margin-top:6px}
+.rateseg div{position:relative;height:16px;border:2px solid var(--sumi);background:#e9dcbc;overflow:hidden}
+.rateseg i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(#e0605a,var(--shu))}
+.rateseg div:nth-child(2) i{background:linear-gradient(#e6bf5c,#b88a2a)}
+.rateseg div:nth-child(3) i{background:linear-gradient(#5a6fb0,var(--ai-lt))}
+.ratelbl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;font-size:12px;font-weight:700;text-align:center;margin-top:3px}
+.mlist{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.mlist li{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;background:rgba(255,255,255,.55);border:1px solid var(--washi-dk);padding:8px 10px}
+.mlist .ck{width:26px;height:26px;border:2px solid var(--sumi);border-radius:4px;display:grid;place-items:center;font-family:var(--head);font-weight:800;color:var(--washi);background:#efe2c2}
+.mlist li.ok .ck{background:var(--shu)}
+.mlist li.ok .mt{text-decoration:line-through;color:var(--ink-soft)}
+.mlist .pr{font-size:12px;color:var(--ink-soft)}
+.mlist .rw2{font-family:var(--head);font-weight:800;white-space:nowrap}
+.chestline{margin-top:8px;padding:8px 10px;border:2px dashed var(--kin-dk);font-size:14px}
+.chestline.ok{border-style:solid;background:rgba(212,166,64,.25)}
+.strk{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-top:8px}
+.strk div{border:2px solid var(--sumi);border-radius:4px;padding:6px 2px;text-align:center;background:#efe2c2;font-size:11px;font-weight:700;line-height:1.15;min-width:0;overflow-wrap:anywhere}
+.strk b{display:block;font-family:var(--head);font-weight:800;font-size:16px}
+.strk .got{background:var(--shu);color:var(--washi)}
+.strk .nx{background:var(--kin)}
+.bigflame{display:flex;align-items:center;gap:12px;margin-top:6px}
+.bigflame svg{width:52px;height:52px;flex:none}
+.bigflame b{font-family:var(--head);font-weight:800;font-size:28px;line-height:1}
+.alert{margin-top:8px;padding:8px 10px;background:var(--shu);color:var(--washi);font-weight:700;font-size:14px}
+.minirate{font-size:13px;margin:-2px 0 8px;color:var(--ink-soft)}
+.minirate b{color:var(--shu-dk)}
+.rank{font-family:var(--head);font-weight:700;font-size:13px;color:var(--kin);margin-top:3px}
+.ratel{font-family:var(--head);font-weight:800;color:#f2d7a0;font-size:16px}
+.day.myst{background:#a9b6e0}
+.day.myst.done{background:var(--ai-lt);color:var(--washi)}
+
+/* Enfoque nocturno, modelo Forest */
+.focus{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;
+  padding:calc(20px + env(safe-area-inset-top,0px)) 20px calc(20px + env(safe-area-inset-bottom,0px));color:var(--washi);overflow:auto;
+  background:radial-gradient(circle at 78% 14%,rgba(244,236,217,.95) 0 34px,rgba(244,236,217,.15) 35px 60px,transparent 61px),linear-gradient(#141d3a,#1b2440 55%,#1d2a22)}
+.focus::after{content:"";position:absolute;left:0;right:0;bottom:0;height:22%;pointer-events:none;z-index:-1;
+  background:linear-gradient(transparent,rgba(0,0,0,.35)),radial-gradient(ellipse at 20% 100%,#15241c 0 40%,transparent 41%),radial-gradient(ellipse at 75% 100%,#182a20 0 45%,transparent 46%)}
+.focus h2{font-family:var(--head);font-weight:800;font-size:22px;margin:0}
+.treebox{position:relative;width:min(250px,62vw);aspect-ratio:1/1}
 .treebox svg{position:absolute;inset:0;width:100%;height:100%}
-.breath{position:absolute;inset:4%;border-radius:50%;border:3px solid rgba(160,230,255,.55);animation:breath 14s ease-in-out infinite}
+.breath{position:absolute;inset:3%;border-radius:50%;border:2px solid rgba(242,181,199,.6);animation:breath 14s ease-in-out infinite}
 @keyframes breath{0%{transform:scale(.72)}28.5%{transform:scale(1)}57%{transform:scale(1)}100%{transform:scale(.72)}}
-.clock{font-family:var(--ui);font-size:clamp(56px,18vw,96px);line-height:1;font-variant-numeric:tabular-nums}
+.clock{font-family:var(--head);font-weight:800;font-size:clamp(54px,17vw,92px);line-height:1;font-variant-numeric:tabular-nums}
 .focus .bar{width:min(320px,100%)}
-.focus .mis{font-size:16px;color:#d5e8c8;max-width:34ch}
-.focus .tip{max-width:36ch;color:#cfe0ef;font-size:15px;min-height:3em}
-.breathlbl{font-family:var(--ui);color:#a8e4ff;font-size:16px;min-height:1.2em}
-.lose{font-size:13px;color:#ffd7cc;max-width:36ch}
+.focus .mis{font-size:16px;color:#f2d7a0;max-width:34ch}
+.focus .tip{max-width:36ch;color:#d8dcef;font-size:15px;min-height:3em}
+.breathlbl{font-family:var(--head);font-weight:700;color:var(--sakura);font-size:16px;min-height:1.2em}
+.lose{font-size:13px;color:#ffcfc4;max-width:38ch}
+.petal{position:absolute;top:-20px;width:10px;height:7px;border-radius:70% 0 70% 0;background:var(--sakura);opacity:.85;animation:fall linear infinite;pointer-events:none}
+@keyframes fall{to{transform:translate(-80px,110vh) rotate(540deg)}}
 
-/* Modal */
-.modal{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:16px;background:rgba(10,8,4,.65);overflow:auto}
-.modal .card{width:min(460px,100%);display:flex;flex-direction:column;gap:8px}
-.mtree{width:120px;height:120px;align-self:center}
-.gain{font-family:var(--ui);font-size:34px;color:var(--gold-dk);text-align:center;line-height:1}
+/* Modal como pergamino */
+.modal{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:24px 16px;background:rgba(8,10,20,.7);overflow:auto}
+.modal .card{width:min(460px,100%);display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.modal .card::before,.modal .card::after{content:"";position:absolute;left:-10px;right:-10px;height:14px;border-radius:7px;background:linear-gradient(#6b3d1f,#3a1f0e);border:2px solid var(--sumi);box-shadow:inset 0 0 0 2px rgba(212,166,64,.5)}
+.modal .card::before{top:-12px}.modal .card::after{bottom:-12px}
+.mtree{width:130px;height:130px;align-self:center}
+.gain{font-family:var(--head);font-weight:800;font-size:30px;color:var(--shu-dk);text-align:center;line-height:1.1}
+.gain.neg{color:var(--shu)}
 .gl{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px}
-.gl li{background:#fff7e2;border-radius:8px;padding:5px 10px;font-size:15px}
-textarea{width:100%;min-height:64px;border-radius:10px;border:2px solid var(--parch-dk);padding:8px;font:inherit;background:#fffaf0;color:var(--ink);resize:vertical}
+.gl li{background:rgba(255,255,255,.55);border:1px solid var(--washi-dk);padding:5px 10px;font-size:15px}
+textarea{width:100%;min-height:64px;border:1px solid var(--washi-dk);border-bottom:2px solid var(--sumi);border-radius:4px;padding:8px;font:inherit;background:#fffaf0;color:var(--sumi);resize:vertical}
 
-.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:40;background:#000c;color:#fff;
-  font-family:var(--ui);padding:10px 16px;border-radius:12px;border:2px solid var(--gold);max-width:calc(100% - 32px);text-align:center}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:40;background:var(--sumi);color:var(--washi);
+  font-family:var(--head);font-weight:700;padding:10px 16px;border-radius:6px;border:2px solid var(--kin);max-width:calc(100% - 32px);text-align:center}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
 <div class="app">
   <header class="hud">
-    <h1 class="brand">Clash of Class</h1>
+    <div class="brandwrap"><div class="hanko" aria-hidden="true">学</div><div><h1 class="brand">Clash of Class</h1><div class="rank" id="rank"></div></div></div>
     <div class="pills">
       <div class="pill" id="pTH"></div>
       <div class="pill" id="pCoins"></div>
@@ -207,8 +256,8 @@ textarea{width:100%;min-height:64px;border-radius:10px;border:2px solid var(--pa
   </header>
 
   <section class="mapwrap" aria-label="Mapa de tu aldea">
-    <svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aldea isométrica"></svg>
-    <div class="maptag out" id="mapTag"></div>
+    <svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aldea japonesa isométrica"></svg>
+    <div class="maptag" id="mapTag"></div>
     <div class="mapctl">
       <button id="zin" aria-label="Acercar">+</button>
       <button id="zout" aria-label="Alejar">−</button>
@@ -219,13 +268,15 @@ textarea{width:100%;min-height:64px;border-radius:10px;border:2px solid var(--pa
   <div class="duo">
     <section class="card" id="detail" aria-live="polite"></section>
     <section class="card" aria-label="Iniciar sesión de desconexión">
-      <h2>Desconectarse</h2>
-      <p class="muted">Planta un árbol y estudia. Si terminas, el árbol crece en tu bosque y ganas ClassCoins. Si sales de la app o bloqueas el teléfono, el árbol se seca y no ganas nada.</p>
+      <div class="brush">Desconectarse</div>
+      <p class="muted">Planta un cerezo y estudia. Si terminas, florece en tu bosque y ganas ClassCoins.</p>
       <div class="blocks" id="blocks"></div>
-      <div id="misWrap" hidden><label for="mission" class="muted"><b>Tablón de Misiones:</b> ¿qué vas a estudiar?</label>
+      <div class="minirate" id="miniRate"></div>
+      <div id="misWrap" hidden><label for="mission" class="muted"><b>Altar de Ema:</b> escribe tu misión de estudio</label>
         <input class="field" id="mission" maxlength="80" placeholder="Ej: guía de Bayes, capítulo 4 de Robbins"></div>
-      <div class="rew"><span>Recompensa al terminar: <b id="potential">0</b></span><span>XP del pase: <b id="potXp">0</b></span></div>
-      <button class="btn go big" id="start">Plantar y empezar</button>
+      <div class="rew"><span>Recompensa: <b id="potential">0</b></span><span>XP del pase: <b id="potXp">0</b></span></div>
+      <button class="btn big" id="start">Plantar y empezar</button>
+      <p class="warn">Si sales de la app o bloqueas el teléfono antes de terminar, el cerezo se seca y pierdes 15 ClassCoins.</p>
       <div class="spread" style="margin-top:8px">
         <label class="chk" for="demo"><input type="checkbox" id="demo"> Modo demo: 1 segundo = 1 minuto</label>
       </div>
@@ -234,6 +285,7 @@ textarea{width:100%;min-height:64px;border-radius:10px;border:2px solid var(--pa
   </div>
 
   <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="hoy">Hoy</button>
     <button class="tab" role="tab" data-tab="camino">21 días</button>
     <button class="tab" role="tab" data-tab="pase">Pase</button>
     <button class="tab" role="tab" data-tab="edif">Edificios</button>
@@ -243,568 +295,1054 @@ textarea{width:100%;min-height:64px;border-radius:10px;border:2px solid var(--pa
 </div>
 
 <div class="focus" id="focus" hidden>
-  <h2>Tu árbol está creciendo</h2>
+  <div id="petals" aria-hidden="true"></div>
+  <h2>Tu cerezo está creciendo</h2>
   <div class="treebox"><div class="breath" id="breath" hidden></div><svg id="ftree" viewBox="0 0 200 200" aria-hidden="true"></svg></div>
   <div class="breathlbl" id="breathLbl"></div>
   <div class="clock" id="clock">15:00</div>
+  <div class="ratel" id="fRate"></div>
   <div class="bar"><i id="fbar" style="width:0"></i></div>
   <div class="mis" id="fmis"></div>
   <p class="tip" id="tip"></p>
-  <p class="lose">Deja la pantalla encendida y el teléfono boca abajo. Si cambias de app o lo bloqueas, el árbol se seca.</p>
-  <button class="btn red small" id="giveup">Rendirse</button>
+  <p class="lose">Deja la pantalla encendida y el teléfono boca abajo. Si cambias de app o lo bloqueas, el cerezo se seca y pierdes 15 ClassCoins.</p>
+  <button class="btn small" id="giveup">Rendirse</button>
 </div>
 
 <div class="modal" id="modal" hidden>
   <div class="card" role="dialog" aria-modal="true" aria-labelledby="mTitle">
-    <h2 id="mTitle"></h2>
+    <div class="brush" id="mTitle"></div>
     <svg class="mtree" id="mTree" viewBox="0 0 200 200" aria-hidden="true"></svg>
     <div class="gain" id="mGain"></div>
     <p class="muted" id="mText"></p>
     <ul class="gl" id="mList"></ul>
-    <div id="mReflect" hidden><label for="reflect"><b>Jardín de Reflexión:</b> ¿qué lograste y cómo te sentiste sin el celular?</label>
+    <div id="mReflect" hidden><label for="reflect"><b>Jardín Zen:</b> ¿qué lograste y cómo te sentiste sin el celular?</label>
       <textarea id="reflect" placeholder="Ej: terminé la guía y me concentré mejor que ayer."></textarea></div>
-    <button class="btn go" id="mClose" style="justify-content:center">Volver a la aldea</button>
+    <button class="btn" id="mClose" style="justify-content:center">Volver a la aldea</button>
   </div>
 </div>
 <div class="toast" id="toast" hidden></div>
 
 <script>
 /* ================== Datos del juego ================== */
-// Horas de desconexión para subir el Ayuntamiento al nivel i+1 (índice 1 = nivel 2)
-const TH_H=[0,1,2,4,6,8,10,12,15,18,21,24,28,32,36,40,45,50,55,60];
-const MAX_TH=20;
+const TH_H=[0,1,2,4,6,8,10,12,15,18,21,24,28,32,36,40,45,50,55,60]; // horas para subir el palacio al nivel i+1
+const MAX_TH=20, PENALTY=15;
 const BUILD=[
- {id:"ayunt",name:"Ayuntamiento",pillar:"Centro",unlock:1,x:7,y:7,w:3,d:3,
-  desc:"El corazón de la aldea. Cada nivel desbloquea edificios nuevos, sube el nivel máximo de los demás y mejora las murallas."},
- {id:"reloj",name:"Torre del Reloj",pillar:"Enfoque",unlock:1,f:.25,build:15,x:3.5,y:3.5,
-  desc:"Premia la concentración larga.",perk:l=>`+${5+l} ClassCoins por cada bloque de 15 min completo.`},
- {id:"tablon",name:"Tablón de Misiones",pillar:"Organización",unlock:2,f:.2,build:20,x:11.5,y:3.5,
-  desc:"Antes de cada sesión anotas qué vas a estudiar. Tener una meta clara mejora el foco.",perk:l=>`+${l} ClassCoins por bloque cuando la sesión tiene misión.`},
- {id:"biblio",name:"Biblioteca",pillar:"Constancia",unlock:2,f:.25,build:20,x:3.5,y:7.5,
-  desc:"Guarda tu racha de días estudiando.",perk:l=>`Racha diaria activa. Cada 5 niveles regala 1 escudo de racha (llevas ${Math.floor(l/5)}).`},
- {id:"jardin",name:"Jardín de Reflexión",pillar:"Introspección",unlock:3,f:.2,build:25,x:3.5,y:11,
-  desc:"Al terminar una sesión te pregunta qué lograste y cómo te sentiste. Todo queda en tu diario.",perk:l=>`Diario activo. ${Math.min(1+Math.floor(l/2),7)} árboles en el jardín.`},
- {id:"templo",name:"Templo del Silencio",pillar:"Espiritualidad",unlock:4,f:.25,build:30,x:7.5,y:3.5,
-  desc:"Durante la sesión te guía con respiración 4-4-6 y frases de calma.",perk:l=>`Respiración guiada activa${l>=10?" y +5% ClassCoins":""}.`},
- {id:"academia",name:"Academia de Técnicas",pillar:"Estudio",unlock:5,f:.3,build:30,x:11.5,y:7.5,
-  desc:"Enseña técnicas de estudio que aparecen durante tus sesiones.",perk:l=>`${TECH.filter(t=>t.lv<=l).length} de ${TECH.length} técnicas desbloqueadas.`},
- {id:"taller",name:"Taller de Artes",pillar:"Arte",unlock:6,f:.2,build:30,x:5.6,y:11,
-  desc:"Personaliza tu aldea: colores de estandarte y estilos de tejado.",perk:l=>`${Math.min(2+Math.floor(l/2),8)} colores de estandarte disponibles.`},
- {id:"taberna",name:"Taberna del Clan",pillar:"Socialización",unlock:7,f:.25,build:40,x:10,y:11,
-  desc:"Tu clan de estudio. Compite con tus compañeros por los minutos desconectado de la semana.",perk:l=>`Ranking del clan activo${l>=5?" y +1 XP del pase por bloque":""}.`},
- {id:"observ",name:"Observatorio",pillar:"Autoconocimiento",unlock:9,f:.3,build:60,x:12.2,y:11,
-  desc:"Muestra cuánto te desconectaste cada día de la semana para que veas tus patrones.",perk:l=>`Gráfico semanal activo.`},
- {id:"mina",name:"Mina de ClassCoins",pillar:"Recompensa",unlock:11,f:.35,build:90,x:15.4,y:4.6,
-  desc:"Multiplica lo que ganas en cada sesión.",perk:l=>`+${2*l}% ClassCoins en cada sesión.`}
+ {id:"ayunt",name:"Palacio Feudal",pillar:"Centro",unlock:1,x:7,y:7,w:3,d:3,
+  desc:"El corazón de tu imperio académico. Cada nivel cambia su arquitectura, desbloquea edificios, sube el nivel máximo de los demás y mejora los Muros del Imperio."},
+ {id:"reloj",name:"Torre de la Campana",pillar:"Enfoque",unlock:1,f:.25,build:15,x:3.5,y:3.5,
+  desc:"La campana marca cada bloque de 15 minutos de concentración.",perk:l=>`+${5+l} ClassCoins por cada bloque de 15 min completo.`},
+ {id:"tablon",name:"Altar de Ema",pillar:"Organización",unlock:2,f:.2,build:20,x:11.5,y:3.5,
+  desc:"En Japón se escriben deseos en tablillas de madera llamadas ema. Aquí escribes tu misión antes de cada sesión.",perk:l=>`+${l} ClassCoins por bloque cuando la sesión tiene misión.`},
+ {id:"biblio",name:"Archivo de Pergaminos",pillar:"Constancia",unlock:2,f:.25,build:20,x:3.5,y:7.5,
+  desc:"Bodega de muros gruesos que guarda tu racha de días estudiando.",perk:l=>`Racha diaria activa. Cada 5 niveles regala 1 escudo de racha (llevas ${Math.floor(l/5)}).`},
+ {id:"jardin",name:"Jardín Zen",pillar:"Introspección",unlock:3,f:.2,build:25,x:3.5,y:11,
+  desc:"Arena rastrillada, rocas y un estanque con kois. Al terminar cada sesión te pregunta qué lograste y cómo te sentiste.",perk:l=>`Diario activo. El jardín suma un elemento nuevo cada pocos niveles.`},
+ {id:"templo",name:"Santuario",pillar:"Espiritualidad",unlock:4,f:.25,build:30,x:7.5,y:3.5,
+  desc:"Durante la sesión te guía con respiración 4-4-6 y frases de calma.",perk:l=>`Respiración guiada activa${l>=10?" y +5 ClassCoins por sesión":""}.`},
+ {id:"academia",name:"Dojo",pillar:"Estudio",unlock:5,f:.3,build:30,x:11.5,y:7.5,
+  desc:"Aquí se entrenan técnicas de estudio que aparecen durante tus sesiones.",perk:l=>`${TECH.filter(t=>t.lv<=l).length} de ${TECH.length} técnicas desbloqueadas.`},
+ {id:"taller",name:"Taller de Caligrafía",pillar:"Arte",unlock:6,f:.2,build:30,x:5.6,y:11,
+  desc:"El shodō es el arte de la caligrafía. Desde aquí personalizas los estandartes y los tejados de tu aldea.",perk:l=>`${Math.min(2+Math.floor(l/2),8)} colores de estandarte disponibles.`},
+ {id:"taberna",name:"Casa de Té",pillar:"Socialización",unlock:7,f:.25,build:40,x:10,y:11,
+  desc:"Tu clan de estudio se reúne a tomar té. Compite con tus compañeros por los minutos desconectado de la semana.",perk:l=>`Ranking del clan activo${l>=5?" y +1 XP del pase por bloque":""}.`},
+ {id:"observ",name:"Pagoda de las Estrellas",pillar:"Autoconocimiento",unlock:9,f:.3,build:60,x:12.2,y:11,
+  desc:"Desde lo alto se ve tu semana: cuánto te desconectaste cada día.",perk:l=>`Gráfico semanal activo.`},
+ {id:"mina",name:"Mina de Oro",pillar:"Recompensa",unlock:11,f:.35,build:90,x:16.6,y:5,
+  desc:"Cada sesión completa saca oro extra de la mina.",perk:l=>`+${3*l} ClassCoins por cada sesión completa.`}
 ];
 const BY=Object.fromEntries(BUILD.map(b=>[b.id,b]));
 BUILD.forEach(b=>{if(b.id!=="ayunt"){b.w=2;b.d=2;}});
 const TECH=[
- {lv:1,t:"Pomodoro: 25 min de foco y 5 de descanso. Aquí usas bloques de 15."},
+ {lv:1,t:"Pomodoro: periodos cortos de foco con descansos. Aquí usas bloques de 15."},
  {lv:3,t:"Recuperación activa: cierra el apunte y escribe lo que recuerdas."},
  {lv:5,t:"Técnica Feynman: explica el tema como si fuera para un niño."},
  {lv:7,t:"Repetición espaciada: repasa hoy, en 2 días y en una semana."},
  {lv:9,t:"Mapas mentales: conecta los conceptos en una hoja."},
  {lv:12,t:"Intercalado: alterna tipos de ejercicio en vez de repetir uno."},
  {lv:15,t:"Autoexplicación: después de cada paso, pregúntate por qué."},
- {lv:18,t:"Enseñar a otro: explícale el tema a un compañero de clan."}
+ {lv:18,t:"Enseñar a otro: explícale el tema a alguien de tu clan."}
 ];
-const TIPS=["Deja el celular boca abajo y lejos de tu mano.","Una tarea a la vez. La aldea crece mientras avanzas.","Si te acuerdas de algo pendiente, anótalo en papel y sigue."];
+const TIPS=["Deja el celular boca abajo y lejos de tu mano.","Una tarea a la vez, como un trazo de pincel.","Si te acuerdas de algo pendiente, anótalo en papel y sigue."];
 const CALM=["Suelta los hombros y relaja la mandíbula.","Nota tres sonidos a tu alrededor.","Estás justo donde tienes que estar."];
-const FLAGS=["#d8452e","#2f78d0","#7a4fd1","#2f9e5b","#f08a1c","#e8d23a","#1f1f1f","#ff6fae"];
-const SKINS={clasico:{n:"Clásico",c:"#d2452f"},real:{n:"Real",c:"#2f6fd6"},esmeralda:{n:"Esmeralda",c:"#23a05a"},obsidiana:{n:"Obsidiana",c:"#4a3a6b"}};
-const DECOR={antorchas:"Antorchas de la puerta",fuente:"Fuente de la plaza",estatua:"Estatua del Estudiante",estandarte:"Estandarte de los 21 días",arco:"Arco de Triunfo",pozo:"Pozo de los Deseos",dragon:"Dragón de Piedra"};
+const FLAGS=["#b8322a","#2c3a6b","#5b3a7a","#3f7a4a","#d4a640","#1b140c","#e88aa8","#2f6f8f"];
+const SKINS={clasico:{n:"Índigo",c:"#2c3a6b"},real:{n:"Bermellón",c:"#a8322a"},esmeralda:{n:"Cobre verde",c:"#4f8f7a"},obsidiana:{n:"Obsidiana",c:"#24222e"},sakura:{n:"Sakura",c:"#c25a7c"}};
+const DECOR={antorchas:"Faroles de piedra",fuente:"Fuente de bambú",estatua:"Estatua del Samurái",estandarte:"Estandarte de los 21 días",arco:"Torii dorado",pozo:"Campana de los deseos",dragon:"Dragón de jade",koinobori:"Koinobori (carpas al viento)",farol:"Gran farol rojo"};
 
-// Camino de 21 días: metas que suben de a poco y premios que crecen, con cofres en los días 7, 14 y 21
+// Camino de 21 días: metas que suben de a poco, cofre misterioso cada semana, cofre grande y rango nuevo los días 7, 14 y 21. No se reinicia si fallas un día.
 const PATH=[
- [15,{coins:45},"Primera victoria"],[15,{coins:30}],[15,{shield:1}],
- [30,{coins:40}],[30,{coins:50}],[30,{boost:1}],[30,{coins:120,decor:"fuente"},"Cofre semanal"],
- [45,{coins:60}],[45,{coins:70}],[45,{boost:1}],[45,{coins:80}],[45,{shield:1}],[45,{coins:100}],[45,{coins:200,decor:"estatua"},"Cofre de la quincena"],
- [60,{coins:100}],[60,{coins:110}],[60,{boost:1}],[60,{coins:120}],[60,{shield:1}],[60,{coins:150}],[60,{coins:300,decor:"estandarte",gold:true},"Cofre legendario"]
-].map(([goal,rew,title],i)=>({goal,rew,title,day:i+1}));
+ [15,{coins:60},"Primera victoria"],[15,{coins:40}],[15,{mystery:1},"m"],
+ [30,{coins:50}],[30,{shield:1}],[30,{coins:70}],[30,{coins:150,decor:"fuente",rank:"Aprendiz"},"c"],
+ [45,{coins:70}],[45,{boost:1}],[45,{mystery:1},"m"],[45,{coins:90}],[45,{shield:1}],[45,{coins:110}],[45,{coins:250,decor:"estatua",rank:"Samurái"},"c"],
+ [60,{coins:120}],[60,{boost:1}],[60,{mystery:1},"m"],[60,{coins:140}],[60,{shield:1}],[60,{coins:160}],[60,{coins:400,decor:"estandarte",gold:true,rank:"Maestro"},"c"]
+].map(([goal,rew,kind],i)=>({goal,rew,kind:kind==="m"?"myst":kind==="c"?"chest":"",day:i+1}));
+const rankOf=st=>st>=21?"Maestro":st>=14?"Samurái":st>=7?"Aprendiz":"Rōnin";
+// Hitos de racha
+const STREAK_MS=[{d:3,rew:{coins:50,shield:1}},{d:7,rew:{coins:150,boost:1}},{d:14,rew:{coins:250,decor:"koinobori"}},{d:21,rew:{coins:300,shield:2}},{d:30,rew:{coins:500,skin:"sakura"}},{d:60,rew:{coins:800,decor:"farol"}},{d:100,rew:{coins:1500,boost:3}}];
+// Misiones diarias
+const MISSIONS=[
+ {id:"s1",t:"Completa 1 sesión",chk:d=>[d.sessions,1],r:20,easy:1},
+ {id:"m30",t:"Desconéctate 30 min hoy",chk:d=>[todayMin(),30],r:25,easy:1},
+ {id:"s2",t:"Completa 2 sesiones",chk:d=>[d.sessions,2],r:40},
+ {id:"s3",t:"Completa 3 sesiones",chk:d=>[d.sessions,3],r:70,minPath:7},
+ {id:"m60",t:"Llega a la tasa ×1,5 (60 min hoy)",chk:d=>[todayMin(),60],r:50},
+ {id:"m120",t:"Llega a la tasa ×2 (120 min hoy)",chk:d=>[todayMin(),120],r:100,minPath:7},
+ {id:"l30",t:"Haz una sesión de 30 min o más",chk:d=>[d.longest>=30?1:0,1],r:35},
+ {id:"l60",t:"Haz una sesión de 60 min",chk:d=>[d.longest>=60?1:0,1],r:70,minPath:10},
+ {id:"ema",t:"Completa una sesión con misión en el Altar de Ema",chk:d=>[d.withMission,1],r:30,need:"tablon"},
+ {id:"dia",t:"Escribe en tu diario del Jardín Zen",chk:d=>[d.diary,1],r:25,need:"jardin"},
+ {id:"up",t:"Construye o mejora un edificio",chk:d=>[d.upgrades,1],r:20},
+ {id:"am",t:"Termina una sesión antes de las 12:00",chk:d=>[d.morning,1],r:30},
+ {id:"clean",t:"Completa 2 sesiones sin rendirte ni salirte",chk:d=>[d.fails?0:Math.min(d.sessions,2),2],r:45}
+];
+const MBY=Object.fromEntries(MISSIONS.map(m=>[m.id,m]));
 
-// Pase de batalla: 30 niveles de 60 XP (1 XP = 1 minuto desconectado)
 const TIERS=30, XPT=60;
 function passRew(track,t){
-  if(track==="free"){
-    const sp={5:{decor:"antorchas"},10:{shield:1},15:{boost:1},20:{decor:"pozo"},25:{skin:"esmeralda"},30:{coins:300}};
-    return sp[t]||{coins:20+t*2};
-  }
-  const sp={3:{boost:1},8:{shield:1},10:{skin:"real"},15:{decor:"arco"},20:{boost:1},25:{skin:"obsidiana"},30:{decor:"dragon"}};
-  return sp[t]||{coins:40+t*3};
+  if(track==="free"){const sp={5:{decor:"antorchas"},10:{shield:1},15:{boost:1},20:{decor:"pozo"},25:{skin:"esmeralda"},30:{coins:300}};return sp[t]||{coins:20+t*2};}
+  const sp={3:{boost:1},8:{shield:1},10:{skin:"real"},15:{decor:"arco"},20:{boost:1},25:{skin:"obsidiana"},30:{decor:"dragon"}};return sp[t]||{coins:40+t*3};
 }
 
 /* ================== Estado ================== */
-const dkey=(d=new Date())=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+let DAYOFF=0;const now=()=>new Date(Date.now()+DAYOFF*864e5);
+const dkey=(d=now())=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 const DEF=()=>({coins:50,lv:Object.fromEntries(BUILD.map(b=>[b.id,b.id==="ayunt"?1:0])),xp:0,gold:false,passFree:0,passGold:0,
-  totalMin:0,sessions:0,failed:0,forest:[],log:{},streak:0,lastActive:null,shields:0,boosts:0,
+  totalMin:0,sessions:0,failed:0,lost:0,forest:[],log:{},streak:0,lastActive:null,shields:0,boosts:0,
   path:{step:0,prog:0,progDate:null,lastDay:null},decor:[],skins:["clasico"],skin:"clasico",flag:0,
-  block:1,demo:true,sel:"ayunt",tab:"camino",diary:[],mission:"",season:dkey()});
-let S=load();
-function load(){try{const r=JSON.parse(localStorage.getItem("clash-of-class-v2")||"null");if(r){const d=DEF();return {...d,...r,lv:{...d.lv,...r.lv},path:{...d.path,...r.path}};}}catch(e){}return DEF();}
-function save(){try{localStorage.setItem("clash-of-class-v2",JSON.stringify(S));}catch(e){}}
+  block:1,demo:true,sel:"ayunt",tab:"hoy",diary:[],mission:"",season:dkey(),dayOff:0,day:null,msPaid:[]});
+let S=load();DAYOFF=S.dayOff||0;if(!S.path.v4){S.path={step:Math.min(S.path.step||0,21),lastDay:S.path.lastDay||null,v4:1};}
+function load(){try{const r=JSON.parse(localStorage.getItem("clash-of-class-v3")||localStorage.getItem("clash-of-class-v2")||"null");
+  if(r){const d=DEF();return {...d,...r,lv:{...d.lv,...r.lv},path:{...d.path,...r.path}};}}catch(e){}return DEF();}
+function save(){try{localStorage.setItem("clash-of-class-v3",JSON.stringify(S));}catch(e){}}
 const $=id=>document.getElementById(id);
 const lv=id=>S.lv[id]||0;
 const TH=()=>lv("ayunt");
 const fmtH=m=>{const h=m/60;return h<1?`${m} min`:(Number.isInteger(h)?`${h} h`:`${h.toFixed(1).replace(".",",")} h`);};
 
 /* ================== Economía ================== */
-function cost(b,to){
-  if(b.id==="ayunt") return TH_H[to-1]*60;
-  if(to===1) return b.build;
-  return Math.max(15,Math.round(TH_H[to-1]*60*b.f/5)*5);
-}
+function cost(b,to){if(b.id==="ayunt")return TH_H[to-1]*60;if(to===1)return b.build;return Math.max(15,Math.round(TH_H[to-1]*60*b.f/5)*5);}
 function maxLv(b){return b.id==="ayunt"?MAX_TH:TH();}
 function unlocked(b){return TH()>=b.unlock;}
 function canUp(b){const l=lv(b.id);return unlocked(b)&&l<maxLv(b)&&S.coins>=cost(b,l+1);}
-function blockBonus(withMission){return 5+lv("reloj")+(withMission?lv("tablon"):0);}
-function mult(){return 1+lv("mina")*.02+(lv("templo")>=10?.05:0);}
-function reward(min,withMission,useBoost){
-  const blocks=Math.floor(min/15);
-  const base=min+blocks*blockBonus(withMission);
-  return Math.round(base*mult()*(useBoost?2:1));
-}
+// Tasa por minuto según lo estudiado hoy: hora 1 = 1, hora 2 = 1,5, hora 3 en adelante = 2 (máximo). Se reinicia cada día.
+const rateAt=m=>m<60?1:m<120?1.5:2;
+const rateTxt=r=>String(r).replace(".",",");
+const todayMin=()=>S.log[dkey()]||0;
+function minuteCoins(start,min,boost){let c=0;for(let i=0;i<min;i++)c+=boost?2:rateAt(start+i);return c;}
+function blockBonus(m){return 5+lv("reloj")+(m?lv("tablon"):0);}
+function flatBonus(){return lv("mina")*3+(lv("templo")>=10?5:0);}
+function reward(min,m,boost,start=todayMin()){return Math.round(minuteCoins(start,min,boost))+Math.floor(min/15)*blockBonus(m)+flatBonus();}
+const streakBonus=st=>10+5*Math.min(st,20);
+function mysteryGrant(){const x=Math.random(),r=x<.15?{coins:250}:x<.4?{boost:1}:x<.6?{shield:1}:{coins:60+Math.round(Math.random()*90)};return "Cofre misterioso: "+grant(r);}
+function daily(){const k=dkey();if(!S.day||S.day.date!==k)S.day={date:k,sessions:0,longest:0,withMission:0,diary:0,upgrades:0,morning:0,fails:0,done:[],chest:false,streakPaid:false,missions:pickMissions(k)};return S.day;}
+function pickMissions(k){let h=7;for(const c of k)h=(h*31+c.charCodeAt(0))%233280;const r=()=>(h=(h*9301+49297)%233280)/233280;
+  const ok=m=>(!m.need||lv(m.need)>0)&&(!m.minPath||S.path.step>=m.minPath);
+  const easy=MISSIONS.filter(m=>m.easy&&ok(m)),rest=MISSIONS.filter(m=>!m.easy&&ok(m));
+  const out=[easy[Math.floor(r()*easy.length)].id];while(out.length<3&&rest.length){const m=rest.splice(Math.floor(r()*rest.length),1)[0];out.push(m.id);}return out;}
+function checkMissions(){const d=daily(),out=[];
+  d.missions.forEach(id=>{if(d.done.includes(id))return;const m=MBY[id],[v,t]=m.chk(d);if(v>=t){d.done.push(id);S.coins+=m.r;out.push(`Misión cumplida: ${m.t} (+${m.r})`);}});
+  if(!d.chest&&d.done.length===d.missions.length){d.chest=true;const c={coins:60+Math.round(Math.random()*60)};if(Math.random()<.3)c.boost=1;out.push(`Cofre diario: ${grant(c)}`);}
+  return out;}
+function payStreak(list){STREAK_MS.forEach(ms=>{if(S.streak>=ms.d&&!S.msPaid.includes(ms.d)){S.msPaid.push(ms.d);list.push(`Hito de racha ${ms.d} días: ${grant(ms.rew)}`);}});}
 function xpFor(min){return min+(lv("taberna")>=5?Math.floor(min/15):0);}
-
-function grant(r){
-  const out=[];
+function grant(r){const out=[];
   if(r.coins){S.coins+=r.coins;out.push(`+${r.coins} ClassCoins`);}
-  if(r.shield){S.shields+=r.shield;out.push(`Escudo de racha`);}
-  if(r.boost){S.boosts+=r.boost;out.push(`Poción x2 (próxima sesión)`);}
+  if(r.shield){S.shields+=r.shield;out.push("Escudo de racha");}
+  if(r.boost){S.boosts+=r.boost;out.push(`Poción de enfoque${r.boost>1?" x"+r.boost:""} (próxima sesión a ×2)`);}
+  if(r.mystery)out.push(mysteryGrant());
+  if(r.rank)out.push(`Rango ${r.rank}`);
   if(r.decor&&!S.decor.includes(r.decor)){S.decor.push(r.decor);out.push(DECOR[r.decor]);}
   if(r.skin&&!S.skins.includes(r.skin)){S.skins.push(r.skin);out.push(`Tejados ${SKINS[r.skin].n}`);}
   if(r.gold&&!S.gold){S.gold=true;out.push("Pase Dorado activado");}
-  return out.join(" · ");
-}
-function claimPass(){
-  const t=Math.min(TIERS,Math.floor(S.xp/XPT)),out=[];
+  return out.join(" · ");}
+function claimPass(){const t=Math.min(TIERS,Math.floor(S.xp/XPT)),out=[];
   while(S.passFree<t){S.passFree++;out.push(`Pase nivel ${S.passFree}: ${grant(passRew("free",S.passFree))}`);}
   if(S.gold)while(S.passGold<t){S.passGold++;out.push(`Pase Dorado ${S.passGold}: ${grant(passRew("gold",S.passGold))}`);}
-  return out;
-}
-function upgrade(id){
-  const b=BY[id],l=lv(id);if(!canUp(b))return;
+  return out;}
+function upgrade(id){const b=BY[id],l=lv(id);if(!canUp(b))return;
   S.coins-=cost(b,l+1);S.lv[id]=l+1;
   let msg=l===0?`${b.name} construido`:`${b.name} subió a nivel ${l+1}`;
   if(id==="biblio"&&(l+1)%5===0){S.shields++;msg+=" · +1 escudo de racha";}
   if(id==="ayunt"){const nu=BUILD.filter(x=>x.unlock===l+1);if(nu.length)msg+=` · Nuevo: ${nu.map(x=>x.name).join(", ")}`;}
-  save();renderAll();bump("pCoins");toast(msg);
-}
+  const dd=daily();dd.upgrades++;const mm=checkMissions();
+  save();renderAll();bump("pCoins");toast(msg+(mm.length?" · "+mm.join(" · "):""));}
 
-/* ================== Dibujo isométrico ================== */
+/* ================== Motor isométrico ================== */
 const iso=(x,y,z=0)=>[(x-y)*32,(x+y)*16-z];
-const pt=a=>a.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
-const OL='stroke="#24150a" stroke-opacity=".6" stroke-width="1.4" stroke-linejoin="round"';
+const F=p=>p[0].toFixed(1)+" "+p[1].toFixed(1);
+const PT=a=>a.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
+const Lp=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
+const bez=(a,c,b,t)=>{const u=1-t;return [u*u*a[0]+2*u*t*c[0]+t*t*b[0],u*u*a[1]+2*u*t*c[1]+t*t*b[1]];};
+const OL='stroke="#1b140c" stroke-opacity=".75" stroke-width="1.1" stroke-linejoin="round"';
+const poly=(ps,f,ex="")=>`<polygon points="${PT(ps)}" fill="${f}" ${OL} ${ex}/>`;
+const pl=(ps,c,w=1,ex="")=>`<polyline points="${PT(ps)}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" ${ex}/>`;
 function sh(h,p){const n=parseInt(h.slice(1),16);let r=n>>16,g=n>>8&255,b=n&255;const t=p<0?0:255,a=Math.abs(p);
   r=Math.round(r+(t-r)*a);g=Math.round(g+(t-g)*a);b=Math.round(b+(t-b)*a);return "#"+((1<<24)|(r<<16)|(g<<8)|b).toString(16).slice(1);}
-const poly=(ps,f,ex="")=>`<polygon points="${pt(ps)}" fill="${f}" ${OL} ${ex}/>`;
-function box(x,y,w,d,z,h,c){
-  return poly([iso(x,y,z+h),iso(x+w,y,z+h),iso(x+w,y+d,z+h),iso(x,y+d,z+h)],sh(c,.2))
-   +poly([iso(x,y+d,z),iso(x+w,y+d,z),iso(x+w,y+d,z+h),iso(x,y+d,z+h)],c)
-   +poly([iso(x+w,y,z),iso(x+w,y+d,z),iso(x+w,y+d,z+h),iso(x+w,y,z+h)],sh(c,-.25));
-}
-function pyr(x,y,w,d,z,h,c,o=.22){const a=x-o,b=y-o,A=x+w+o,B=y+d+o,ap=iso(x+w/2,y+d/2,z+h);
-  return poly([iso(a,b,z),iso(A,b,z),ap],sh(c,.25))+poly([iso(a,b,z),iso(a,B,z),ap],sh(c,.12))
-   +poly([iso(a,B,z),iso(A,B,z),ap],c)+poly([iso(A,b,z),iso(A,B,z),ap],sh(c,-.28));}
-function gable(x,y,w,d,z,h,c,o=.2){const a=x-o,A=x+w+o,b=y-o,B=y+d+o,m=y+d/2;
-  return poly([iso(a,b,z),iso(A,b,z),iso(A,m,z+h),iso(a,m,z+h)],sh(c,.25))
-   +poly([iso(a,B,z),iso(A,B,z),iso(A,m,z+h),iso(a,m,z+h)],c)
-   +poly([iso(A,b,z),iso(A,B,z),iso(A,m,z+h)],sh(c,-.3));}
-const faceL=(x0,x1,yf,z0,z1,c)=>poly([iso(x0,yf,z0),iso(x1,yf,z0),iso(x1,yf,z1),iso(x0,yf,z1)],c);
-const faceR=(xf,y0,y1,z0,z1,c)=>poly([iso(xf,y0,z0),iso(xf,y1,z0),iso(xf,y1,z1),iso(xf,y0,z1)],c);
-function flag(x,y,z,c){const p=iso(x,y,z);return `<line x1="${p[0]}" y1="${p[1]}" x2="${p[0]}" y2="${p[1]-26}" stroke="#3b2a1a" stroke-width="2.5"/><path d="M${p[0]} ${p[1]-26}l17 5-17 6z" fill="${c}" ${OL}/>`;}
-function dome(x,y,z,r,c){const p=iso(x,y,z);
-  return `<path d="M${p[0]-r} ${p[1]}A${r} ${r} 0 0 1 ${p[0]+r} ${p[1]}A${r} ${r*.5} 0 0 1 ${p[0]-r} ${p[1]}z" fill="${c}" ${OL}/><ellipse cx="${p[0]-r*.35}" cy="${p[1]-r*.55}" rx="${r*.22}" ry="${r*.32}" fill="#fff" opacity=".35"/>`;}
-function ellipseAt(x,y,z,rx,ry,c,ex=""){const p=iso(x,y,z);return `<ellipse cx="${p[0]}" cy="${p[1]}" rx="${rx}" ry="${ry}" fill="${c}" ${ex}/>`;}
-function tree(x,y,s=1,c="#3f9a2c",pine=false){const p=iso(x,y,0);let o=`<ellipse cx="${p[0]}" cy="${p[1]}" rx="${10*s}" ry="${5*s}" fill="rgba(0,0,0,.22)"/><rect x="${p[0]-2*s}" y="${p[1]-12*s}" width="${4*s}" height="${12*s}" fill="#6b4220"/>`;
-  if(pine) o+=`<path d="M${p[0]} ${p[1]-44*s}l${13*s} ${22*s}h${-6*s}l${9*s} ${14*s}h${-32*s}l${9*s} ${-14*s}h${-6*s}z" fill="${c}" ${OL}/>`;
-  else o+=`<circle cx="${p[0]}" cy="${p[1]-22*s}" r="${13*s}" fill="${c}" ${OL}/><circle cx="${p[0]-4*s}" cy="${p[1]-27*s}" r="${5*s}" fill="#fff" opacity=".18"/>`;
-  return o;}
-function deadTree(x,y,s=1){const p=iso(x,y,0);return `<ellipse cx="${p[0]}" cy="${p[1]}" rx="${9*s}" ry="${4*s}" fill="rgba(0,0,0,.2)"/><path d="M${p[0]} ${p[1]}v${-26*s}m0 ${10*s}l${-8*s} ${-8*s}m${8*s} ${-2*s}l${7*s} ${-9*s}" stroke="#6e5a44" stroke-width="${3*s}" stroke-linecap="round" fill="none"/>`;}
+let SEED=1;const rnd=()=>(SEED=(SEED*9301+49297)%233280)/233280;
 
+const PLASTER="#f3eee2",WOOD="#6b4a2c",DWOOD="#3a2a1c",SHU="#c8352b",GOLD="#d9b04a",STONE="#9b958a";
 const tier=l=>l<=0?0:Math.min(5,Math.ceil(l/4));
-const WALLS=["#c28a52","#c28a52","#bcb6aa","#ded6c4","#efe6d0","#6f6690"];
-const wallC=l=>WALLS[tier(l)];
-const roofC=()=>SKINS[S.skin].c;
+const rc=l=>tier(l)<=1?"#a8865a":tier(l)>=5&&S.skin==="clasico"?"#24222e":SKINS[S.skin].c;
+const wc=l=>tier(l)<=1?"#b98a57":PLASTER;
 const flagC=()=>FLAGS[S.flag]||FLAGS[0];
-function trims(x,y,w,d,z,l){ // detalles por rango: oro desde nivel 13, aura desde 17
-  let s="";if(l>=13){[[x,y+d],[x+w,y+d],[x+w,y]].forEach(([a,b])=>s+=box(a-.08,b-.08,.16,.16,z,5,"#ffcf3a"));}
-  return s;}
-function aura(x,y,w,d,l){return l>=17?ellipseAt(x+w/2,y+d/2,0,w*30,d*15,"url(#aura)"):"";}
-function found(x,y,w,d,l){return box(x-.05,y-.05,w+.1,d+.1,0,4,l>=13?"#c9c2b2":"#9c968b");}
 
-function drawB(b,l){
-  const {x,y}=b,W=wallC(l),R=roofC(),F=flagC();let s="",top=30;
-  switch(b.id){
-  case "ayunt":{
-    s+=aura(x,y,3,3,l)+found(x,y,3,3,l);const h=22+l*1.6;
-    const tw=(tx,ty,th)=>box(tx,ty,.85,.85,4,th,W)+faceR(tx+.85,ty+.3,ty+.55,4+th*.55,4+th*.75,"#2b3550")+pyr(tx,ty,.85,.85,4+th,16+l*.3,R,.12)+flag(tx+.425,ty+.425,4+th+16+l*.3,F);
-    if(l>=7) s+=tw(x+.05,y+.05,h+12);
-    s+=box(x+.25,y+.25,2.5,2.5,4,h,W);
-    s+=faceL(x+1.15,x+1.85,y+2.75,4,4+Math.min(18,h*.6),"#5a3518")+faceL(x+1.25,x+1.75,y+2.75,4,4+Math.min(14,h*.45),"#3a2210");
-    const nw=Math.min(4,1+Math.floor(l/4));for(let i=0;i<nw;i++){const yy=y+.45+i*.55;s+=faceR(x+2.75,yy,yy+.3,4+h*.5,4+h*.5+9,"#2b3550");}
-    if(l>=9){
-      const kh=14+l*.7;s+=box(x+.85,y+.85,1.3,1.3,4+h,kh,W)+pyr(x+.85,y+.85,1.3,1.3,4+h+kh,22+l*.4,R,.2)+flag(x+1.5,y+1.5,4+h+kh+22+l*.4,F);
-      for(let i=0;i<5;i++){s+=box(x+.25+i*.55,y+2.45,.3,.3,4+h,5,W);s+=box(x+2.45,y+.25+i*.55,.3,.3,4+h,5,W);}
-      top=4+h+kh+22+l*.4;
-    } else {const rh=20+l*1.2;s+=pyr(x+.25,y+.25,2.5,2.5,4+h,rh,R,.3)+(l>=2?flag(x+1.5,y+1.5,4+h+rh,F):"");top=4+h+rh;}
-    if(l>=3){s+=tw(x+.05,y+2.1,h+8);s+=tw(x+2.1,y+.05,h+8);}
-    if(l>=11) s+=tw(x+2.1,y+2.1,h+4);
-    s+=trims(x+.25,y+.25,2.5,2.5,4+h,l);
-    if(l>=17) s+=`<circle cx="${iso(x+1.5,y+1.5,top+6)[0]}" cy="${iso(x+1.5,y+1.5,top+6)[1]}" r="6" fill="#b48cff" ${OL}/>`;
-    break;}
-  case "reloj":{
-    s+=aura(x,y,2,2,l)+found(x,y,2,2,l);
-    if(l>=5){const ah=10+l*.4;s+=box(x+.1,y+.1,1.8,1.8,4,ah,W)+pyr(x+.1,y+.1,1.8,1.8,4+ah,8,R,.1);}
-    const th=30+l*2.6;s+=box(x+.55,y+.55,.9,.9,4,th,W);
-    const c=iso(x+1.45,y+1,4+th-12);s+=`<circle cx="${c[0]}" cy="${c[1]}" r="8" fill="#fff8e0" ${OL}/><path d="M${c[0]} ${c[1]}v-6M${c[0]} ${c[1]}l4 3" stroke="#2b1a0b" stroke-width="2" stroke-linecap="round"/>`;
-    if(l>=9) s+=box(x+.45,y+.45,1.1,1.1,4+th*.55,3,"#7a4a24");
-    if(l>=13){const g=iso(x+1,y+1,4+th+2);s+=`<circle cx="${g[0]}" cy="${g[1]+4}" r="5" fill="#ffcf3a" ${OL}/>`;}
-    const rh=18+l*.6;s+=pyr(x+.55,y+.55,.9,.9,4+th,rh,R,.15)+(l>=3?flag(x+1,y+1,4+th+rh,F):"");top=4+th+rh;break;}
-  case "tablon":{
-    s+=aura(x,y,2,2,l)+found(x,y,2,2,l);const h=12+l*.8;
-    s+=box(x+.2,y+.15,1.2,1.1,4,h,W)+gable(x+.2,y+.15,1.2,1.1,4+h,10+l*.3,R);
-    if(l>=6) s+=box(x+1.45,y+.2,.4,.4,4,h+6,W)+pyr(x+1.45,y+.2,.4,.4,4+h+6,8,R,.08);
-    const yb=y+1.7;s+=box(x+.25,yb,.12,.12,4,26,"#6b4220")+box(x+1.65,yb,.12,.12,4,26,"#6b4220");
-    s+=faceL(x+.25,x+1.77,yb+.12,12,28,"#d8b77a");
-    const n=Math.min(2+Math.floor(l/2),9);for(let i=0;i<n;i++){const cx=x+.38+(i%5)*.27,zz=i<5?21:14;s+=faceL(cx,cx+.2,yb+.12,zz,zz+5,FLAGS[i%FLAGS.length]==="#1f1f1f"?"#fff":["#fff8e0","#ffe48a","#cde8ff","#ffd0d8"][i%4]);}
-    top=4+h+10+l*.3;break;}
-  case "biblio":{
-    s+=aura(x,y,2,2,l)+found(x,y,2,2,l);const h=15+l*1.1;
-    s+=box(x+.15,y+.15,1.7,1.7,4,h,W)+faceL(x+.75,x+1.2,y+1.85,4,18,"#5a3518");
-    s+=faceR(x+1.85,y+.4,y+.75,4+h*.45,4+h*.45+9,"#2b3550")+faceR(x+1.85,y+1.1,y+1.45,4+h*.45,4+h*.45+9,"#2b3550");
-    const rh=14+l*.5;s+=gable(x+.15,y+.15,1.7,1.7,4+h,rh,R);
-    const bk=iso(x+1,y+1.55,4+h+rh*.45);s+=`<path d="M${bk[0]-9} ${bk[1]-4}q4.5-3 9 0q4.5-3 9 0v9q-4.5-3-9 0q-4.5-3-9 0z" fill="#fff8e0" ${OL}/><line x1="${bk[0]}" y1="${bk[1]-4}" x2="${bk[0]}" y2="${bk[1]+5}" stroke="#24150a" stroke-width="1"/>`;
-    if(l>=5){const th=h+12;s+=box(x+1.35,y+.05,.6,.6,4,th,W)+pyr(x+1.35,y+.05,.6,.6,4+th,14,R,.1)+(l>=9?flag(x+1.65,y+.35,4+th+14,F):"");}
-    s+=trims(x+.15,y+.15,1.7,1.7,4+h,l);top=4+h+rh;break;}
-  case "jardin":{
-    s+=aura(x,y,2,2,l)+box(x,y,2,2,0,3,"#5aa83c");
-    if(l>=6){for(let i=0;i<4;i++){s+=box(x+i*.5,y,.45,.18,3,5,"#2f7a22");s+=box(x,y+i*.5,.18,.45,3,5,"#2f7a22");}}
-    s+=ellipseAt(x+1.15,y+1.2,3,24,12,"#5ab4e8",OL)+ellipseAt(x+1.05,y+1.15,3,10,4,"#fff",'opacity=".4"');
-    const n=Math.min(1+Math.floor(l/2),7),pos=[[.35,.35],[1.65,.35],[.35,1.1],[1,.3],[1.7,1.0],[.4,1.75],[1.75,1.75]];
-    for(let i=0;i<n;i++)s+=tree(x+pos[i][0],y+pos[i][1],.7,i%2?"#4fb236":"#2f8f2a",i%3===2);
-    if(l>=3){for(let i=0;i<6;i++){const f=iso(x+.3+((i*0.31)%1.4),y+1.5+((i*0.17)%.4),3);s+=`<circle cx="${f[0]}" cy="${f[1]}" r="2.5" fill="${["#ff6fae","#ffe14d","#fff"][i%3]}"/>`;}}
-    if(l>=10) s+=box(x+.1,y+.1,.08,.08,3,16,"#fff")+box(x+.7,y+.1,.08,.08,3,16,"#fff")+box(x+.1,y+.7,.08,.08,3,16,"#fff")+box(x+.7,y+.7,.08,.08,3,16,"#fff")+pyr(x+.05,y+.05,.8,.8,19,12,R,.1);
-    top=30;break;}
-  case "templo":{
-    s+=aura(x,y,2,2,l)+found(x,y,2,2,l)+box(x+.1,y+.1,1.8,1.8,4,4,"#e9e2d0");
-    const hb=12+l*.8,mw=l>=17?"#e9e4ff":"#f4eee0";s+=box(x+.35,y+.35,1.3,1.3,8,hb,mw);
-    if(l>=5){[.3,.85,1.4].forEach(c=>{s+=box(x+c,y+1.62,.18,.18,8,hb,"#fffaf0");});s+=box(x+.25,y+1.55,1.5,.3,8+hb,3,"#e3d9c2");}
-    const r=17+l*.55,dc=l>=17?"#ffcf3a":(l>=9?"#2fa3c8":"#2fb3a8");s+=dome(x+1,y+1,8+hb,r,dc);
-    const f=iso(x+1,y+1,8+hb+r+2);s+=`<line x1="${f[0]}" y1="${f[1]}" x2="${f[0]}" y2="${f[1]-10}" stroke="#c28a12" stroke-width="3"/><circle cx="${f[0]}" cy="${f[1]-12}" r="4" fill="#ffcf3a" ${OL}/>`;
-    if(l>=12) s+=`<circle cx="${f[0]}" cy="${f[1]+r*.5}" r="${r+10}" fill="none" stroke="#ffe48a" stroke-width="2" opacity=".6"/>`;
-    top=8+hb+r+14;break;}
-  case "academia":{
-    s+=aura(x,y,2,2,l)+found(x,y,2,2,l);const h=14+l*1.1;
-    s+=box(x+.15,y+.15,1.7,1.7,4,h,W)+faceL(x+.4,x+.85,y+1.85,4,17,"#5a3518");
-    s+=faceR(x+1.85,y+.45,y+1.45,4+h*.35,4+h*.35+12,"#25523a");
-    for(let i=0;i<3;i++){const a=iso(x+1.85,y+.6+i*.25,4+h*.35+3+i*3);s+=`<line x1="${a[0]-2}" y1="${a[1]}" x2="${a[0]+6}" y2="${a[1]-4}" stroke="#fff" stroke-width="1.2" opacity=".8"/>`;}
-    const rh=14+l*.4;s+=gable(x+.15,y+.15,1.7,1.7,4+h,rh,R);top=4+h+rh;
-    if(l>=5){s+=box(x+.8,y+.8,.4,.4,4+h+rh*.4,14,W)+pyr(x+.8,y+.8,.4,.4,4+h+rh*.4+14,10,R,.08);const bl=iso(x+1,y+1,4+h+rh*.4+8);s+=`<circle cx="${bl[0]}" cy="${bl[1]}" r="3" fill="#ffcf3a"/>`;top=Math.max(top,4+h+rh*.4+24);}
-    if(l>=10) s+=flag(x+1.85,y+1.85,4+h,F);
-    s+=trims(x+.15,y+.15,1.7,1.7,4+h,l);break;}
-  case "taller":{
-    s+=aura(x,y,2,2,l)+found(x,y,2,2,l);const h=13+l*1;
-    s+=box(x+.2,y+.15,1.6,1.5,4,h,W)+faceL(x+.45,x+.85,y+1.65,4,16,"#5a3518");
-    for(let i=0;i<6;i++){const x0=x+.2+i*.267,x1=x0+.267;s+=poly([iso(x0,y+1.65,4+h-2),iso(x1,y+1.65,4+h-2),iso(x1,y+2.0,4+h-9),iso(x0,y+2.0,4+h-9)],i%2?"#fff8e0":FLAGS[(S.flag+i)%4]);}
-    const p=iso(x+1.8,y+.9,4+h*.55);s+=`<ellipse cx="${p[0]}" cy="${p[1]}" rx="10" ry="7" fill="#f6ead0" ${OL}/>`+["#d8452e","#2f78d0","#ffc83d","#2f9e5b"].map((c,i)=>`<circle cx="${p[0]-5+i*3.5}" cy="${p[1]-2+(i%2)*3}" r="2" fill="${c}"/>`).join("");
-    const rh=16+l*.5;s+=pyr(x+.2,y+.15,1.6,1.5,4+h,rh,R,.2);top=4+h+rh;
-    if(l>=3) s+=box(x+1.55,y+1.75,.2,.2,4,6,"#2f78d0")+box(x+1.25,y+1.8,.2,.2,4,5,"#d8452e");
-    if(l>=8) s+=flag(x+1,y+.9,top,F);
-    s+=trims(x+.2,y+.15,1.6,1.5,4+h,l);break;}
-  case "taberna":{
-    s+=aura(x,y,2,2,l)+found(x,y,2,2,l);const h=13+l*.9,WC=tier(l)<=1?"#a8743f":W;
-    s+=box(x+.15,y+.15,1.7,1.7,4,h,WC)+faceL(x+.5,x+.95,y+1.85,4,17,"#4a2c14");
-    [.15,.95,1.85].forEach(c=>s+=faceL(x+c,x+c+.06,y+1.86,4,4+h,"#4a2c14"));
-    s+=faceR(x+1.85,y+.5,y+.9,4+h*.5,4+h*.5+8,"#ffd36b")+faceR(x+1.85,y+1.15,y+1.55,4+h*.5,4+h*.5+8,"#ffd36b");
-    let z=4+h;if(l>=6){const h2=10+l*.4;s+=box(x+.05,y+.05,1.9,1.9,z,h2,WC);z+=h2;}
-    const rh=14+l*.4;s+=gable(x+.05,y+.05,1.9,1.9,z,rh,R);top=z+rh;
-    const m=iso(x+1.9,y+1.9,4+h-2);s+=`<line x1="${m[0]}" y1="${m[1]}" x2="${m[0]+12}" y2="${m[1]-3}" stroke="#3b2a1a" stroke-width="2"/><rect x="${m[0]+7}" y="${m[1]}" width="9" height="10" rx="2" fill="#ffcf3a" ${OL}/>`;
-    if(l>=3) s+=box(x+1.6,y+1.9,.3,.3,0,9,"#8a5a2b")+box(x+1.25,y+1.95,.3,.3,0,9,"#8a5a2b");
-    if(l>=9) s+=flag(x+1,y+1,top,F);
-    s+=trims(x+.15,y+.15,1.7,1.7,4+h,l);break;}
-  case "observ":{
-    s+=aura(x,y,2,2,l)+found(x,y,2,2,l);const th=24+l*1.8;
-    s+=box(x+.15,y+.15,1.7,1.7,4,10,W)+box(x+.45,y+.45,1.1,1.1,14,th-10,W);
-    if(l>=8) s+=box(x+.35,y+.35,1.3,1.3,4+th-6,3,"#7a4a24");
-    const r=16+l*.3;s+=dome(x+1,y+1,4+th,r,"#e8eef5");const d=iso(x+1,y+1,4+th);
-    s+=`<path d="M${d[0]-2} ${d[1]-r+2}v${r-4}h4v${-r+4}z" fill="#2b3550"/><line x1="${d[0]}" y1="${d[1]-r*.5}" x2="${d[0]+r+8}" y2="${d[1]-r-10}" stroke="#7a5a3a" stroke-width="5" stroke-linecap="round"/>`;
-    if(l>=14)[[-24,-40],[26,-48],[30,-20]].forEach(([a,b])=>s+=`<path d="M${d[0]+a} ${d[1]+b}l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#ffe14d"/>`);
-    top=4+th+r;break;}
-  case "mina":{
-    s+=aura(x,y,2,2,l)+pyr(x,y,2,2,0,26+l*.8,"#8b8378",0);
-    s+=faceL(x+.75,x+1.25,y+1.75,0,12,"#2b1a0b")+faceL(x+.7,x+.78,y+1.78,0,13,"#7a4a24")+faceL(x+1.22,x+1.3,y+1.78,0,13,"#7a4a24");
-    const n=Math.min(1+Math.floor(l/2),10);for(let i=0;i<n;i++){const a=iso(x+.5+(i*.37)%1.2,y+.6+(i*.53)%1.1,8+(i%3)*5);s+=`<path d="M${a[0]} ${a[1]-4}l4 3-1 4h-6l-1-4z" fill="#ffcf3a" ${OL}/>`;}
-    if(l>=3) s+=box(x+1.6,y+1.9,.4,.3,2,6,"#6b4220")+box(x+1.62,y+1.92,.36,.26,8,3,"#ffcf3a");
-    top=30+l*.8;break;}
-  }
-  return [s,top];
-}
-function site(b){const {x,y,w,d}=b;let s=poly([iso(x,y,0),iso(x+w,y,0),iso(x+w,y+d,0),iso(x,y+d,0)],"#c8a165");
-  s+=box(x+.3,y+.3,.5,.5,0,8,"#c99a5b")+box(x+1,y+.5,.6,.4,0,5,"#b0844c")+box(x+.5,y+1.1,.9,.25,0,3,"#d8b77a");
-  const p=iso(x+1.2,y+1.3,0);s+=`<line x1="${p[0]}" y1="${p[1]}" x2="${p[0]}" y2="${p[1]-22}" stroke="#6b4220" stroke-width="3"/><rect x="${p[0]-12}" y="${p[1]-34}" width="24" height="14" rx="2" fill="#f6ead0" ${OL}/><text x="${p[0]}" y="${p[1]-23}" text-anchor="middle" font-family="Lilita One,Arial Black" font-size="11" fill="#3d8a1c">+</text>`;
-  return [s,24];}
+function box(x,y,w,d,z,h,c){
+  return poly([iso(x,y,z+h),iso(x+w,y,z+h),iso(x+w,y+d,z+h),iso(x,y+d,z+h)],sh(c,.18))
+   +poly([iso(x,y+d,z),iso(x+w,y+d,z),iso(x+w,y+d,z+h),iso(x,y+d,z+h)],c)
+   +poly([iso(x+w,y,z),iso(x+w,y+d,z),iso(x+w,y+d,z+h),iso(x+w,y,z+h)],sh(c,-.24));}
+// Muro de piedra en talud (ishigaki)
+function ishi(x,y,w,d,z,h,i,c=STONE){
+  const B=[iso(x,y,z),iso(x+w,y,z),iso(x+w,y+d,z),iso(x,y+d,z)],T=[iso(x+i,y+i,z+h),iso(x+w-i,y+i,z+h),iso(x+w-i,y+d-i,z+h),iso(x+i,y+d-i,z+h)];
+  let s=poly(T,sh(c,.25))+poly([B[3],B[2],T[2],T[3]],c)+poly([B[1],B[2],T[2],T[1]],sh(c,-.24));
+  const rows=Math.max(2,Math.round(h/4.5));let ln="";
+  for(let k=1;k<rows;k++){const f=k/rows;ln+=`M${F(Lp(B[3],T[3],f))}L${F(Lp(B[2],T[2],f))}L${F(Lp(B[1],T[1],f))}`;}
+  for(let k=0;k<rows;k++){const f0=k/rows,f1=(k+1)/rows,off=(k%2)*.5;
+    const nw=Math.max(2,Math.round(w*3.2)),nd=Math.max(2,Math.round(d*3.2));
+    for(let j=0;j<nw;j++){const t=(j+off)/nw;if(t<=0||t>=1)continue;const a=Lp(B[3],B[2],t),b=Lp(T[3],T[2],t);ln+=`M${F(Lp(a,b,f0))}L${F(Lp(a,b,f1))}`;}
+    for(let j=0;j<nd;j++){const t=(j+off)/nd;if(t<=0||t>=1)continue;const a=Lp(B[1],B[2],t),b=Lp(T[1],T[2],t);ln+=`M${F(Lp(a,b,f0))}L${F(Lp(a,b,f1))}`;}}
+  return s+`<path d="${ln}" stroke="#4a463f" stroke-width=".8" stroke-opacity=".55" fill="none"/>`;}
+function winL(x0,x1,yf,z0,z1){let s=poly([iso(x0,yf,z0),iso(x1,yf,z0),iso(x1,yf,z1),iso(x0,yf,z1)],"#2a2420");
+  for(let i=1;i<4;i++){const xx=x0+(x1-x0)*i/4;s+=pl([iso(xx,yf,z0),iso(xx,yf,z1)],"#c8b48a",.8);}return s;}
+function winR(xf,y0,y1,z0,z1){let s=poly([iso(xf,y0,z0),iso(xf,y1,z0),iso(xf,y1,z1),iso(xf,y0,z1)],"#211c18");
+  for(let i=1;i<4;i++){const yy=y0+(y1-y0)*i/4;s+=pl([iso(xf,yy,z0),iso(xf,yy,z1)],"#b8a47a",.8);}return s;}
+// Cuerpo de muro con vigas de madera y ventanas de celosía
+function body(x,y,w,d,z,h,o={}){
+  const c=o.c||PLASTER,bm=o.bm||(c==="#2b2733"?GOLD:DWOOD);let s=box(x,y,w,d,z,h,c);
+  [z+1.2,z+h-1.6].forEach(zz=>s+=pl([iso(x,y+d,zz),iso(x+w,y+d,zz),iso(x+w,y,zz)],bm,1.6));
+  s+=pl([iso(x+w,y+d,z),iso(x+w,y+d,z+h)],bm,1.8);
+  if(o.posts){for(let t=1;t<o.posts;t++){s+=pl([iso(x+w*t/o.posts,y+d,z),iso(x+w*t/o.posts,y+d,z+h)],o.postC||bm,1.4);s+=pl([iso(x+w,y+d*t/o.posts,z),iso(x+w,y+d*t/o.posts,z+h)],o.postC||bm,1.4);}}
+  const nw=o.win||0,nr=o.winR??nw,wz=z+h*.36,wh=Math.min(7,h*.38);
+  for(let k=0;k<nw;k++){const t=(k+.5)/nw,ww=Math.min(.3,w/nw*.5);s+=winL(x+t*w-ww/2,x+t*w+ww/2,y+d,wz,wz+wh);}
+  for(let k=0;k<nr;k++){const t=(k+.5)/nr,ww=Math.min(.3,d/nr*.5);s+=winR(x+w,y+t*d-ww/2,y+t*d+ww/2,wz,wz+wh);}
+  return s;}
+function shachi(p,flip){const k=flip?-1:1;return `<path d="M${F(p)}c${-2*k} -3 ${-2*k} -8 ${2*k} -11c0 3 ${2*k} 4 ${4*k} 4c${-1*k} 2 ${-3*k} 3 ${-4*k} 7z" fill="${GOLD}" stroke="#6a4a10" stroke-width=".8"/>`;}
+// Techo japonés con aleros curvos (irimoya simplificado)
+function roofJ(x,y,w,d,z,h,o,c,op={}){
+  const up=op.up??Math.min(7,3+h*.18),sag=op.sag??1.5;
+  const C=[[x-o,y-o],[x+w+o,y-o],[x+w+o,y+d+o],[x-o,y+d+o]],E=C.map(p=>iso(p[0],p[1],z+up));
+  const ctrl=(i,j)=>{const m=iso((C[i][0]+C[j][0])/2,(C[i][1]+C[j][1])/2,z-sag);return [2*m[0]-(E[i][0]+E[j][0])/2,2*m[1]-(E[i][1]+E[j][1])/2];};
+  const ax=w>=d,rl=op.pyr?0:Math.abs(w-d)/2+Math.min(w,d)*.14;
+  const r1=ax?iso(x+w/2-rl,y+d/2,z+h):iso(x+w/2,y+d/2-rl,z+h),r2=ax?iso(x+w/2+rl,y+d/2,z+h):iso(x+w/2,y+d/2+rl,z+h);
+  const T=ax?{b:[r2,r1],lb:[r1],f:[r2,r1],r:[r2]}:{b:[r1],lb:[r2,r1],f:[r2],r:[r2,r1]};
+  const face=(i,j,tp,fill)=>`<path d="M${F(E[i])}Q${F(ctrl(i,j))} ${F(E[j])}${tp.map(t=>"L"+F(t)).join("")}Z" fill="${fill}" ${OL}/>`;
+  let s=face(0,1,T.b,sh(c,.2))+face(0,3,T.lb,sh(c,.08))+face(3,2,T.f,c)+face(1,2,T.r,sh(c,-.3));
+  const c32=ctrl(3,2),c12=ctrl(1,2);let ln="";
+  if(op.thatch){
+    for(let k=1;k<Math.round(w*9);k++){const t=k/Math.round(w*9),a=bez(E[3],c32,E[2],t),b=ax?Lp(r1,r2,t):r2;ln+=`M${F(a)}L${F(Lp(a,b,.35+((k*7)%5)*.05))}`;}
+    for(let k=1;k<Math.round(d*9);k++){const t=k/Math.round(d*9),a=bez(E[1],c12,E[2],t),b=ax?r2:Lp(r1,r2,t);ln+=`M${F(a)}L${F(Lp(a,b,.35+((k*5)%5)*.05))}`;}
+    s+=`<path d="${ln}" stroke="${sh(c,.3)}" stroke-width="1" opacity=".7" fill="none"/>`;
+    s+=`<path d="M${F(E[3])}Q${F(c32)} ${F(E[2])}Q${F(c12)} ${F(E[1])}" stroke="${sh(c,-.35)}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;
+    if(!op.pyr)s+=pl([r1,r2],sh(c,-.4),4);
+    return s;}
+  const nf=Math.max(3,Math.round(w*6)),nr=Math.max(3,Math.round(d*6));
+  for(let k=1;k<nf;k++){const t=k/nf;ln+=`M${F(bez(E[3],c32,E[2],t))}L${F(ax?Lp(r1,r2,t):r2)}`;}
+  for(let k=1;k<nr;k++){const t=k/nr;ln+=`M${F(bez(E[1],c12,E[2],t))}L${F(ax?r2:Lp(r1,r2,t))}`;}
+  s+=`<path d="${ln}" stroke="${sh(c,-.4)}" stroke-width=".8" opacity=".75" fill="none"/>`;
+  s+=`<path d="M${F(E[3])}Q${F(c32)} ${F(E[2])}Q${F(c12)} ${F(E[1])}" stroke="${op.gold?GOLD:"#15100a"}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`;
+  s+=pl([E[2],Lp(E[2],r2,.35)],"#15100a",1.8);
+  if(!op.pyr)s+=pl([r1,r2],"#15100a",3.4);
+  if(op.shachi){s+=shachi(r1,true)+shachi(r2,false);}
+  if(op.gold)[E[1],E[2],E[3]].forEach(p=>s+=`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="1.9" fill="${GOLD}" stroke="#6a4a10" stroke-width=".6"/>`);
+  if(op.pyr&&op.finial){s+=`<line x1="${r1[0].toFixed(1)}" y1="${r1[1].toFixed(1)}" x2="${r1[0].toFixed(1)}" y2="${(r1[1]-8).toFixed(1)}" stroke="#15100a" stroke-width="2"/><circle cx="${r1[0].toFixed(1)}" cy="${(r1[1]-9).toFixed(1)}" r="2.4" fill="${op.gold?GOLD:"#15100a"}"/>`;}
+  return s;}
+// Techo a dos aguas (kirizuma) con remate de santuario opcional
+function gableJ(x,y,w,d,z,h,o,c,op={}){
+  const a=x-o,A=x+w+o,b=y-o,B=y+d+o,m=y+d/2,r1=iso(a,m,z+h),r2=iso(A,m,z+h);
+  const fl=iso(a,B,z),fr=iso(A,B,z),bl=iso(a,b,z),br=iso(A,b,z);
+  let s=poly([bl,br,r2,r1],sh(c,.22));
+  s+=poly([iso(x+w,y,z),iso(x+w,y+d,z),iso(x+w,m,z+h*.9)],op.wall||PLASTER);
+  if(op.crest){const cc=iso(x+w,m,z+h*.38);s+=`<circle cx="${cc[0].toFixed(1)}" cy="${cc[1].toFixed(1)}" r="${Math.min(6,h*.22).toFixed(1)}" fill="none" stroke="${op.gold?GOLD:"#1b140c"}" stroke-width="1.4"/><circle cx="${cc[0].toFixed(1)}" cy="${cc[1].toFixed(1)}" r="1.6" fill="${op.gold?GOLD:"#1b140c"}"/>`;}
+  const mc=iso((a+A)/2,B,z-1.5),ct=[2*mc[0]-(fl[0]+fr[0])/2,2*mc[1]-(fl[1]+fr[1])/2];
+  s+=`<path d="M${F(fl)}Q${F(ct)} ${F(fr)}L${F(r2)}L${F(r1)}Z" fill="${c}" ${OL}/>`;
+  if(op.thatch){let ln="";for(let k=1;k<Math.round(w*9);k++){const t=k/Math.round(w*9),p=bez(fl,ct,fr,t);ln+=`M${F(p)}L${F(Lp(p,Lp(r1,r2,t),.4))}`;}s+=`<path d="${ln}" stroke="${sh(c,.3)}" stroke-width="1" opacity=".7" fill="none"/>`;}
+  else{let ln="";const n=Math.max(3,Math.round(w*6));for(let k=1;k<n;k++){const t=k/n;ln+=`M${F(bez(fl,ct,fr,t))}L${F(Lp(r1,r2,t))}`;}s+=`<path d="${ln}" stroke="${sh(c,-.4)}" stroke-width=".8" opacity=".75" fill="none"/>`;}
+  s+=pl([br,r2,fr],"#15100a",2.4)+`<path d="M${F(fl)}Q${F(ct)} ${F(fr)}" stroke="${op.gold?GOLD:"#15100a"}" stroke-width="2.4" fill="none"/>`+pl([r1,r2],"#15100a",3.2);
+  if(op.chigi){const cg=op.gold?GOLD:"#5a3a1c";[r1,r2].forEach(p=>s+=`<path d="M${(p[0]-6).toFixed(1)} ${(p[1]-10).toFixed(1)}L${(p[0]+5).toFixed(1)} ${(p[1]+2).toFixed(1)}M${(p[0]+6).toFixed(1)} ${(p[1]-10).toFixed(1)}L${(p[0]-5).toFixed(1)} ${(p[1]+2).toFixed(1)}" stroke="${cg}" stroke-width="2.6" stroke-linecap="round"/>`);
+    for(let k=1;k<4;k++){const p=Lp(r1,r2,k/4);s+=`<rect x="${(p[0]-4).toFixed(1)}" y="${(p[1]-3).toFixed(1)}" width="8" height="3.4" rx="1.6" fill="${cg}" stroke="#1b140c" stroke-width=".6"/>`;}}
+  return s;}
+function pyrRock(x,y,w,d,h,c,ax=.55,ay=.45){const ap=iso(x+w*ax,y+d*ay,h),A=iso(x,y,0),B=iso(x+w,y,0),C=iso(x+w,y+d,0),D=iso(x,y+d,0);
+  return poly([A,B,ap],sh(c,.2))+poly([D,C,ap],c)+poly([B,C,ap],sh(c,-.25))
+   +pl([Lp(D,ap,.3),Lp(Lp(D,C,.5),ap,.55),Lp(C,ap,.4)],sh(c,-.4),1)
+   +`<path d="M${F(Lp(D,ap,.55))}l6 -3 5 4 -7 3z" fill="#5f8a3a" opacity=".9"/>`;}
+
+/* ---- vegetación y detalles ---- */
+const N1=v=>v.toFixed(1);
+function sakura(x,y,s=1){const p=iso(x,y,0),X=p[0],Y=p[1];
+  let o=`<ellipse cx="${N1(X)}" cy="${N1(Y)}" rx="${N1(14*s)}" ry="${N1(6*s)}" fill="rgba(0,0,0,.2)"/>`;
+  o+=`<path d="M${N1(X-2*s)} ${N1(Y)}c${N1(1*s)} ${N1(-8*s)} ${N1(-3*s)} ${N1(-14*s)} ${N1(1*s)} ${N1(-24*s)}l${N1(3*s)} 0c${N1(-2*s)} ${N1(8*s)} ${N1(2*s)} ${N1(14*s)} ${N1(2*s)} ${N1(24*s)}z" fill="#4a2f22" ${OL}/>`;
+  o+=`<path d="M${N1(X)} ${N1(Y-18*s)}l${N1(-9*s)} ${N1(-8*s)}M${N1(X+1*s)} ${N1(Y-20*s)}l${N1(8*s)} ${N1(-9*s)}" stroke="#4a2f22" stroke-width="${N1(2*s)}" stroke-linecap="round"/>`;
+  [[-11,-30,10,"#f4b3c6"],[10,-31,10,"#f0a2b9"],[0,-38,11,"#f8c9d6"],[-4,-27,8,"#f7c0cf"],[13,-24,7,"#f2adc2"],[-14,-22,7,"#f8cad6"]].forEach(([dx,dy,r,c])=>o+=`<circle cx="${N1(X+dx*s)}" cy="${N1(Y+dy*s)}" r="${N1(r*s)}" fill="${c}" stroke="#a8566c" stroke-opacity=".55" stroke-width="1"/>`);
+  for(let i=0;i<6;i++)o+=`<circle cx="${N1(X+((i*13)%26-13)*s)}" cy="${N1(Y+(-40+((i*11)%20))*s)}" r="${N1(1.3*s)}" fill="#fff" opacity=".8"/>`;
+  return o;}
+function pine(x,y,s=1){const p=iso(x,y,0),X=p[0],Y=p[1];
+  let o=`<ellipse cx="${N1(X)}" cy="${N1(Y)}" rx="${N1(12*s)}" ry="${N1(5*s)}" fill="rgba(0,0,0,.2)"/><path d="M${N1(X-2*s)} ${N1(Y)}q${N1(-2*s)} ${N1(-14*s)} ${N1(4*s)} ${N1(-30*s)}l${N1(2*s)} ${N1(1*s)}q${N1(-4*s)} ${N1(14*s)} ${N1(-1*s)} ${N1(29*s)}z" fill="#5a3a26" ${OL}/>`;
+  [[-6,-14,13,5],[6,-24,11,4.5],[-2,-34,9,4]].forEach(([dx,dy,rx,ry])=>o+=`<ellipse cx="${N1(X+dx*s)}" cy="${N1(Y+dy*s)}" rx="${N1(rx*s)}" ry="${N1(ry*s)}" fill="#2f6b3a" ${OL}/><ellipse cx="${N1(X+dx*s-2*s)}" cy="${N1(Y+dy*s-1.5*s)}" rx="${N1(rx*.6*s)}" ry="${N1(ry*.5*s)}" fill="#3f8a4a"/>`);
+  return o;}
+function momiji(x,y,s=1){const p=iso(x,y,0),X=p[0],Y=p[1];
+  let o=`<ellipse cx="${N1(X)}" cy="${N1(Y)}" rx="${N1(12*s)}" ry="${N1(5*s)}" fill="rgba(0,0,0,.2)"/><rect x="${N1(X-1.6*s)}" y="${N1(Y-18*s)}" width="${N1(3.2*s)}" height="${N1(18*s)}" fill="#4a2f22"/>`;
+  [[-8,-26,9,"#d9502e"],[8,-27,9,"#c23b28"],[0,-34,10,"#e8763a"],[0,-22,8,"#d9502e"]].forEach(([dx,dy,r,c])=>o+=`<circle cx="${N1(X+dx*s)}" cy="${N1(Y+dy*s)}" r="${N1(r*s)}" fill="${c}" stroke="#6a1c10" stroke-opacity=".5" stroke-width="1"/>`);
+  return o;}
+function dead(x,y,s=1){const p=iso(x,y,0),X=N1(p[0]),Y=N1(p[1]);return `<ellipse cx="${X}" cy="${Y}" rx="${N1(9*s)}" ry="${N1(4*s)}" fill="rgba(0,0,0,.2)"/><path d="M${X} ${Y}v${N1(-24*s)}m0 ${N1(9*s)}l${N1(-8*s)} ${N1(-8*s)}m${N1(8*s)} ${N1(-2*s)}l${N1(7*s)} ${N1(-9*s)}m${N1(-7*s)} ${N1(-8*s)}l${N1(-4*s)} ${N1(-6*s)}" stroke="#6e5a44" stroke-width="${N1(2.6*s)}" stroke-linecap="round" fill="none"/>`;}
+function bamboo(x,y,n=5,s=1){const p=iso(x,y,0);let o=`<ellipse cx="${N1(p[0])}" cy="${N1(p[1])}" rx="${N1(14*s)}" ry="${N1(6*s)}" fill="rgba(0,0,0,.18)"/>`;
+  for(let i=0;i<n;i++){const X=p[0]+(i-n/2)*5*s,h=(46+((i*17)%18))*s,c=i%2?"#7fa83e":"#6a9634";o+=`<line x1="${N1(X)}" y1="${N1(p[1])}" x2="${N1(X+2*s)}" y2="${N1(p[1]-h)}" stroke="${c}" stroke-width="${N1(3*s)}"/>`;
+    for(let k=1;k<4;k++)o+=`<line x1="${N1(X+k*.5*s-1.5)}" y1="${N1(p[1]-h*k/4)}" x2="${N1(X+k*.5*s+2)}" y2="${N1(p[1]-h*k/4)}" stroke="#4f7428" stroke-width="1.2"/>`;
+    o+=`<path d="M${N1(X+2*s)} ${N1(p[1]-h)}q8 -2 14 4q-8 1 -14 -4zM${N1(X+1*s)} ${N1(p[1]-h*.7)}q-9 -1 -13 5q8 0 13 -5z" fill="#8cbf4a"/>`;}
+  return o;}
+function rock(x,y,s=1){const p=iso(x,y,0),X=p[0],Y=p[1];return `<path d="M${N1(X-10*s)} ${N1(Y)}l${N1(2*s)} ${N1(-8*s)} ${N1(7*s)} ${N1(-4*s)} ${N1(8*s)} ${N1(3*s)} ${N1(3*s)} ${N1(7*s)} ${N1(-6*s)} ${N1(3*s)}z" fill="#9b958a" ${OL}/><path d="M${N1(X-1*s)} ${N1(Y-12*s)}l${N1(8*s)} ${N1(3*s)} ${N1(3*s)} ${N1(7*s)} ${N1(-6*s)} ${N1(3*s)}z" fill="#7d776c"/><path d="M${N1(X-7*s)} ${N1(Y-7*s)}l${N1(5*s)} ${N1(-3*s)} ${N1(4*s)} ${N1(2*s)}z" fill="#6f9a44"/>`;}
+function toro(x,y,s=1,lit=true){let o=box(x-.12*s,y-.12*s,.24*s,.24*s,0,3*s,"#a8a294")+box(x-.05*s,y-.05*s,.1*s,.1*s,3*s,10*s,"#b3ad9f")+box(x-.12*s,y-.12*s,.24*s,.24*s,13*s,6*s,"#b3ad9f");
+  const f=iso(x+.12*s,y,16*s);o+=`<rect x="${N1(f[0]-3*s)}" y="${N1(f[1]-2.5*s)}" width="${N1(4*s)}" height="${N1(4*s)}" fill="#ffd36b">${lit?`<animate attributeName="opacity" values="1;.6;1;.85;1" dur="2.2s" repeatCount="indefinite"/>`:""}</rect>`;
+  o+=roofJ(x-.15*s,y-.15*s,.3*s,.3*s,19*s,5*s,.08*s,"#9b958a",{pyr:true,up:1.5,finial:true});return o;}
+function nobori(x,y,z,c,kanji="学",fs=9){const p=iso(x,y,z),X=N1(p[0]);
+  return `<line x1="${X}" y1="${N1(p[1])}" x2="${X}" y2="${N1(p[1]-44)}" stroke="#2a1d12" stroke-width="2.2"/><line x1="${X}" y1="${N1(p[1]-42)}" x2="${N1(p[0]+11)}" y2="${N1(p[1]-42)}" stroke="#2a1d12" stroke-width="1.6"/>
+  <g transform="translate(${X} ${N1(p[1]-42)})"><g><animateTransform attributeName="transform" type="skewY" values="0;5;0;-4;0" dur="3.2s" repeatCount="indefinite"/>
+  <rect x="0" y="0" width="11" height="30" fill="${c}" stroke="#1b140c" stroke-width="1"/><rect x="0" y="0" width="11" height="4" fill="#f4ecd9" opacity=".85"/><text x="5.5" y="20" text-anchor="middle" font-family="Shippori Mincho B1,serif" font-weight="800" font-size="${fs}" fill="#f4ecd9">${kanji}</text></g></g>`;}
+function torii(x0,x1,yf,h,c=SHU,top="#1b140c"){let s=box(x0,yf-.06,.13,.13,0,h,c)+box(x1-.13,yf-.06,.13,.13,0,h,c);
+  s+=pl([iso(x0-.12,yf,h*.72),iso(x1+.12,yf,h*.72)],c,3.2);
+  const a=iso(x0-.32,yf,h+3),b=iso(x1+.32,yf,h+3),m=iso((x0+x1)/2,yf,h);
+  const ct=[2*m[0]-(a[0]+b[0])/2,2*m[1]-(a[1]+b[1])/2];
+  s+=pl([iso(x0-.22,yf,h-2),iso(x1+.22,yf,h-2)],c,3.6);
+  s+=`<path d="M${F(a)}Q${F(ct)} ${F(b)}l0 4Q${N1(ct[0])} ${N1(ct[1]+4)} ${N1(a[0])} ${N1(a[1]+4)}z" fill="${top}" stroke="#1b140c" stroke-width=".8"/>`;
+  return s;}
+function lanternRed(x,y,z){const p=iso(x,y,z),X=N1(p[0]);return `<line x1="${X}" y1="${N1(p[1]-6)}" x2="${X}" y2="${N1(p[1]-2)}" stroke="#1b140c"/><ellipse cx="${X}" cy="${N1(p[1]+3)}" rx="3.6" ry="5" fill="${SHU}" stroke="#1b140c" stroke-width=".8"><animate attributeName="fill" values="#c8352b;#e2563c;#c8352b" dur="1.8s" repeatCount="indefinite"/></ellipse>`;}
+function smoke(x,y,z){const p=iso(x,y,z),X=N1(p[0]),Y=N1(p[1]);let s="";for(let i=0;i<3;i++)s+=`<circle cx="${X}" cy="${Y}" r="3" fill="#e9e4d8" opacity="0"><animate attributeName="cy" values="${Y};${N1(p[1]-34)}" dur="3.6s" begin="${-i*1.2}s" repeatCount="indefinite"/><animate attributeName="cx" values="${X};${N1(p[0]+8)}" dur="3.6s" begin="${-i*1.2}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.75;0" dur="3.6s" begin="${-i*1.2}s" repeatCount="indefinite"/><animate attributeName="r" values="2;6" dur="3.6s" begin="${-i*1.2}s" repeatCount="indefinite"/></circle>`;return s;}
+function aura(x,y,w,d,l){if(l<17)return "";const c=iso(x+w/2,y+d/2);return `<ellipse cx="${N1(c[0])}" cy="${N1(c[1])}" rx="${w*34}" ry="${d*17}" fill="url(#aura)"/>`;}
+
+/* ---- diseños por nivel: Palacio Feudal, Archivo de Pergaminos y Muros del Imperio (20 cada uno) ---- */
+function rcol(c){return c==="t"?"#a8865a":c==="k"?"#24222e":c==="v"?"#a8322a":c==="g"?"#c99a2e":c==="s"?"#6b7180":SKINS[S.skin].c;}
+const WALLC={wood:"#b98a57",red:"#b8402f",plaster:PLASTER,kura:PLASTER};
+function steps(x0,y0,len,h,alongY){let s="";for(let k=0;k<4;k++){const hh=h*(1-k/4);if(hh<=.6)continue;s+=alongY?box(x0+k*.12,y0,.12,len,0,hh,"#a8a294"):box(x0,y0+k*.12,len,.12,0,hh,"#a8a294");}return s;}
+function komainu(px,py){const p=iso(px,py,5);return box(px-.1,py-.1,.2,.2,0,5,"#a8a294")+`<path d="M${N1(p[0]-4)} ${N1(p[1])}q0-9 5-9q5 1 4 5l-3 2 3 2z" fill="#b3ad9f" ${OL}/>`;}
+function flameAt(p,c){return `<path d="M${N1(p[0])} ${N1(p[1])}q-5-5 0-13q5 7 0 13z" fill="${c}" opacity=".95"><animate attributeName="opacity" values=".95;.55;.95" dur="${(1+Math.random()*.6).toFixed(2)}s" repeatCount="indefinite"/></path><path d="M${N1(p[0])} ${N1(p[1]-1)}q-2-3 0-7q2 4 0 7z" fill="#fff" opacity=".8"/>`;}
+const PAL=[
+ {st:0,fl:1,rf:"t",wall:"wood",size:1.5,fence:"wood"},
+ {st:0,fl:1,rf:"i",wall:"wood",size:1.75,sak:1,lan:1},
+ {st:3,fl:1,rf:"i",wall:"wood",size:1.8,sign:1,sak:2,lan:1,stairs:1},
+ {st:5,fl:1,rf:"i",wall:"red",red:1,size:1.95,sak:2,lan:2,stairs:1,chidori:1},
+ {st:6,fl:2,rf:"i",wall:"plaster",red:1,size:2.0,ban:2,sak:1,lan:2,stairs:1},
+ {st:7,fl:2,rf:"s",wall:"wood",size:2.1,sak:2,lan:2,stairs:2,fence:"wood"},
+ {st:7,fl:2,rf:"i",wall:"red",red:1,size:2.1,ban:2,lan:4,fence:"stone",sak:1,stairs:1},
+ {st:8,fl:2,rf:"i",wall:"plaster",red:1,gold:1,size:2.2,ban:2,sign:1,lan:2,stairs:1,chidori:1},
+ {st:9,fl:3,rf:"i",wall:"red",gold:1,size:2.2,ban:2,sak:2,stairs:1},
+ {st:9,fl:3,rf:"i",wall:"plaster",red:1,gold:1,size:2.3,sak:4,stat:1,lan:2,stairs:1},
+ {st:11,fl:3,rf:"k",wall:"red",gold:1,size:2.3,stairs:2,ban:2,sak:2,kara:1},
+ {st:11,fl:4,rf:"i",wall:"plaster",red:1,gold:1,size:2.3,tw:2,ban:2,stairs:1,sign:1},
+ {st:13,fl:4,rf:"i",wall:"plaster",gold:1,tw:2,stairs:2,lan:2,size:2.3,chidori:1},
+ {st:13,fl:4,rf:"k",wall:"red",gold:2,tw:4,sak:2,size:2.3,stairs:1,kara:1},
+ {st:14,fl:4,rf:"v",wall:"plaster",gold:2,tw:4,fence:"stone",size:2.3,stairs:1,ban:2},
+ {st:16,fl:5,rf:"i",wall:"plaster",red:1,gold:2,tw:4,stairs:2,fence:"stone",ban:2,size:2.3},
+ {st:16,fl:5,rf:"i",wall:"plaster",gold:2,tw:4,pond:1,sak:2,size:2.2,stairs:1,lan:2},
+ {st:17,fl:5,rf:"k",wall:"plaster",red:1,gold:2,tw:2,halls:1,pond:1,size:2.2,stairs:1,ban:2},
+ {st:18,fl:5,rf:"g",wall:"plaster",gold:2,tw:4,halls:1,fall:1,size:2.2,stairs:1,sak:2},
+ {st:18,fl:5,rf:"k",wall:"plaster",red:1,gold:2,tw:4,halls:1,aura:1,magic:1,sak:4,size:2.2,stairs:2,pond:1}
+];
+const ptower=(tx,ty,h0,R,G)=>ishi(tx,ty,.62,.62,0,h0,.04)+body(tx+.08,ty+.08,.46,.46,h0,12,{c:PLASTER,win:1})+roofJ(tx+.08,ty+.08,.46,.46,h0+12,10,.14,R,{gold:G>0,pyr:true,finial:true});
+function palaceSvg(b,l){const P=PAL[Math.max(1,Math.min(20,l))-1],x=b.x,y=b.y,R=rcol(P.rf),WC=WALLC[P.wall],G=P.gold||0,TH1=P.rf==="t",FC=flagC();let s="";
+  if(P.aura)s+=aura(x,y,3,3,20);
+  s+=poly([iso(x+.05,y+.05),iso(x+2.95,y+.05),iso(x+2.95,y+2.95),iso(x+.05,y+2.95)],"#d8ccae");
+  const sp=[[x+.32,y+.38],[x+.3,y+2.7],[x+2.7,y+.3],[x+2.68,y+2.66]],sak=P.sak||0;
+  if(sak>=3)s+=sakura(...sp[0],.55);
+  if(P.halls){s+=body(x+.12,y+.12,2.1,.5,0,11,{c:PLASTER,win:3,winR:0,posts:P.red?4:0,postC:SHU})+roofJ(x+.12,y+.12,2.1,.5,11,7,.12,R,{gold:G>0,up:3});
+    s+=body(x+.12,y+.66,.5,1.6,0,11,{c:PLASTER,win:0,winR:2,posts:P.red?3:0,postC:SHU})+roofJ(x+.12,y+.66,.5,1.6,11,7,.12,R,{gold:G>0,up:3});}
+  const tw=P.tw||0,th0=8+P.st*.5;
+  if(tw>=4)s+=ptower(x+.05,y+.05,th0,R,G);
+  if(tw>=2)s+=ptower(x+.05,y+2.33,th0,R,G)+ptower(x+2.33,y+.05,th0,R,G);
+  let S0=P.size+.6;if(tw)S0=Math.min(S0,2.2);const o=(3-S0)/2,bx=x+o,by=y+o;
+  if(P.pond){s+=poly([iso(x+.1,by+S0),iso(bx+S0,by+S0),iso(x+2.9,y+2.9),iso(x+.1,y+2.9)],"#4f9fc4")+poly([iso(bx+S0,y+.1),iso(x+2.9,y+.1),iso(x+2.9,y+2.9),iso(bx+S0,by+S0)],"#4a98bd");
+    const w0=iso(x+.6,y+2.75,0);s+=`<path d="M${N1(w0[0])} ${N1(w0[1])}h14" stroke="#dff2fb" stroke-width="1.4" opacity=".8"><animate attributeName="opacity" values=".1;.9;.1" dur="2.6s" repeatCount="indefinite"/></path>`;}
+  s+=P.st>0?ishi(bx,by,S0,S0,0,P.st,.1):box(bx,by,S0,S0,0,2.5,"#8a6a40");
+  if(P.fall){const a=iso(bx+S0,y+1.05,P.st),b2=iso(bx+S0,y+1.45,P.st),c=iso(bx+S0,y+1.45,0),d=iso(bx+S0,y+1.05,0);
+    s+=poly([a,b2,c,d],"#6fc0e8")+`<path d="M${F(Lp(a,b2,.3))}L${F(Lp(d,c,.3))}M${F(Lp(a,b2,.7))}L${F(Lp(d,c,.7))}" stroke="#fff" stroke-width="1.6" stroke-dasharray="4 5"><animate attributeName="stroke-dashoffset" values="0;-18" dur=".8s" repeatCount="indefinite"/></path>`;}
+  const z0=Math.max(P.st,2.5);let z=z0,sz=Math.min(P.size,S0-.3),top=0;
+  for(let i=0;i<P.fl;i++){const fx=x+(3-sz)/2,fy=y+(3-sz)/2,fh=(i===0?19:14)+l*.25,last=i===P.fl-1;
+    s+=body(fx,fy,sz,sz,z,fh,{c:WC,win:Math.max(1,Math.round(sz*1.3)),posts:P.red||P.wall==="wood"?3:0,postC:P.red?SHU:DWOOD});
+    if(i===0){const d0=iso(fx+sz/2-.22,fy+sz,z),d1=iso(fx+sz/2+.22,fy+sz,z);s+=poly([d0,d1,[d1[0],d1[1]-11],[d0[0],d0[1]-11]],"#2a1d12");
+      if(P.sign){const sg=iso(fx+sz/2,fy+sz,z+fh*.78);s+=`<rect x="${N1(sg[0]-6)}" y="${N1(sg[1]-7)}" width="12" height="13" fill="#f4ecd9" stroke="#1b140c" stroke-width="1"/><text x="${N1(sg[0])}" y="${N1(sg[1]+3)}" text-anchor="middle" font-family="Shippori Mincho B1,serif" font-weight="800" font-size="10" fill="#1b140c">学</text>`;}}
+    if(last){const rh=10+sz*4.2;s+=roofJ(fx,fy,sz,sz,z+fh,rh,.24,R,{gold:G>0,thatch:TH1,shachi:!TH1&&l>=4,up:4});top=z+fh+rh;}
+    else{s+=roofJ(fx,fy,sz,sz,z+fh,5,.22,R,{gold:G>1,thatch:TH1,up:2.5});
+      if(i===0&&P.chidori){const gl=iso(fx+sz/2-.35,fy+sz+.22,z+fh+1),gr=iso(fx+sz/2+.35,fy+sz+.22,z+fh+1),gt=iso(fx+sz/2,fy+sz+.22,z+fh+11);s+=poly([gl,gr,gt],PLASTER)+pl([gl,gt,gr],G?GOLD:"#15100a",2.2);}
+      if(i===0&&P.kara){const a=iso(fx+sz/2-.42,fy+sz+.26,z+fh+1),c=iso(fx+sz/2+.42,fy+sz+.26,z+fh+1);s+=`<path d="M${F(a)}Q${N1((a[0]+c[0])/2)} ${N1((a[1]+c[1])/2-18)} ${F(c)}Z" fill="${R}" stroke="${G?GOLD:"#15100a"}" stroke-width="2.4"/>`;}}
+    z+=fh+(last?0:3);sz=Math.max(.8,sz-.36);}
+  if(P.fence==="wood"){for(let t=0;t<=6;t++){const u=t/6;s+=box(bx+S0*u-.04,by+S0-.06,.08,.08,z0,7,"#7a4a24")+box(bx+S0-.06,by+S0*u-.04,.08,.08,z0,7,"#7a4a24");}
+    s+=pl([iso(bx,by+S0-.02,z0+5),iso(bx+S0-.02,by+S0-.02,z0+5),iso(bx+S0-.02,by,z0+5)],"#7a4a24",1.8);}
+  if(P.fence==="stone"){[[x+.15],[x+1.85]].forEach(([a])=>s+=box(a,y+2.78,1.0,.14,0,6,PLASTER)+box(a-.02,y+2.76,1.04,.18,6,2,R));
+    [[y+.15],[y+1.85]].forEach(([a])=>s+=box(x+2.78,a,.14,1.0,0,6,PLASTER)+box(x+2.76,a-.02,.18,1.04,6,2,R));}
+  if(P.stairs&&P.st>0){s+=steps(x+1.2,by+S0,.6,P.st,false);if(P.stairs>1)s+=steps(bx+S0,y+1.2,.6,P.st,true);
+    if(P.pond)s+=pl([iso(x+1.18,by+S0,P.st+6),iso(x+1.18,by+S0+.48,6)],SHU,2.2)+pl([iso(x+1.82,by+S0,P.st+6),iso(x+1.82,by+S0+.48,6)],SHU,2.2);}
+  if(P.ban){s+=nobori(bx+.12,by+S0+.1,0,FC);if(P.ban>1)s+=nobori(bx+S0+.1,by+.12,0,FC);}
+  const LP=[[x+1.02,y+2.85],[x+1.98,y+2.85],[x+2.85,y+1.02],[x+2.85,y+1.98]];for(let k=0;k<(P.lan||0);k++)s+=toro(...LP[k],.72);
+  if(P.stat)s+=komainu(x+.8,y+2.88)+komainu(x+2.2,y+2.88);
+  if(sak>=1)s+=sakura(...sp[1],.55);if(sak>=2)s+=sakura(...sp[2],.55);if(sak>=4)s+=sakura(...sp[3],.5);
+  if(tw>=4)s+=ptower(x+2.33,y+2.33,th0,R,G);
+  if(P.magic){const c=iso(x+1.5,y+1.5,top*.62);s+=`<ellipse cx="${N1(c[0])}" cy="${N1(c[1])}" rx="78" ry="24" fill="none" stroke="#c9a6ff" stroke-width="2.4" stroke-dasharray="10 12" opacity=".85"><animate attributeName="stroke-dashoffset" values="0;-88" dur="3s" repeatCount="indefinite"/></ellipse>`;
+    [[-50,-30],[46,-50],[60,8],[-64,4]].forEach(([a,bb],k)=>s+=`<path d="M${N1(c[0]+a)} ${N1(c[1]+bb)}l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#e2c9ff"><animate attributeName="opacity" values="1;.2;1" dur="${1.4+k*.4}s" repeatCount="indefinite"/></path>`);}
+  return [s,top];}
+
+const ARC=[
+ {rf:"t",wall:"wood",fl:1,w:1.1,st:0},
+ {rf:"i",wall:"wood",fl:1,w:1.2,st:2,lan:1},
+ {rf:"i",wall:"wood",fl:1,w:1.25,st:3,racks:1},
+ {rf:"i",wall:"red",red:1,fl:1,w:1.3,st:3,lan:2},
+ {rf:"i",wall:"plaster",red:1,fl:1,w:1.3,st:4,lan:2,wings:1},
+ {rf:"i",wall:"plaster",fl:1,w:1.35,st:4,racks:2,ban:1},
+ {rf:"s",wall:"wood",fl:1,w:1.3,st:4,porch:1,ban:2,lan:1},
+ {rf:"i",wall:"plaster",fl:1,w:1.25,st:5,wings:2,lan:1},
+ {rf:"s",wall:"kura",fl:1,w:1.35,st:5,ban:2},
+ {rf:"i",wall:"plaster",red:1,fl:2,w:1.3,st:5,ban:2,lan:2},
+ {rf:"i",wall:"red",red:1,fl:2,w:1.3,st:6,tower:1,ban:1},
+ {rf:"k",wall:"plaster",red:1,fl:3,w:1.3,st:6,racks:2},
+ {rf:"i",wall:"plaster",red:1,fl:2,w:1.3,st:6,magic:1,gold:1,ban:2},
+ {rf:"k",wall:"red",fl:2,w:1.2,st:7,wings:2,gold:1,lan:2},
+ {rf:"i",wall:"plaster",fl:2,w:1.3,st:7,stat:1,gold:1,tower:1},
+ {rf:"i",wall:"plaster",red:1,fl:2,w:1.3,st:7,sak:3,stat:1,gold:1},
+ {rf:"k",wall:"plaster",fl:3,w:1.3,st:8,porch:1,gold:2,ban:2,wings:1},
+ {rf:"i",wall:"plaster",red:1,fl:3,w:1.3,st:8,spirit:1,gold:2,magic:1},
+ {rf:"k",wall:"red",fl:3,w:1.3,st:8,float:1,spirit:1,gold:2,sak:2,tower:1},
+ {rf:"g",wall:"plaster",red:1,fl:3,w:1.35,st:9,float:1,aura:1,gold:2,sak:2,magic:1,stat:1}
+];
+function namako(kx,ky,kw,kd,z,nb){const dk="#3d3f47";let o=poly([iso(kx,ky+kd,z),iso(kx+kw,ky+kd,z),iso(kx+kw,ky+kd,z+nb),iso(kx,ky+kd,z+nb)],dk)+poly([iso(kx+kw,ky,z),iso(kx+kw,ky+kd,z),iso(kx+kw,ky+kd,z+nb),iso(kx+kw,ky,z+nb)],sh(dk,-.15));
+  for(let u=.1;u<1;u+=.16)for(let v=.3;v<1;v+=.45){const p=iso(kx+kw*u,ky+kd,z+nb*v),q=iso(kx+kw,ky+kd*u,z+nb*v);o+=`<path d="M${N1(p[0])} ${N1(p[1]-2.4)}l2.4 2.4-2.4 2.4-2.4-2.4zM${N1(q[0])} ${N1(q[1]-2.4)}l2.4 2.4-2.4 2.4-2.4-2.4z" fill="none" stroke="#f3eee2" stroke-width=".9"/>`;}return o;}
+function scrollIcon(p,c="#fbf3dc"){return `<rect x="${N1(p[0]-6)}" y="${N1(p[1]-4)}" width="12" height="8" rx="1" fill="${c}" stroke="#6b4a2c" stroke-width=".8"/><rect x="${N1(p[0]-7.5)}" y="${N1(p[1]-5)}" width="2.4" height="10" rx="1.2" fill="#b8322a"/><rect x="${N1(p[0]+5.1)}" y="${N1(p[1]-5)}" width="2.4" height="10" rx="1.2" fill="#b8322a"/><path d="M${N1(p[0]-3)} ${N1(p[1]-1)}h6M${N1(p[0]-3)} ${N1(p[1]+1.5)}h4" stroke="#1b140c" stroke-width=".7"/>`;}
+function archiveSvg(b,l){const A=ARC[Math.max(1,Math.min(20,l))-1],x=b.x,y=b.y,R=rcol(A.rf),G=A.gold||0,TH1=A.rf==="t",WC=WALLC[A.wall],FC=flagC();let s="";
+  if(A.aura)s+=aura(x,y,2,2,20);
+  if((A.sak||0)>=3)s+=sakura(x+.25,y+.3,.55);
+  if(A.tower)s+=ishi(x+1.42,y+.08,.5,.5,0,4,.03)+body(x+1.47,y+.13,.4,.4,4,26,{c:WC,win:1,posts:A.red?2:0,postC:SHU})+roofJ(x+1.47,y+.13,.4,.4,30,10,.14,R,{gold:G>0,pyr:true,finial:true});
+  if(A.wings>=1)s+=body(x+.1,y+.25,.45,1.45,0,10+A.st,{c:WC,win:0,winR:2,posts:A.red?2:0,postC:SHU})+roofJ(x+.1,y+.25,.45,1.45,10+A.st,6,.12,R,{up:2,thatch:TH1,gold:G>1});
+  if(A.wings>=2)s+=body(x+.25,y+.1,1.45,.45,0,10+A.st,{c:WC,win:2,winR:0,posts:A.red?2:0,postC:SHU})+roofJ(x+.25,y+.1,1.45,.45,10+A.st,6,.12,R,{up:2,thatch:TH1,gold:G>1});
+  s+=A.st?ishi(x+.18,y+.18,1.64,1.64,0,A.st,.04):box(x+.22,y+.22,1.56,1.56,0,2,"#8a6a40");
+  const kw=A.w,mx=x+(2-kw)/2+.06,my=y+(2-kw)/2+.06;let z=Math.max(A.st,2),sz=kw,top=0;
+  for(let i=0;i<A.fl;i++){const fx=mx+(kw-sz)/2,fy=my+(kw-sz)/2,fh=(i===0?18:13)+l*.2,last=i===A.fl-1;
+    s+=body(fx,fy,sz,sz,z,fh,{c:WC,win:i?1:0,winR:1,posts:A.red||A.wall==="wood"?3:0,postC:A.red?SHU:DWOOD});
+    if(i===0){if(A.wall==="kura")s+=namako(fx,fy,sz,sz,z,fh*.38);
+      const d0=iso(fx+sz*.36,fy+sz,z),d1=iso(fx+sz*.64,fy+sz,z);s+=poly([d0,d1,[d1[0],d1[1]-12],[d0[0],d0[1]-12]],"#2a2420",'stroke-width="1.8"');
+      const em=iso(fx+sz*.5,fy+sz,z+fh*.72);s+=scrollIcon(em,G?"#f6e3a8":"#fbf3dc");}
+    if(last){if(A.fl===1){const rh=9+sz*3.5;s+=gableJ(fx,fy,sz,sz,z+fh,rh,.18,R,{crest:true,gold:G>0,thatch:TH1,wall:WC});top=z+fh+rh;}
+      else{const rh=9+sz*4;s+=roofJ(fx,fy,sz,sz,z+fh,rh,.22,R,{gold:G>0,shachi:G>1,up:3.5});top=z+fh+rh;}}
+    else s+=roofJ(fx,fy,sz,sz,z+fh,4,.2,R,{gold:G>1,up:2.5});
+    z+=fh+(last?0:3);sz=Math.max(.7,sz-.3);}
+  const shelf=(sx,sy,sw,sd,alongY)=>{let o=box(sx,sy,sw,sd,0,15,"#6b4a2c");const cols=["#b8322a","#2c3a6b","#d4a640","#3f7a4a","#f4ecd9"];
+    for(let r=0;r<3;r++)for(let k=0;k<5;k++){const u=(k+.5)/5,zz=3+r*4.2,p=alongY?iso(sx+sw,sy+sd*u,zz):iso(sx+sw*u,sy+sd,zz);o+=`<circle cx="${N1(p[0])}" cy="${N1(p[1])}" r="1.6" fill="${cols[(k+r*2)%5]}"/>`;}return o;};
+  if(A.racks>=1)s+=shelf(x+1.66,y+.5,.24,1.0,true);
+  if(A.racks>=2)s+=shelf(x+.5,y+1.66,1.0,.24,false);
+  if(A.porch){s+=box(x+.28,y+1.62,1.1,.32,0,3,"#7a5232")+box(x+.55,y+1.7,.4,.18,3,3,"#4a3420")+box(x+1.0,y+1.72,.22,.16,3,1.4,SHU);s+=scrollIcon(iso(x+.75,y+1.79,7.5));}
+  if(A.lan){s+=toro(x+.18,y+1.86,.7);if(A.lan>1)s+=toro(x+1.86,y+.18,.7);}
+  if(A.ban){s+=nobori(x+.12,y+1.92,0,FC,"知");if(A.ban>1)s+=nobori(x+1.92,y+.12,0,FC,"書");}
+  if(A.stat)s+=komainu(x+.62,y+1.95)+komainu(x+1.38,y+1.95);
+  if(A.spirit)[[x+.3,y+1.75],[x+1.75,y+.3]].forEach(([a,c])=>{const p=iso(a,c,14);s+=`<line x1="${N1(p[0])}" y1="${N1(p[1]-6)}" x2="${N1(p[0])}" y2="${N1(p[1]-2)}" stroke="#1b140c"/><ellipse cx="${N1(p[0])}" cy="${N1(p[1]+3)}" rx="4" ry="5.4" fill="#5ab4ff" stroke="#1b140c" stroke-width=".8"><animate attributeName="fill" values="#5ab4ff;#a8dcff;#5ab4ff" dur="1.6s" repeatCount="indefinite"/></ellipse>`;});
+  if((A.sak||0)>=1)s+=sakura(x+1.85,y+.32,.5);if((A.sak||0)>=2)s+=sakura(x+.32,y+1.85,.5);
+  const c=iso(x+1,y+1,top*.75);
+  if(A.magic)[[-34,-6],[34,-14]].forEach(([a,bb],k)=>s+=`<g opacity=".95"><animate attributeName="opacity" values="1;.4;1" dur="${1.8+k*.5}s" repeatCount="indefinite"/><circle cx="${N1(c[0]+a)}" cy="${N1(c[1]+bb)}" r="10" fill="#ffe48a" opacity=".35"/>${scrollIcon([c[0]+a,c[1]+bb],"#fff6d0")}</g>`);
+  if(A.float)[[-44,-30,0],[42,-38,1],[0,-62,2]].forEach(([a,bb,k])=>s+=`<g><animateTransform attributeName="transform" type="translate" values="0 0;0 -7;0 0" dur="${2.4+k*.6}s" repeatCount="indefinite"/><path d="M${N1(c[0]+a-12)} ${N1(c[1]+bb+6)}q12 -14 24 0" stroke="#c9a6ff" stroke-width="3" fill="none" opacity=".6"/>${scrollIcon([c[0]+a,c[1]+bb],"#fff6d0")}</g>`);
+  return [s,top];}
+
+// Muros del Imperio: un tramo de 1 casilla por nivel; los detalles se reparten cada cierto número de tramos para no saturar
+const WT=[null,
+ {k:"stakes"},
+ {body:["plank",14],post:["#5a3a1c",17],pcap:"#4a2e17"},
+ {base:5,body:["plank",10],post:["#5a3a1c",18],pcap:"#4a2e17"},
+ {base:15,post:["#8f8a80",18],pcap:"#a8a294"},
+ {base:5,body:["plaster",8],cap:"#6b7180",post:["#6b4220",15],mon:1},
+ {base:7,body:["plaster",8],cap:"#2c3a6b",post:["#6b4220",17],pcap:"#4a2e17"},
+ {base:7,body:["plaster",8],cap:"#2c3a6b",post:["#6b4220",17],pcap:"#4a2e17",banner:1},
+ {base:9,body:["plaster",7],cap:"#2c3a6b",post:[SHU,18],pcap:"#2c3a6b"},
+ {base:9,body:["plaster",7],cap:"#2c3a6b",post:[SHU,19],proof:1,lamp:1},
+ {base:8,body:["plaster",10],cap:"#2c3a6b",post:[SHU,22],pcap:GOLD,frame:1},
+ {base:8,body:["plaster",10],cap:"#2c3a6b",cap2:1,post:[SHU,21],pcap:"#2c3a6b",lanterns:1},
+ {base:8,body:["plaster",10],cap:"#24222e",post:[SHU,21],pcap:GOLD,medal:1},
+ {base:8,body:["plaster",10],cap:"#24222e",post:[SHU,21],pcap:GOLD,medal:1,horns:1,frame:1},
+ {base:6,body:["dark",11],cap:"#24222e",post:["#3d4458",21],pcap:GOLD,emblem:1},
+ {base:8,body:["plaster",10],cap:"#24222e",gtrim:1,post:[SHU,21],pcap:GOLD,gpanel:1},
+ {base:8,body:["plaster",10],cap:"#24222e",gtrim:1,post:[SHU,21],pcap:GOLD,slamp:1,frame:1},
+ {base:8,body:["plaster",11],cap:"#24222e",gtrim:1,post:["#3d4458",22],pcap:GOLD,kanji:1,tower:1},
+ {base:7,body:["dark",12],cap:"#24222e",gtrim:1,post:["#2b2f40",22],pcap:GOLD,flame:"#5ab4ff"},
+ {base:8,body:["plaster",11],cap:"#24222e",gtrim:1,post:[GOLD,22],pcap:"#24222e",rpanel:1,flame:"#c06bff"},
+ {base:8,body:["plaster",12],cap:"#24222e",gtrim:1,post:[GOLD,24],pcap:GOLD,gpanel:1,flame:"#c06bff",dragon:1,glow:1}];
+const KANJI=["学","道","知","心","書","力"];
+function wallSeg(L,x,y,w,d,i){const C=WT[Math.max(1,Math.min(20,L))],ax=w>d;
+  const vis=(u,z)=>ax?iso(x+u,y+d,z):iso(x+w,y+u,z);
+  const face=(u0,u1,z0,z1,c,ex="")=>poly([vis(u0,z0),vis(u1,z0),vis(u1,z1),vis(u0,z1)],c,ex);
+  let s="";
+  if(C.k==="stakes"){for(let k=0;k<4;k++){const u=k*.25+.05,h=12+(k%2)*3,bx=ax?x+u:x+.12,by=ax?y+.12:y+u;s+=box(bx,by,.16,.16,0,h,k%2?"#9a6a3a":"#8a5a2b");
+      const t=iso(bx+.08,by+.08,h+6),l1=iso(bx,by+.16,h),r1=iso(bx+.16,by+.16,h),r2=iso(bx+.16,by,h);s+=poly([l1,r1,t],"#b08050")+poly([r1,r2,t],"#7a4a24");}
+    s+=pl([vis(0,6),vis(1,6)],"#6b4220",1.6);if(i%3===0)s+=box(ax?x:x+.08,ax?y+.08:y,.24,.24,0,18,"#6b4220");return s;}
+  let z=0;const dark=C.body&&C.body[0]==="dark";
+  if(C.base){s+=ishi(x,y,w,d,0,C.base,.03,dark?"#7d8394":STONE);z=C.base;}
+  const zb0=z;let zb1=z;
+  if(C.body){const t=C.body[0],h=C.body[1]+6,col=t==="plank"?"#7a4a24":dark?"#5d6378":PLASTER;s+=box(x+(ax?0:.04),y+(ax?.04:0),ax?w:w-.08,ax?d-.08:d,z,h,col);
+    if(t==="plank"){let ln="";for(let u=.2;u<1;u+=.2)ln+=`M${F(vis(u,z))}L${F(vis(u,z+h))}`;s+=`<path d="${ln}" stroke="#4a2e17" stroke-width="1" fill="none"/>`;}
+    if(dark){let ln=`M${F(vis(0,z+h/2))}L${F(vis(1,z+h/2))}M${F(vis(.25,z))}L${F(vis(.25,z+h/2))}M${F(vis(.75,z))}L${F(vis(.75,z+h/2))}M${F(vis(.5,z+h/2))}L${F(vis(.5,z+h))}`;s+=`<path d="${ln}" stroke="#3d4458" stroke-width="1" fill="none"/>`;}
+    z+=h;zb1=z;
+    const m=(zb0+zb1)/2,cm=vis(.5,m);
+    if(C.frame)s+=face(.16,.84,zb0+1.6,zb1-1.6,"none",'stroke="#b8322a" stroke-width="1.6"');
+    if(C.mon&&i%3===1)s+=`<circle cx="${N1(cm[0])}" cy="${N1(cm[1])}" r="3" fill="none" stroke="#1b140c" stroke-width="1.2"/>`;
+    if(C.banner&&i%3===1)s+=face(.42,.58,zb0+1,zb1,SHU)+`<circle cx="${N1(cm[0])}" cy="${N1(cm[1])}" r="1.6" fill="${GOLD}"/>`;
+    if(C.medal&&i%2===1)s+=`<circle cx="${N1(cm[0])}" cy="${N1(cm[1])}" r="4" fill="${GOLD}" stroke="#6a4a10" stroke-width="1"/><circle cx="${N1(cm[0])}" cy="${N1(cm[1])}" r="1.6" fill="#6a4a10"/>`;
+    if(C.emblem&&i%3===1)s+=`<circle cx="${N1(cm[0])}" cy="${N1(cm[1])}" r="5.5" fill="${GOLD}" stroke="#6a4a10" stroke-width="1"/><circle cx="${N1(cm[0])}" cy="${N1(cm[1])}" r="3" fill="none" stroke="#6a4a10" stroke-width="1"/>`;
+    if(C.gpanel&&i%3===1)s+=face(.3,.7,zb0+1.2,zb1-1,"#d4a640");
+    if(C.kanji&&i%2===1){s+=face(.32,.68,zb0+1.2,zb1-1,"#fbf6ea");s+=`<text x="${N1(cm[0])}" y="${N1(cm[1]+3)}" text-anchor="middle" font-family="Shippori Mincho B1,serif" font-weight="800" font-size="8" fill="#1b140c">${KANJI[i%KANJI.length]}</text>`;}
+    if(C.rpanel&&i%2===0){s+=face(.3,.7,zb0+1.2,zb1-1,SHU);s+=`<text x="${N1(cm[0])}" y="${N1(cm[1]+3)}" text-anchor="middle" font-family="Shippori Mincho B1,serif" font-weight="800" font-size="8" fill="${GOLD}">${KANJI[i%KANJI.length]}</text>`;}
+    if(C.lanterns&&i%2===0){const p=vis(.5,zb1-1);s+=lanternRed(...(ax?[x+.5,y+d+.05]:[x+w+.05,y+.5]),zb1-2);}}
+  if(C.cap){s+=box(x-.04,y-.04,w+.08,d+.08,z,2.6,C.cap);if(C.cap2)s+=box(x-.07,y-.07,w+.14,d+.14,z+2.6,2,C.cap);
+    if(C.gtrim)s+=pl([vis(0,z+.3),vis(1,z+.3)],GOLD,1.4);
+    if(C.glow)s+=`<path d="M${F(vis(0,z+3))}L${F(vis(1,z+3))}" stroke="#c9a6ff" stroke-width="3" opacity=".6"><animate attributeName="opacity" values=".2;.85;.2" dur="2.4s" repeatCount="indefinite"/></path>`;}
+  if(C.post){const pc=C.post[0],ph0=C.post[1]+(C.body?6:0),ph=C.tower&&i%4===0?ph0+10:ph0;s+=box(ax?x-.04:x-.03,ax?y-.03:y-.04,ax?.14:w+.06,ax?d+.06:.14,0,ph,pc);
+    const pt=iso(ax?x+.03:x+w/2,ax?y+d/2:y+.03,ph+2.4);
+    if(C.pcap)s+=box(ax?x-.06:x-.05,ax?y-.05:y-.06,ax?.18:w+.1,ax?d+.1:.18,ph,2.2,C.pcap);
+    if(C.proof)s+=roofJ(ax?x-.08:x-.05,ax?y-.05:y-.08,ax?.24:w+.1,ax?d+.1:.24,ph,6,.05,"#2c3a6b",{pyr:true,up:1});
+    if(C.tower&&i%4===0)s+=roofJ(ax?x-.1:x-.08,ax?y-.08:y-.1,ax?.28:w+.16,ax?d+.16:.28,ph+2.4,8,.06,"#24222e",{pyr:true,up:1.5,gold:true,finial:true});
+    if(C.lamp&&i%3===0)s+=`<rect x="${N1(pt[0]-2.5)}" y="${N1(pt[1]+3)}" width="5" height="4" fill="#ffd36b"><animate attributeName="opacity" values="1;.5;1" dur="1.9s" repeatCount="indefinite"/></rect>`;
+    if(C.slamp&&i%2===0)s+=`<rect x="${N1(pt[0]-3)}" y="${N1(pt[1]-7)}" width="6" height="6" fill="#ffd36b" stroke="#1b140c" stroke-width=".8"><animate attributeName="opacity" values="1;.55;1" dur="2.1s" repeatCount="indefinite"/></rect><path d="M${N1(pt[0]-5)} ${N1(pt[1]-7)}l5-4 5 4z" fill="#24222e"/>`;
+    if(C.horns)s+=`<path d="M${N1(pt[0]-2)} ${N1(pt[1])}q-7-3-5-11M${N1(pt[0]+2)} ${N1(pt[1])}q7-3 5-11" stroke="${GOLD}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+    if(C.flame&&i%3===0)s+=flameAt(pt,C.flame);
+    if(C.dragon&&i%3===2)s+=shachi(pt,i%2===0);}
+  return s;}
+
+/* ---- edificios ---- */
+/* ---- Muros del Imperio: tramos continuos con torres de esquina ---- */
+function wallRun(L,a0,a1,f,alongY,i0){let s="",i=i0;for(let t=a0;t<a1-.01;t+=1){const w=Math.min(1,a1-t);s+=alongY?wallSeg(L,f,t,.4,w,i):wallSeg(L,t,f,w,.4,i);i++;}
+  return s;}
+function wallCorner(L,x,y){const C=WT[Math.max(1,Math.min(20,L))];let s="";
+  if(L<=3){const h=L===1?22:28;s+=box(x-.06,y-.06,.52,.52,0,h,L===1?"#8a5a2b":"#5a3a1c");
+    if(L===1){const t=iso(x+.2,y+.2,h+10),a=iso(x-.06,y+.46,h),b2=iso(x+.46,y+.46,h),c=iso(x+.46,y-.06,h);s+=poly([a,b2,t],"#b08050")+poly([b2,c,t],"#7a4a24");}
+    else s+=box(x-.1,y-.1,.6,.6,h,3,"#4a2e17")+(L===3?ishi(x-.12,y-.12,.64,.64,0,6,.02):"");return s;}
+  if(L<=8){const h=26+L;s+=ishi(x-.12,y-.12,.64,.64,0,h,.04,STONE)+box(x-.15,y-.15,.7,.7,h,3,C.cap||"#6b7180");
+    if(L>=6)s+=roofJ(x-.1,y-.1,.6,.6,h+3,9,.08,C.cap||"#2c3a6b",{pyr:true,up:1.5,finial:true});
+    if(L>=8)s+=lanternRed(x+.5,y+.5,h-8);return s;}
+  const hb=L>=15?14:10,tw=L>=15?15:12,R=L>=13?"#24222e":"#2c3a6b",wc=L>=18?"#5d6378":PLASTER,pc=C.post?C.post[0]:SHU;
+  s+=ishi(x-.18,y-.18,.76,.76,0,hb,.05,L>=18?"#7d8394":STONE)+body(x-.12,y-.12,.64,.64,hb,tw,{c:wc,win:1,posts:2,postC:pc});
+  let top;
+  if(L>=15){s+=roofJ(x-.12,y-.12,.64,.64,hb+tw,5,.14,R,{gold:true,up:3})+body(x-.02,y-.02,.44,.44,hb+tw+3,10,{c:wc,win:1})+roofJ(x-.02,y-.02,.44,.44,hb+tw+13,10,.12,R,{gold:true,pyr:true,finial:true});top=hb+tw+23;}
+  else{s+=roofJ(x-.12,y-.12,.64,.64,hb+tw,11,.14,R,{gold:L>=13,pyr:true,finial:true,up:3});top=hb+tw+11;}
+  if(C.flame)s+=flameAt(iso(x+.2,y+.2,top+6),C.flame);
+  if(L>=11)s+=lanternRed(x+.52,y+.52,hb+tw-3);
+  return s;}
+
+/* ---- 20 diseños por nivel: lista de mejoras acumulativas (niveles 2 a 20) ---- */
+function cfg(list,l,def={}){const C={...def},n=Math.max(1,Math.min(20,l));
+  for(let i=0;i<n-1&&i<list.length;i++)for(const tok of list[i].split(" ")){if(!tok)continue;const j=tok.indexOf(":");
+    if(j<0){C[tok]=(C[tok]||0)+1;continue;}const k=tok.slice(0,j),v=tok.slice(j+1);
+    if(v[0]==="+")C[k]=(C[k]||0)+parseFloat(v.slice(1));else C[k]=isNaN(+v)?v:+v;}
+  return C;}
+const UP={
+ reloj:["st:3","rf:i","pc:red","lan","bs:+.2","st:+3 ban","lower","gold","lan sak","bc:bronze bs:+.2","tiers","rf:k stat","ban","pc:black gold","sak waves","st:+3 lan","bc:gold","rf:g","aura magic"],
+ tablon:["rf:i","plq:+3","torii","lan","hok","red plq:+4","rope","sak ban","rows","gold","lan plq:+4","rf:v","hok stat","torG","sak lan","rf:k","glow","gold rows","aura magic"],
+ jardin:["rock","lan","lily","fenceB","koi","sak","bridge","rock moss","momiji","gaz","lan","fall","sekito","gold","sak","koiG","fenceS","glow","aura magic"],
+ templo:["st:3","rf:i","red","stat","rope","lan","st:+2 tor","sak","haiden","gold","lan ban","rf:k","tor","sak","gold torG","st:+2 ban","rf:g","spirit","aura magic"],
+ academia:["st:2","mk","rf:i","sign","ban","mk","wall:plaster","rack","lan","fl","mk sak","gold","taiko","rf:k","ban lan","stat","gold","fl","aura magic"],
+ taller:["ns","rf:i","noren","ns pots","lan","fl","ns","brush","sak","wall:plaster","ns gold","big","rf:k","ban","lan sak","gold","ink","rf:v","aura magic"],
+ taberna:["stones","lanR","fenceB","engawa","sak","rf:i","lanR","fl","umb","lan","noren","sak","gold","rf:k","string","lan","gold","pond","aura magic"],
+ observ:["st:+2","tier","rf:i","red","lan","tier","sorin","sak","gold","tier","scope","rf:k","stars","lan ban","tier","armil","gold","moon","aura magic"],
+ mina:["rails","cart","lanR","nug:+3","frame","torii","veins","nug:+3","shed","lanR","crys","cart2","nug:+3","frameG","lan","crys","torG","nug:+4","aura magic"]
+};
+function sakB(C,x,y,spots){let s="";const SK=spots||[[1.86,.28],[.28,1.86]];for(let k=0;k<Math.min(C.sak||0,SK.length);k++)s+=sakura(x+SK[k][0],y+SK[k][1],.5);return s;}
+function decoB(C,x,y,o={}){let s="";const L=o.lan||[[.12,1.88],[1.88,.12],[.12,1.2],[1.2,.12]];
+  for(let k=0;k<Math.min(C.lan||0,L.length);k++)s+=toro(x+L[k][0],y+L[k][1],.6);
+  const B=o.ban||[[.05,1.97],[1.97,.05]];for(let k=0;k<Math.min(C.ban||0,B.length);k++)s+=nobori(x+B[k][0],y+B[k][1],0,flagC(),o.kanji||"学");
+  if(C.stat){const K=o.stat||[[.55,1.96],[1.45,1.96]];s+=komainu(x+K[0][0],y+K[0][1])+komainu(x+K[1][0],y+K[1][1]);}
+  return s;}
+function sparkB(C,x,y,top,col="#e2c9ff"){if(!C.magic)return "";const c=iso(x+1,y+1,top*.6);
+  let s=`<ellipse cx="${N1(c[0])}" cy="${N1(c[1])}" rx="56" ry="17" fill="none" stroke="#c9a6ff" stroke-width="2" stroke-dasharray="8 10" opacity=".85"><animate attributeName="stroke-dashoffset" values="0;-72" dur="3s" repeatCount="indefinite"/></ellipse>`;
+  [[-38,-26],[34,-40],[46,6],[-48,2]].forEach(([a,bb],k)=>s+=`<path d="M${N1(c[0]+a)} ${N1(c[1]+bb)}l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="${col}"><animate attributeName="opacity" values="1;.2;1" dur="${1.4+k*.4}s" repeatCount="indefinite"/></path>`);
+  return s;}
+function rope(a,b,sag=4){const m=[(a[0]+b[0])/2,(a[1]+b[1])/2+sag*2];let s=`<path d="M${F(a)}Q${F(m)} ${F(b)}" stroke="#d9c48a" stroke-width="3.6" fill="none" stroke-linecap="round"/><path d="M${F(a)}Q${F(m)} ${F(b)}" stroke="#a8925a" stroke-width="1" stroke-dasharray="2 3" fill="none"/>`;
+  [.3,.5,.7].forEach(t=>{const p=bez(a,m,b,t);s+=`<path d="M${N1(p[0])} ${N1(p[1]+2)}l2 3-2 1 2 3-2 1" stroke="#fff" stroke-width="1.3" fill="none"/>`;});return s;}
+
+/* Torre de la Campana */
+function bellSvg(b,l){const C=cfg(UP.reloj,l,{st:0,pc:"wood",bs:1,bc:"green",rf:"t"}),x=b.x,y=b.y,R=rcol(C.rf),G=C.gold||0,TH1=C.rf==="t";let s="";
+  if(C.aura)s+=aura(x,y,2,2,20);s+=sakB(C,x,y);
+  let zb=C.st;if(zb)s+=ishi(x+.2,y+.2,1.6,1.6,0,zb,.06);else{s+=box(x+.28,y+.28,1.44,1.44,0,2,"#8a6a40");zb=2;}
+  const pcol={wood:WOOD,red:SHU,black:"#2a2730"}[C.pc];
+  if(C.lower){s+=body(x+.38,y+.38,1.24,1.24,zb,9,{c:PLASTER,posts:3,postC:pcol})+roofJ(x+.34,y+.34,1.32,1.32,zb+9,3,.12,R,{up:1.5,gold:G>1});zb+=11;}
+  const ph=26+l*.4,P=(px,py)=>box(px,py,.13,.13,zb,ph,pcol);
+  s+=P(x+.4,y+.4)+P(x+1.47,y+.4)+P(x+.4,y+1.47)+pl([iso(x+.42,y+1.53,zb+4),iso(x+1.53,y+1.53,zb+4),iso(x+1.53,y+.42,zb+4)],pcol,2);
+  const tp=iso(x+1,y+1.5,zb+ph-3),k=C.bs,bc={green:"#5d7a62",bronze:"#a8743a",gold:"#d9b04a"}[C.bc];
+  if(C.waves)[0,1].forEach(j=>s+=`<ellipse cx="${N1(tp[0])}" cy="${N1(tp[1]+14*k)}" rx="10" ry="4" fill="none" stroke="#f2d27a" stroke-width="2"><animate attributeName="rx" values="10;46" dur="2.4s" begin="${-j*1.2}s" repeatCount="indefinite"/><animate attributeName="ry" values="4;18" dur="2.4s" begin="${-j*1.2}s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="2.4s" begin="${-j*1.2}s" repeatCount="indefinite"/></ellipse>`);
+  s+=`<g transform="translate(${N1(tp[0])} ${N1(tp[1])}) scale(${k})"><g><animateTransform attributeName="transform" type="rotate" values="-5;5;-5" dur="2.8s" repeatCount="indefinite"/><line x1="0" y1="0" x2="0" y2="4" stroke="#1b140c" stroke-width="2"/><path d="M-7 19C-7 9-6 4 0 4C6 4 7 9 7 19L9 22H-9Z" fill="${bc}" ${OL}/><path d="M-7.5 12H7.5M-8 17H8" stroke="${sh(bc,-.35)}" stroke-width="1"/><ellipse cx="-3" cy="9" rx="1.5" ry="3" fill="#fff" opacity=".25"/></g></g>`;
+  s+=pl([iso(x+.42,y+1.5,zb+ph-2),iso(x+1.5,y+1.5,zb+ph-2)],"#3a2a1c",2.4)+P(x+1.47,y+1.47)+box(x+.34,y+.34,1.32,1.32,zb+ph,2.2,"#3a2a1c");
+  const rz=zb+ph+2.2;let top;
+  if(C.tiers){s+=roofJ(x+.34,y+.34,1.32,1.32,rz,6,.2,R,{gold:G>0,up:3})+box(x+.64,y+.64,.72,.72,rz+4,6,pcol)+roofJ(x+.64,y+.64,.72,.72,rz+10,9,.2,R,{gold:G>0,shachi:G>1});top=rz+19;}
+  else{const rh=11+l*.3;s+=roofJ(x+.34,y+.34,1.32,1.32,rz,rh,.2,R,{gold:G>0,thatch:TH1,shachi:G>1,up:4});top=rz+rh;}
+  s+=decoB(C,x,y,{kanji:"鐘"})+sparkB(C,x,y,top);return [s,top];}
+
+/* Altar de Ema */
+function emaSvg(b,l){const C=cfg(UP.tablon,l,{rf:"t",plq:0,rows:0,hok:0}),x=b.x,y=b.y,R=rcol(C.rf),G=C.gold||0,TH1=C.rf==="t";let s="";
+  if(C.aura)s+=aura(x,y,2,2,20);
+  s+=poly([iso(x,y),iso(x+2,y),iso(x+2,y+2),iso(x,y+2)],"#d8cdb2")+sakB(C,x,y,[[1.05,.15],[.12,1.1]]);
+  const hk=Math.min(C.hok,2),hs=[.55,.72,.88][hk],hx=x+.22,hy=y+.22,wcol=C.red?PLASTER:"#c99a5f";let hz;
+  if(hk>=1){s+=ishi(hx-.05,hy-.05,hs+.1,hs+.1,0,4+hk*2,.03);hz=4+hk*2;}else{s+=box(hx+hs/2-.06,hy+hs/2-.06,.12,.12,0,7,WOOD);hz=7;}
+  const bh=8+hk*3,gh=6+hk*2;s+=body(hx,hy,hs,hs,hz,bh,{c:wcol,posts:C.red?2:0,postC:SHU})+gableJ(hx,hy,hs,hs,hz+bh,gh,.12,R,{chigi:hk>=2,gold:G>0,wall:wcol,thatch:TH1});
+  if(C.rope)s+=rope(iso(hx+.05,hy+hs,hz+bh-2),iso(hx+hs-.05,hy+hs,hz+bh-2),2);
+  if(C.torii)s+=torii(x+.2,x+1.0,y+1.32,20+(C.torG?5:0),C.torG?GOLD:C.red?SHU:"#8a5a2b");
+  const rows=2+(C.rows||0),H=8+rows*7,bx=x+1.55,pcol=C.red?SHU:WOOD;
+  s+=box(bx,y+.1,.1,.1,0,H,pcol)+box(bx,y+1.52,.1,.1,0,H,pcol);
+  for(let r=0;r<rows;r++)s+=pl([iso(bx+.1,y+.14,6+r*7+5),iso(bx+.1,y+1.52,6+r*7+5)],"#4a3420",1.6);
+  const n=Math.min(6+C.plq,rows*8);for(let i=0;i<n;i++){const r=Math.floor(i/8),k=i%8,p=iso(bx+.12,y+.22+k*.17,6+r*7+5);
+    s+=`<path d="M${N1(p[0]-3)} ${N1(p[1]+3)}l3 -2 3 2v5h-6z" fill="${C.glow?"#ffe9a8":i%5===3?"#f0d9a8":"#e2c48f"}" stroke="#6b4a2c" stroke-width=".6">${C.glow&&i%3===0?`<animate attributeName="fill" values="#ffe9a8;#fffbe8;#ffe9a8" dur="${1.6+(i%4)*.3}s" repeatCount="indefinite"/>`:""}</path><line x1="${N1(p[0]-1.5)}" y1="${N1(p[1]+5)}" x2="${N1(p[0]+1.5)}" y2="${N1(p[1]+5.5)}" stroke="#b8322a" stroke-width=".7"/>`;}
+  s+=roofJ(bx-.06,y+.04,.22,1.62,H,4,.05,R,{up:2,thatch:TH1,gold:G>1});
+  if(C.rope)s+=rope(iso(bx+.13,y+.14,H-2),iso(bx+.13,y+1.55,H-2),3);
+  s+=decoB(C,x,y,{lan:[[.08,1.55],[1.2,1.9],[1.25,.1],[.08,.95]],stat:[[.16,1.55],[1.06,1.55]],kanji:"願"});
+  const top=Math.max(H+8,hz+bh+gh+8,C.torii?26:0);s+=sparkB(C,x,y,top);return [s,top];}
+
+/* Jardín Zen */
+function zenSvg(b,l){const C=cfg(UP.jardin,l,{rock:0,koi:0}),x=b.x,y=b.y,G=C.gold||0,R=G?GOLD:rcol("i");let s="";
+  if(C.aura)s+=aura(x,y,2,2,20);
+  if(C.fenceS)s+=box(x,y,2,.12,0,9,PLASTER)+box(x-.02,y-.02,2.04,.16,9,2.4,"#2c3a6b")+box(x,y+.12,.12,1.88,0,9,PLASTER)+box(x-.02,y+.1,.16,1.92,9,2.4,"#2c3a6b");
+  else if(C.fenceB){for(let t=0;t<=8;t++){s+=box(x+t*.24,y,.05,.05,0,10,"#8fae4a")+box(x,y+t*.24,.05,.05,0,10,"#8fae4a");}
+    s+=pl([iso(x,y+.05,4),iso(x+2,y+.05,4)],"#6a8a34",1.6)+pl([iso(x,y+.05,8),iso(x+2,y+.05,8)],"#6a8a34",1.6)+pl([iso(x+.05,y,4),iso(x+.05,y+2,4)],"#6a8a34",1.6)+pl([iso(x+.05,y,8),iso(x+.05,y+2,8)],"#6a8a34",1.6);}
+  if(C.sak)s+=sakura(x+.28,y+.28,.62);if(C.momiji)s+=momiji(x+.95,y+.18,.62);
+  s+=box(x,y,2,2,0,2.5,"#e6dcc3");
+  let ln="";for(let t=.2;t<1.95;t+=.17)ln+=`M${F(iso(x+.08,y+t,2.5))}L${F(iso(x+1.92,y+t,2.5))}`;s+=`<path d="${ln}" stroke="#cbbd9b" stroke-width="1" fill="none"/>`;
+  const rings=(cx,cy,n)=>{let o="";const p=iso(cx,cy,2.5);for(let k=n;k>=1;k--)o+=`<ellipse cx="${N1(p[0])}" cy="${N1(p[1])}" rx="${6+k*5}" ry="${3+k*2.5}" fill="#e6dcc3" stroke="#cbbd9b" stroke-width="1"/>`;return o;};
+  const RK=[[.62,.62,.95,3],[.45,1.32,.75,2],[1.05,.95,.6,2]].slice(0,1+C.rock);
+  RK.forEach(r=>s+=rings(r[0],r[1],r[3]));
+  if(C.gaz){const gx=x+1.22,gy=y+.15,gw=.6,pc=G?SHU:"#6b4a2c";s+=box(gx-.04,gy-.04,gw+.08,gw+.08,2.5,2,"#9b958a");
+    [[0,0],[gw,0],[0,gw]].forEach(([a,c])=>s+=box(gx+a-.05,gy+c-.05,.08,.08,4.5,13,pc));s+=box(gx+.1,gy+.45,.4,.1,4.5,4,"#8a5a2b");
+    s+=box(gx+gw-.05,gy+gw-.05,.08,.08,4.5,13,pc)+roofJ(gx-.02,gy-.02,gw+.04,gw+.04,17.5,10,.14,R,{pyr:true,finial:true,gold:G>0,up:2});}
+  RK.forEach((r,k)=>s+=rock(x+r[0],y+r[1],r[2])+(C.moss&&k<2?`<ellipse cx="${N1(iso(x+r[0],y+r[1])[0]-2)}" cy="${N1(iso(x+r[0],y+r[1])[1]-9*r[2])}" rx="${N1(6*r[2])}" ry="${N1(2.5*r[2])}" fill="#6f9a44"/>`:""));
+  if(C.fall){const w0=iso(x+1.75,y+.95,2.5);s+=pyrRock(x+1.55,y+.8,.4,.35,18,"#8b8378");s+=`<path d="M${N1(w0[0]-4)} ${N1(w0[1]-14)}v14" stroke="#9fd8f2" stroke-width="5"/><path d="M${N1(w0[0]-4)} ${N1(w0[1]-14)}v14" stroke="#fff" stroke-width="1.5" stroke-dasharray="3 4"><animate attributeName="stroke-dashoffset" values="0;-14" dur=".7s" repeatCount="indefinite"/></path>`;}
+  const pc=iso(x+1.42,y+1.42,2.5),PX=N1(pc[0]),PY=N1(pc[1]);
+  s+=`<ellipse cx="${PX}" cy="${PY}" rx="25" ry="12.5" fill="#3f8fb0" stroke="#8f8a80" stroke-width="3.2"/><ellipse cx="${N1(pc[0]-6)}" cy="${N1(pc[1]-3)}" rx="9" ry="3" fill="#fff" opacity=".25"/>`;
+  const koi=(c,dur,beg)=>`<g transform="translate(${PX} ${PY})"><ellipse rx="3.4" ry="1.6" fill="${c}"><animateMotion dur="${dur}s" begin="${beg}s" repeatCount="indefinite" rotate="auto" path="M-15 0a15 7 0 1 0 30 0a15 7 0 1 0 -30 0"/></ellipse></g>`;
+  s+=koi("#f07a2a",9,0)+(C.koi?koi("#f4ecd9",11,-4):"")+(C.koiG?koi(GOLD,7,-2):"");
+  if(C.lily)[[8,3],[-10,-2],[2,-6]].forEach(([a,c])=>s+=`<ellipse cx="${N1(pc[0]+a)}" cy="${N1(pc[1]+c)}" rx="4" ry="2" fill="#5f9a3c"/>`)+(C.lily?`<circle cx="${N1(pc[0]+9)}" cy="${N1(pc[1]+2)}" r="1.6" fill="#f7c0cf"/>`:"");
+  if(C.bridge)s+=`<path d="M${N1(pc[0]-23)} ${N1(pc[1]+3)}q23 -18 46 0" stroke="${SHU}" stroke-width="3.6" fill="none"/><path d="M${N1(pc[0]-23)} ${N1(pc[1]-3)}q23 -18 46 0" stroke="${SHU}" stroke-width="1.4" fill="none"/>`+[-14,0,14].map(a=>`<line x1="${N1(pc[0]+a)}" y1="${N1(pc[1]-5-(a?7:12))}" x2="${N1(pc[0]+a)}" y2="${N1(pc[1]+1-(a?7:12))}" stroke="${SHU}" stroke-width="1.4"/>`).join("");
+  if(C.sekito){const p=iso(x+.28,y+1.72,0);s+=box(x+.18,y+1.62,.2,.2,2.5,3,"#a8a294");for(let k=0;k<4;k++){const z=5.5+k*6;s+=box(x+.22,y+1.66,.12,.12,z,4,"#b3ad9f")+roofJ(x+.17,y+1.61,.22,.22,z+4,2,.04,"#9b958a",{pyr:true,up:1,finial:k===3});}}
+  if(C.glow){[[-30,-20],[24,-30],[40,-6],[-12,-38],[8,-14]].forEach(([a,c],k)=>{const p=iso(x+1,y+1,8);s+=`<circle cx="${N1(p[0]+a)}" cy="${N1(p[1]+c)}" r="1.8" fill="#fff59a"><animate attributeName="opacity" values="0;1;0" dur="${2+k*.4}s" repeatCount="indefinite"/><animate attributeName="cy" values="${N1(p[1]+c)};${N1(p[1]+c-8)};${N1(p[1]+c)}" dur="${3+k*.5}s" repeatCount="indefinite"/></circle>`;});}
+  s+=decoB(C,x,y,{lan:[[.85,1.86],[.15,.95]]});
+  if(C.glow)s=s.replace(/fill="#ffd36b"/g,'fill="#9fe6ff"');
+  const top=C.gaz?30:C.sak?40:24;s+=sparkB(C,x,y,top);return [s,top];}
+
+/* Santuario */
+function shrineSvg(b,l){const C=cfg(UP.templo,l,{st:0,rf:"t",tor:0}),x=b.x,y=b.y,R=rcol(C.rf),G=C.gold||0,TH1=C.rf==="t";let s="";
+  if(C.aura)s+=aura(x,y,2,2,20);s+=sakB(C,x,y,[[1.86,.22],[.18,.22]]);
+  const z0=C.st||0,hy=y+(C.haiden?.12:.32),hh=11+l*.45,bc=C.red?PLASTER:"#c99a5f",postC=C.red?SHU:WOOD;
+  if(z0)s+=ishi(x+.22,y+.06,1.56,C.haiden?1.42:1.32,0,z0,.05);else s+=box(x+.3,hy-.05,1.4,1.0,0,1.5,"#a8a294");
+  const zb=Math.max(z0,1.5);
+  s+=body(x+.42,hy,1.16,.88,zb,hh,{c:bc,posts:3,postC,win:0,winR:1})+pl([iso(x+.42,hy+.88,zb),iso(x+.42,hy+.88,zb+hh)],postC,2.4)+pl([iso(x+1.58,hy+.88,zb),iso(x+1.58,hy+.88,zb+hh)],postC,2.4);
+  const gh=10+l*.3;s+=gableJ(x+.42,hy,1.16,.88,zb+hh,gh,.28,R,{chigi:true,gold:G>0,wall:bc,thatch:TH1});
+  if(C.rope&&!C.haiden)s+=rope(iso(x+.5,hy+.9,zb+hh-3),iso(x+1.5,hy+.9,zb+hh-3),4);
+  if(C.haiden){const ay=y+.98;s+=body(x+.3,ay,1.4,.46,zb,9,{c:bc,posts:4,postC})+roofJ(x+.3,ay,1.4,.46,zb+9,7,.14,R,{gold:G>0,up:3});
+    if(C.rope)s+=rope(iso(x+.4,ay+.46,zb+7),iso(x+1.6,ay+.46,zb+7),4);}
+  const fy=C.haiden?1.5:1.3;s+=box(x+.85,y+fy,.3,.2,zb,3,"#6b4a2c")+smoke(x+1,y+fy+.1,zb+3);
+  const n=1+(C.tor||0),TY=[1.92,1.77,1.62].slice(0,n).reverse(),tc=C.torG?GOLD:C.red?SHU:"#8a5a2b";
+  TY.forEach(t=>s+=torii(x+.45,x+1.55,y+t,22+l*.45,tc));
+  if(C.spirit)[[-26,-30],[30,-36],[-4,-50]].forEach(([a,c],k)=>{const p=iso(x+1,y+1,zb+hh);s+=`<g><animateTransform attributeName="transform" type="translate" values="0 0;0 -6;0 0" dur="${2+k*.5}s" repeatCount="indefinite"/><path d="M${N1(p[0]+a)} ${N1(p[1]+c)}q-5-5 0-12q5 6 0 12z" fill="#7fd3ff" opacity=".9"/><circle cx="${N1(p[0]+a)}" cy="${N1(p[1]+c-3)}" r="1.6" fill="#fff"/></g>`;});
+  s+=decoB(C,x,y,{lan:[[.12,1.0],[1.88,1.0],[.12,.3],[1.88,.3]],stat:[[.24,1.75],[1.76,1.75]],kanji:"神"});
+  const top=zb+hh+gh+8;s+=sparkB(C,x,y,top);return [s,top];}
+
+/* Dojo */
+function dojoSvg(b,l){const C=cfg(UP.academia,l,{st:0,rf:"t",wall:"wood",mk:0,fl:0}),x=b.x,y=b.y,R=rcol(C.rf),G=C.gold||0,TH1=C.rf==="t";let s="";
+  if(C.aura)s+=aura(x,y,2,2,20);s+=sakB(C,x,y,[[.2,.2]]);
+  const z0=C.st?C.st+2:3;s+=C.st?ishi(x+.15,y+.15,1.7,1.5,0,z0,.04):box(x+.15,y+.15,1.7,1.5,0,3,"#5a3e26");
+  const hh=20+l*.35,wc=C.wall==="plaster"?PLASTER:"#8a5a34";s+=body(x+.3,y+.25,1.4,1.15,z0,hh,{c:wc,win:0,winR:0});
+  for(let k=0;k<4;k++){const x0=x+.32+k*.34,x1=x0+.32;s+=poly([iso(x0,y+1.4,z0),iso(x1,y+1.4,z0),iso(x1,y+1.4,z0+hh*.7),iso(x0,y+1.4,z0+hh*.7)],"#f6efdc");
+    for(let j=1;j<3;j++)s+=pl([iso(x0+(x1-x0)*j/3,y+1.4,z0),iso(x0+(x1-x0)*j/3,y+1.4,z0+hh*.7)],"#6b4a2c",.6);for(let j=1;j<4;j++)s+=pl([iso(x0,y+1.4,z0+hh*.7*j/4),iso(x1,y+1.4,z0+hh*.7*j/4)],"#6b4a2c",.6);}
+  for(let k=0;k<3;k++){const y0=y+.3+k*.37,y1=y0+.35;s+=poly([iso(x+1.7,y0,z0),iso(x+1.7,y1,z0),iso(x+1.7,y1,z0+hh*.7),iso(x+1.7,y0,z0+hh*.7)],"#e6dcc6");}
+  if(C.sign){const sg=iso(x+1,y+1.4,z0+hh*.86);s+=`<rect x="${N1(sg[0]-8)}" y="${N1(sg[1]-5)}" width="16" height="10" fill="#1b140c" stroke="${G?GOLD:"#8a6a40"}" stroke-width="1"/><text x="${N1(sg[0])}" y="${N1(sg[1]+3.2)}" text-anchor="middle" font-family="Shippori Mincho B1,serif" font-weight="800" font-size="8" fill="${G?GOLD:"#f4ecd9"}">道</text>`;}
+  let rz=z0+hh,top;
+  if(C.fl){s+=roofJ(x+.3,y+.25,1.4,1.15,rz,6,.2,R,{gold:G>0,up:3,thatch:TH1});s+=body(x+.6,y+.5,.8,.65,rz+4,9,{c:wc,win:1});rz+=13;
+    if(C.fl>=2){s+=roofJ(x+.6,y+.5,.8,.65,rz,4,.2,R,{gold:G>0,up:2.5});s+=body(x+.75,y+.62,.5,.42,rz+3,7,{c:wc,win:1});rz+=10;s+=roofJ(x+.75,y+.62,.5,.42,rz,9,.18,R,{gold:G>0,shachi:G>1});top=rz+9;}
+    else{s+=roofJ(x+.6,y+.5,.8,.65,rz,10,.22,R,{gold:G>0,shachi:G>1});top=rz+10;}}
+  else{const rh=12+l*.4;s+=roofJ(x+.3,y+.25,1.4,1.15,rz,rh,.2,R,{gold:G>0,thatch:TH1,shachi:G>1,up:4});top=rz+rh;}
+  for(let k=0;k<Math.min(C.mk,3);k++){const px=x+.45+k*.36,py=y+1.76;s+=box(px,py,.1,.1,0,16,"#8a6a40");for(let j=0;j<3;j++)s+=box(px-.01,py-.01,.12,.12,5+j*3.5,2,"#d9c48a");}
+  if(C.rack){s+=box(x+1.82,y+.4,.06,.06,0,14,"#4a3420")+box(x+1.82,y+1.15,.06,.06,0,14,"#4a3420")+pl([iso(x+1.85,y+.4,12),iso(x+1.85,y+1.2,12)],"#4a3420",1.6);
+    for(let k=0;k<4;k++){const a=iso(x+1.88,y+.5+k*.18,3),c=iso(x+1.88,y+.56+k*.18,14);s+=`<line x1="${N1(a[0])}" y1="${N1(a[1])}" x2="${N1(c[0])}" y2="${N1(c[1])}" stroke="${k%2?"#c9a06a":"#3a2a1c"}" stroke-width="1.6"/>`;}}
+  if(C.taiko){const p=iso(x+1.62,y+1.78,0);s+=box(x+1.5,y+1.7,.06,.06,0,9,"#4a3420")+box(x+1.72,y+1.7,.06,.06,0,9,"#4a3420")+`<ellipse cx="${N1(p[0])}" cy="${N1(p[1]-13)}" rx="7" ry="8" fill="${SHU}" stroke="#1b140c"/><ellipse cx="${N1(p[0]+3)}" cy="${N1(p[1]-13)}" rx="3.4" ry="7" fill="#f0e2c0" stroke="#1b140c" stroke-width=".8"/><circle cx="${N1(p[0]+3)}" cy="${N1(p[1]-13)}" r="1.5" fill="#1b140c"/>`;}
+  s+=decoB(C,x,y,{lan:[[1.88,.18],[.12,1.88]],stat:[[.3,1.95],[1.3,1.97]],kanji:"道"});
+  s+=sparkB(C,x,y,top);return [s,top];}
+
+/* Taller de Caligrafía */
+function callSvg(b,l){const C=cfg(UP.taller,l,{rf:"t",ns:2,wall:"wood",fl:0}),x=b.x,y=b.y,R=rcol(C.rf),G=C.gold||0,TH1=C.rf==="t";let s="";
+  if(C.aura)s+=aura(x,y,2,2,20);s+=sakB(C,x,y,[[1.86,.22],[.18,.22]]);
+  s+=ishi(x+.15,y+.15,1.7,1.4,0,3,.03);
+  const hh=13+l*.45,wc=C.wall==="plaster"?PLASTER:"#5c3b22";s+=body(x+.22,y+.25,1.5,1.2,3,hh,{c:wc,bm:"#2a1a0e",win:0,winR:1});
+  if(C.wall!=="plaster")for(let t=.05;t<.55;t+=.045)s+=pl([iso(x+.22+1.5*t,y+1.45,3),iso(x+.22+1.5*t,y+1.45,3+hh*.6)],"#a07850",.8);
+  else{for(let k=0;k<2;k++){const x0=x+.32+k*.36;s+=winL(x0,x0+.26,y+1.45,3+hh*.35,3+hh*.65);}}
+  [0,1,2].forEach(k=>{const x0=x+1.12+k*.18;s+=poly([iso(x0,y+1.46,3+hh*.58),iso(x0+.16,y+1.46,3+hh*.58),iso(x0+.16,y+1.46,3),iso(x0,y+1.46,3)],"#2a2420");});
+  if(C.noren)[0,1,2].forEach(k=>{const x0=x+1.12+k*.18;s+=poly([iso(x0,y+1.47,3+hh*.58),iso(x0+.16,y+1.47,3+hh*.58),iso(x0+.16,y+1.47,3+hh*.3),iso(x0,y+1.47,3+hh*.3)],"#2c3a6b");});
+  if(C.noren){const nc=iso(x+1.39,y+1.47,3+hh*.46);s+=`<circle cx="${N1(nc[0])}" cy="${N1(nc[1])}" r="2.6" fill="none" stroke="#f4ecd9" stroke-width="1.2"/>`;}
+  let rz=3+hh,top;
+  if(C.fl){s+=roofJ(x+.22,y+.25,1.5,1.2,rz,5,.24,R,{gold:G>0,up:3,thatch:TH1});s+=body(x+.5,y+.45,.95,.8,rz+3,9,{c:wc,bm:"#2a1a0e",win:1});rz+=12;}
+  const gw=C.fl?.95:1.5,gd=C.fl?.8:1.2,gx=C.fl?x+.5:x+.22,gy=C.fl?y+.45:y+.25,gh=9+l*.15;
+  s+=gableJ(gx,gy,gw,gd,rz,gh,.22,R,{gold:G>0,wall:wc,thatch:TH1});top=rz+gh;
+  if(C.brush){const a=iso(gx+gw*.3,gy+gd/2,rz+gh+2),c=iso(gx+gw*.85,gy+gd/2,rz+gh+16);s+=`<line x1="${N1(a[0])}" y1="${N1(a[1])}" x2="${N1(c[0])}" y2="${N1(c[1])}" stroke="#8a5a2b" stroke-width="3.4" stroke-linecap="round"/><path d="M${N1(a[0])} ${N1(a[1])}l-6 5q-3 4 2 4l6-4z" fill="#1b140c"/>`;top+=14;}
+  if(C.big){const p=iso(x+1.72,y+.55,3+hh*.95),q=iso(x+1.72,y+.55,3+hh*.15);s+=`<rect x="${N1(p[0]-5)}" y="${N1(p[1])}" width="10" height="${N1(q[1]-p[1])}" fill="#fbf6ea" stroke="#6b5a43" stroke-width=".8"/><rect x="${N1(p[0]-6)}" y="${N1(p[1]-1.5)}" width="12" height="2.4" fill="#4a3420"/><text x="${N1(p[0])}" y="${N1(p[1]+(q[1]-p[1])/2+3)}" text-anchor="middle" font-family="Shippori Mincho B1,serif" font-weight="800" font-size="9" fill="#1b140c">書</text>`;}
+  s+=box(x+.2,y+1.78,.08,.08,0,22,WOOD)+box(x+1.75,y+1.78,.08,.08,0,22,WOOD)+pl([iso(x+.22,y+1.82,21),iso(x+1.8,y+1.82,21)],"#4a3420",2);
+  for(let k=0;k<Math.min(C.ns,6);k++){const p=iso(x+.42+k*.24,y+1.84,21);
+    s+=`<rect x="${N1(p[0]-3)}" y="${N1(p[1]+1)}" width="6" height="15" fill="#fbf6ea" stroke="#6b5a43" stroke-width=".6"/><path d="M${N1(p[0]-1.5)} ${N1(p[1]+4)}q2 2 0 4q-1 2 1.5 4M${N1(p[0]+1.2)} ${N1(p[1]+5)}v5" stroke="#1b140c" stroke-width="1.1" fill="none"/><rect x="${N1(p[0]-3.6)}" y="${N1(p[1]+15.5)}" width="7.2" height="1.6" fill="#4a3420"/>`;}
+  if(C.pots)[[1.55,1.6],[1.7,1.65]].forEach(([a,c])=>s+=box(x+a,y+c,.1,.1,3,4,"#1b140c"));
+  if(C.ink)[[-30,-20],[24,-34],[36,-8]].forEach(([a,c],k)=>{const p=iso(x+1,y+1,top*.6);s+=`<g><animateTransform attributeName="transform" type="translate" values="0 0;${k%2?4:-4} -8;0 0" dur="${2.4+k*.5}s" repeatCount="indefinite"/><path d="M${N1(p[0]+a)} ${N1(p[1]+c)}q6-8 12 0q-6 6-12 0z" fill="#1b140c" opacity=".85"/><circle cx="${N1(p[0]+a+9)}" cy="${N1(p[1]+c+4)}" r="1.6" fill="#1b140c"/></g>`;});
+  s+=decoB(C,x,y,{lan:[[.1,1.55],[1.88,.2]],kanji:"書"});s+=sparkB(C,x,y,top);return [s,top];}
+
+/* Casa de Té */
+function teaSvg(b,l){const C=cfg(UP.taberna,l,{rf:"t",lanR:0,fl:0,umb:0}),x=b.x,y=b.y,R=rcol(C.rf),G=C.gold||0,TH1=C.rf==="t";let s="";
+  const bench=(bx,by)=>{let o=box(x+bx,y+by,.5,.2,0,4,SHU);const um=iso(x+bx+.4,y+by+.1,0),UX=um[0],UY=um[1];
+    o+=`<line x1="${N1(UX)}" y1="${N1(UY)}" x2="${N1(UX)}" y2="${N1(UY-30)}" stroke="#4a3420" stroke-width="1.6"/><path d="M${N1(UX-20)} ${N1(UY-24)}Q${N1(UX)} ${N1(UY-42)} ${N1(UX+20)} ${N1(UY-24)}Q${N1(UX)} ${N1(UY-19)} ${N1(UX-20)} ${N1(UY-24)}z" fill="${G>1?GOLD:SHU}" ${OL}/>`;
+    for(let k=-2;k<=2;k++)o+=`<line x1="${N1(UX)}" y1="${N1(UY-33)}" x2="${N1(UX+k*9)}" y2="${N1(UY-23)}" stroke="#8a2219" stroke-width=".6"/>`;return o;};
+  if(C.aura)s+=aura(x,y,2,2,20);
+  if(C.fenceB){for(let t=0;t<=8;t++)s+=box(x+t*.24,y,.05,.05,0,10,"#8fae4a")+box(x,y+t*.24,.05,.05,0,10,"#8fae4a");
+    s+=pl([iso(x,y+.05,4),iso(x+2,y+.05,4)],"#6a8a34",1.6)+pl([iso(x,y+.05,8),iso(x+2,y+.05,8)],"#6a8a34",1.6)+pl([iso(x+.05,y,4),iso(x+.05,y+2,4)],"#6a8a34",1.6)+pl([iso(x+.05,y,8),iso(x+.05,y+2,8)],"#6a8a34",1.6);}
+  s+=sakB(C,x,y,[[.22,.22],[1.88,.22]]);
+  if(C.pond){const p=iso(x+1.82,y+.62,0);s+=`<ellipse cx="${N1(p[0])}" cy="${N1(p[1])}" rx="12" ry="6" fill="#3f8fb0" stroke="#8f8a80" stroke-width="2"/><ellipse cx="${N1(p[0]-2)}" cy="${N1(p[1])}" rx="2.6" ry="1.2" fill="#f07a2a"/>`;}
+  if(C.umb)s+=bench(1.45,.2);
+  s+=box(x+.2,y+.15,1.6,1.4,0,3,"#7a5232");const hh=18+l*.3;
+  s+=body(x+.35,y+.25,1.3,1.1,3,hh,{c:"#e9dfc8",posts:2});
+  const rw=iso(x+1.65,y+.8,3+hh*.5);s+=`<circle cx="${N1(rw[0])}" cy="${N1(rw[1])}" r="5" fill="#2a2420" stroke="#6b4a2c" stroke-width="1.4"/><path d="M${N1(rw[0]-4)} ${N1(rw[1])}h8M${N1(rw[0])} ${N1(rw[1]-4)}v8" stroke="#c8b48a" stroke-width=".8"/>`;
+  const dr0=iso(x+.55,y+1.35,3),dr1=iso(x+.95,y+1.35,3);s+=poly([dr0,dr1,[dr1[0],dr1[1]-11],[dr0[0],dr0[1]-11]],"#f6efdc");
+  if(C.noren)s+=poly([dr0,dr1,[dr1[0],dr1[1]-11],[dr0[0],dr0[1]-11]].map((p,i)=>i<2?[p[0],p[1]-5]:p),"#2c3a6b");
+  if(C.engawa){s+=box(x+.3,y+1.36,1.4,.3,0,4,"#9b6a3e");[.3,1.0,1.66].forEach(a=>s+=box(x+a,y+1.62,.05,.05,4,9,"#6b4a2c"));s+=roofJ(x+.28,y+1.3,1.44,.4,13,2,.04,R,{up:1,thatch:TH1});}
+  let rz=3+hh,top;
+  if(C.fl){s+=roofJ(x+.35,y+.25,1.3,1.1,rz,5,.2,R,{up:3,thatch:TH1,gold:G>1});s+=body(x+.55,y+.4,.9,.8,rz+3,9,{c:"#e9dfc8",win:1});rz+=12;const rh=11;s+=roofJ(x+.55,y+.4,.9,.8,rz,rh,.22,R,{thatch:TH1,gold:G>0,up:4});top=rz+rh;}
+  else{const rh=15+l*.3;s+=roofJ(x+.35,y+.25,1.3,1.1,rz,rh,.24,R,{thatch:TH1,gold:G>0,up:4});top=rz+rh;}
+  if(G>0&&TH1)s+=pl([iso(x+.6,y+.8,top),iso(x+1.4,y+.8,top)],GOLD,3);
+  const LR=[[.4,1.62],[1.72,1.62],[1.72,.5]];for(let k=0;k<Math.min(C.lanR,3);k++)s+=lanternRed(x+LR[k][0],y+LR[k][1],3+hh-2);
+  if(C.string){const a=iso(x+.35,y+1.62,3+hh-1),c=iso(x+1.7,y+1.62,3+hh-1),m=[(a[0]+c[0])/2,(a[1]+c[1])/2+8];s+=`<path d="M${F(a)}Q${F(m)} ${F(c)}" stroke="#1b140c" fill="none"/>`;[.2,.4,.6,.8].forEach((t,k)=>{const p=bez(a,m,c,t);s+=`<ellipse cx="${N1(p[0])}" cy="${N1(p[1]+3)}" rx="2.2" ry="3" fill="${k%2?"#f2c76a":SHU}"/>`;});}
+  if(C.stones)[[.8,1.8],[1.05,1.92],[1.3,1.82]].forEach(([a,c])=>{const p=iso(x+a,y+c,0);s+=`<ellipse cx="${N1(p[0])}" cy="${N1(p[1])}" rx="5" ry="2.6" fill="#a8a294" stroke="#6b665c" stroke-width=".8"/>`;});
+  s+=bench(-.1,1.75);const kt=iso(x+.15,y+1.85,4);s+=`<circle cx="${N1(kt[0])}" cy="${N1(kt[1]-2)}" r="2.6" fill="#2a2420"/>`+smoke(x+.15,y+1.85,8);
+  s+=decoB(C,x,y,{lan:[[1.9,1.2],[1.2,1.92]]});s+=sparkB(C,x,y,top);return [s,top];}
+
+/* Pagoda de las Estrellas */
+function pagodaSvg(b,l){const C=cfg(UP.observ,l,{st:3,tier:2,rf:"t"}),x=b.x,y=b.y,R=rcol(C.rf),G=C.gold||0,TH1=C.rf==="t";let s="";
+  if(C.aura)s+=aura(x,y,2,2,20);s+=sakB(C,x,y,[[1.86,.22],[.2,.22]]);
+  s+=ishi(x+.25,y+.25,1.5,1.5,0,C.st,.05);
+  const n=Math.min(C.tier,6),bc=C.red?PLASTER:"#c99a5f";let z=C.st,sz=1.12;
+  for(let i=0;i<n;i++){const o=(2-sz)/2,last=i===n-1;s+=body(x+o,y+o,sz,sz,z,13,{c:bc,winR:1,win:1,posts:C.red?2:0,postC:SHU});
+    s+=roofJ(x+o,y+o,sz,sz,z+13,last?11:3,.18,R,{gold:G>0,up:2.5,pyr:last,thatch:TH1});z+=last?24:15;sz-=.07;}
+  const ap=iso(x+1,y+1,z-1),AX=N1(ap[0]),ringC=C.sorin?"#d9b04a":"#6b4a2c";
+  s+=`<line x1="${AX}" y1="${N1(ap[1])}" x2="${AX}" y2="${N1(ap[1]-(C.sorin?28:14))}" stroke="${C.sorin?"#8a6a2a":"#4a3420"}" stroke-width="2.6"/>`;
+  if(C.sorin){for(let k=0;k<7;k++)s+=`<ellipse cx="${AX}" cy="${N1(ap[1]-6-k*2.8)}" rx="3" ry="1" fill="${ringC}"/>`;s+=`<path d="M${AX} ${N1(ap[1]-36)}q4 4 0 8q-4-4 0-8z" fill="${GOLD}" stroke="#6a4a10" stroke-width=".6"/>`;}
+  let top=z+(C.sorin?30:16);
+  if(C.scope){const p=iso(x+1.72,y+1.72,0);s+=`<path d="M${N1(p[0]-5)} ${N1(p[1])}l5-14 5 14M${N1(p[0])} ${N1(p[1]-14)}v14" stroke="#4a3420" stroke-width="1.4" fill="none"/><line x1="${N1(p[0]-6)}" y1="${N1(p[1]-10)}" x2="${N1(p[0]+10)}" y2="${N1(p[1]-22)}" stroke="#b8902e" stroke-width="4" stroke-linecap="round"/>`;}
+  if(C.armil){const p=iso(x+.3,y+1.72,0);s+=box(x+.22,y+1.64,.16,.16,0,8,"#a8a294")+`<circle cx="${N1(p[0])}" cy="${N1(p[1]-16)}" r="7" fill="none" stroke="${GOLD}" stroke-width="1.6"/><ellipse cx="${N1(p[0])}" cy="${N1(p[1]-16)}" rx="7" ry="2.6" fill="none" stroke="${GOLD}" stroke-width="1.2"><animateTransform attributeName="transform" type="rotate" values="0 ${N1(p[0])} ${N1(p[1]-16)};360 ${N1(p[0])} ${N1(p[1]-16)}" dur="6s" repeatCount="indefinite"/></ellipse><circle cx="${N1(p[0])}" cy="${N1(p[1]-16)}" r="1.8" fill="${GOLD}"/>`;}
+  if(C.stars)[[-26,-20],[28,-36],[30,-6],[-34,-44]].forEach(([a,c],i)=>s+=`<path d="M${N1(ap[0]+a)} ${N1(ap[1]+c)}l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#ffe48a"><animate attributeName="opacity" values="1;.2;1" dur="${1.6+i*.5}s" repeatCount="indefinite"/></path>`);
+  if(C.moon){s+=`<path d="M${N1(ap[0]+22)} ${N1(ap[1]-52)}a10 10 0 1 0 8 14a8 8 0 1 1 -8 -14z" fill="#fbe8a8" stroke="#c9a24a" stroke-width=".8"/>`;top=Math.max(top,z+40);}
+  s+=decoB(C,x,y,{lan:[[.12,1.2],[1.2,.12]],kanji:"星"});s+=sparkB(C,x,y,top);return [s,top];}
+
+/* Mina de Oro */
+function mineSvg(b,l){const C=cfg(UP.mina,l,{nug:2}),x=b.x,y=b.y;let s="";
+  if(C.aura)s+=aura(x,y,2,2,20);
+  const mh=46+l*1.3;s+=pyrRock(x+.2,y-.1,1.7,1.5,mh,"#8b8378",.45,.4)+pyrRock(x+1.05,y+.55,1.0,1.1,mh*.62,"#958e83",.5,.4)+pyrRock(x+.05,y+.95,1.5,1.05,mh*.42,"#7f786e",.5,.35);
+  s+=pine(x+1.95,y+.2,.7)+pine(x+.05,y+.55,.6);
+  if(C.veins){const a=iso(x+.5,y+1.5,18),c=iso(x+1.2,y+1.8,32),d=iso(x+1.6,y+1.2,44);s+=pl([a,Lp(a,c,.5),c],GOLD,2)+pl([Lp(a,c,.5),d],GOLD,1.6);}
+  for(let k=0;k<Math.min(C.crys||0,2);k++){const p=iso(x+.45+k*.9,y+1.3-k*.6,16+k*12),col=k?"#9b6bff":"#5ab4ff";s+=`<path d="M${N1(p[0])} ${N1(p[1])}l-4-10 4-6 4 6zM${N1(p[0]+5)} ${N1(p[1]+1)}l-2-7 3-4 2 4z" fill="${col}" stroke="#1b140c" stroke-width=".7"><animate attributeName="opacity" values="1;.6;1" dur="${2+k*.6}s" repeatCount="indefinite"/></path>`;}
+  const e0=iso(x+.45,y+2,0),e1=iso(x+1.05,y+2,0);s+=`<path d="M${F(e0)}L${N1(e0[0])} ${N1(e0[1]-14)}Q${N1((e0[0]+e1[0])/2)} ${N1((e0[1]+e1[1])/2-24)} ${N1(e1[0])} ${N1(e1[1]-14)}L${F(e1)}z" fill="#1b140c"/>`;
+  s+=box(x+.38,y+1.95,.1,.1,0,18,WOOD)+box(x+1.02,y+1.95,.1,.1,0,18,WOOD)+pl([iso(x+.35,y+2.05,18),iso(x+1.15,y+2.05,18)],"#4a3420",3);
+  for(let k=0;k<Math.min(C.lanR||0,2);k++)s+=lanternRed(k?x+.3:x+1.2,y+2.08,15);
+  if(C.shed)s+=box(x+1.55,y+1.5,.45,.4,0,10,"#9b6a3e")+gableJ(x+1.55,y+1.5,.45,.4,10,7,.06,"#a8865a",{thatch:true,wall:"#9b6a3e"});
+  if(C.frame){const fx=x+1.78,fy=y+.95,fc=C.frameG?SHU:"#6b4220",hgt=40;const a=iso(fx,fy,0),c=iso(fx+.3,fy+.3,0),t=iso(fx+.15,fy+.15,hgt);
+    s+=`<path d="M${F(a)}L${F(t)}L${F(c)}" stroke="${fc}" stroke-width="3" fill="none"/><line x1="${N1(a[0])}" y1="${N1(a[1]-14)}" x2="${N1(c[0])}" y2="${N1(c[1]-14)}" stroke="${fc}" stroke-width="2"/>`;
+    s+=`<g transform="translate(${N1(t[0])} ${N1(t[1])})"><circle r="8" fill="none" stroke="${C.frameG?GOLD:"#4a3420"}" stroke-width="2.4"/><g><animateTransform attributeName="transform" type="rotate" values="0;360" dur="4s" repeatCount="indefinite"/><path d="M-8 0H8M0 -8V8M-5.6 -5.6L5.6 5.6M-5.6 5.6L5.6 -5.6" stroke="${C.frameG?GOLD:"#4a3420"}" stroke-width="1.2"/></g></g>`;}
+
+  if(C.rails){const r0=iso(x+.75,y+2,0),r1=iso(x+.75,y+2.9,0);s+=pl([[r0[0]-4,r0[1]],[r1[0]-4,r1[1]]],"#5a4a3a",1.4)+pl([[r0[0]+4,r0[1]],[r1[0]+4,r1[1]]],"#5a4a3a",1.4);}
+  const cart=(cp,anim)=>`<g>${anim?`<animateTransform attributeName="transform" type="translate" values="0 0;-16 8;-16 8;0 0" keyTimes="0;.45;.6;1" dur="5s" repeatCount="indefinite"/>`:""}<rect x="${N1(cp[0]-9)}" y="${N1(cp[1]-10)}" width="18" height="8" rx="1.5" fill="#6b4220" ${OL}/><path d="M${N1(cp[0]-8)} ${N1(cp[1]-10)}q4-6 8-2q4-5 8 2z" fill="${GOLD}" ${OL}/><circle cx="${N1(cp[0]-5)}" cy="${N1(cp[1]-1)}" r="2.4" fill="#2a1d12"/><circle cx="${N1(cp[0]+5)}" cy="${N1(cp[1]-1)}" r="2.4" fill="#2a1d12"/></g>`;
+  if(C.cart)s+=cart(iso(x+.75,y+2.1,0),true);
+  if(C.cart2)s+=cart(iso(x+1.35,y+2.15,0),false);
+  if(C.torii)s+=torii(x+.3,x+1.2,y+2.55,26,C.torG?GOLD:SHU);
+  for(let i=0;i<Math.min(C.nug,16);i++){const a=iso(x+.5+(i*.37)%1.1,y+.4+(i*.53)%.9,14+(i%4)*9);s+=`<path d="M${N1(a[0])} ${N1(a[1]-4)}l4 3-1 4h-6l-1-4z" fill="${GOLD}" ${OL}/>`;}
+  s+=decoB(C,x,y,{lan:[[.1,2.2],[1.9,2.2]]});const top=mh+6;s+=sparkB(C,x,y,top,"#ffe48a");return [s,top];}
+
+const DRAW={ayunt:palaceSvg,biblio:archiveSvg,reloj:bellSvg,tablon:emaSvg,jardin:zenSvg,templo:shrineSvg,academia:dojoSvg,taller:callSvg,taberna:teaSvg,observ:pagodaSvg,mina:mineSvg};
+function drawB(b,l){return DRAW[b.id](b,l);}
+
+function site(b){const {x,y,w,d}=b;let s=poly([iso(x,y),iso(x+w,y),iso(x+w,y+d),iso(x,y+d)],"#cdb98f");
+  const P=[[x+.3,y+.3],[x+1.6,y+.3],[x+.3,y+1.6],[x+1.6,y+1.6]],bc="#b9a46a";
+  s+=pl([iso(...P[0],0),iso(...P[0],24)],bc,2)+pl([iso(...P[1],0),iso(...P[1],24)],bc,2)+pl([iso(...P[0],12),iso(...P[1],12),iso(...P[3],12)],bc,1.6)+pl([iso(...P[0],22),iso(...P[1],22),iso(...P[3],22)],bc,1.6);
+  s+=box(x+.55,y+.6,.8,.5,0,5,"#c99a5b")+box(x+.6,y+.65,.7,.4,5,3,"#d8b77a")+pl([iso(...P[2],0),iso(...P[2],24)],bc,2)+pl([iso(...P[3],0),iso(...P[3],24)],bc,2)+pl([iso(...P[2],12),iso(...P[3],12)],bc,1.6);
+  const p=iso(x+1.2,y+1.85,0),X=N1(p[0]);s+=`<line x1="${X}" y1="${N1(p[1])}" x2="${X}" y2="${N1(p[1]-18)}" stroke="#4a3420" stroke-width="2.4"/><rect x="${N1(p[0]-10)}" y="${N1(p[1]-30)}" width="20" height="13" fill="#f4ecd9" stroke="#1b140c" stroke-width="1"/><text x="${X}" y="${N1(p[1]-20)}" text-anchor="middle" font-family="Shippori Mincho B1,serif" font-weight="800" font-size="10" fill="${SHU}">工</text>`;
+  return [s,26];}
 function locked(b){const {x,y,w,d}=b;const c=iso(x+w/2,y+d/2,0);
-  return [poly([iso(x,y,0),iso(x+w,y,0),iso(x+w,y+d,0),iso(x,y+d,0)],"rgba(0,0,0,.12)",'stroke-dasharray="5 4" stroke="#fff" stroke-opacity=".7"')
-  +`<g transform="translate(${c[0]} ${c[1]-6})"><rect x="-9" y="-6" width="18" height="14" rx="3" fill="#555" stroke="#000" stroke-width="1.5"/><path d="M-5 -6v-4a5 5 0 0 1 10 0v4" fill="none" stroke="#555" stroke-width="3"/></g>`,10];}
+  return [poly([iso(x,y),iso(x+w,y),iso(x+w,y+d),iso(x,y+d)],"rgba(0,0,0,.1)",'stroke-dasharray="5 4" stroke="#f4ecd9" stroke-opacity=".8"')
+  +`<g transform="translate(${N1(c[0])} ${N1(c[1]-6)})"><rect x="-9" y="-6" width="18" height="14" rx="2" fill="#1b140c" stroke="${GOLD}" stroke-width="1.2"/><path d="M-5 -6v-4a5 5 0 0 1 10 0v4" fill="none" stroke="#1b140c" stroke-width="3"/></g>`,10];}
 function badge(b,l,top){const {x,y,w,d}=b;const p=iso(x+w/2,y+d/2,top+12);let s="";
-  if(!unlocked(b)){return `<text x="${p[0]}" y="${iso(x+w/2,y+d/2,0)[1]+18}" text-anchor="middle" font-family="Lilita One,Arial Black" font-size="12" fill="#fff" stroke="#000" stroke-width="3" paint-order="stroke">Ayto ${b.unlock}</text>`;}
-  if(l>0) s+=`<g transform="translate(${p[0]} ${p[1]})"><path d="M-11 -11h22v9c0 8-11 13-11 13s-11-5-11-13z" fill="${l>=17?"#6b3fc0":l>=13?"#c28a12":"#2f4a7a"}" stroke="#000" stroke-width="2"/><text y="4" text-anchor="middle" font-family="Lilita One,Arial Black" font-size="13" fill="#fff">${l}</text></g>`;
-  if(canUp(b)) s+=`<g transform="translate(${p[0]+(l>0?16:0)} ${p[1]-6})"><g class="updot"><circle r="9" fill="#6fcf3a" stroke="#000" stroke-width="2"/><path d="M0 -5l5 5h-3v4h-4v-4h-3z" fill="#fff"/></g></g>`;
+  if(!unlocked(b)){const q=iso(x+w/2,y+d/2,0);return `<text x="${N1(q[0])}" y="${N1(q[1]+20)}" text-anchor="middle" font-family="Shippori Mincho B1,serif" font-weight="800" font-size="12" fill="#f4ecd9" stroke="#1b140c" stroke-width="3" paint-order="stroke">Palacio ${b.unlock}</text>`;}
+  if(l>0){const bg=l>=17?"#1b140c":l>=13?"#b8902e":"#b8322a",fg=l>=17?GOLD:"#f4ecd9";
+    s+=`<g transform="translate(${N1(p[0])} ${N1(p[1])})"><circle r="11.5" fill="${bg}" stroke="#f4ecd9" stroke-width="2"/><circle r="13.2" fill="none" stroke="#1b140c" stroke-width="1.4"/><text y="4.4" text-anchor="middle" font-family="Shippori Mincho B1,serif" font-weight="800" font-size="13" fill="${fg}">${l}</text></g>`;}
+  if(canUp(b))s+=`<g transform="translate(${N1(p[0]+(l>0?17:0))} ${N1(p[1]-7)})"><g class="updot"><circle r="9" fill="${GOLD}" stroke="#1b140c" stroke-width="2"/><path d="M0 -5l5 5h-3v4h-4v-4h-3z" fill="#1b140c"/></g></g>`;
   return s;}
 
-// Lugares de decoraciones y bosque (fuera de la muralla)
-const DSPOT={antorchas:[7.3,14.9,.4,.4],fuente:[4.4,15.6,1.6,1.6],estatua:[11.4,15.7,1,1],estandarte:[2.6,16.2,.5,.5],arco:[7.6,15.6,2.6,.4],pozo:[13.6,15.7,1,1],dragon:[15.6,10.6,1.2,1.2]};
+/* ---- decoraciones y escenario ---- */
+const DSPOT={antorchas:[6.9,15.1,.3,.3],fuente:[4.4,15.5,1.2,1.2],estatua:[12.3,15.5,1,1],estandarte:[2.9,16.2,.4,.4],arco:[7.9,16.3,2.2,.3],pozo:[14.8,15.8,1,1],dragon:[17.2,11,1.2,1.2],koinobori:[16.3,13.5,.3,.3],farol:[3.2,14.95,.5,.4]};
 function drawDecor(id){const [x,y,w,d]=DSPOT[id];let s="";
-  if(id==="antorchas"){[[7.45,14.95],[10.4,14.95]].forEach(([a,b])=>{s+=box(a,b,.18,.18,0,20,"#6b4220");const f=iso(a+.09,b+.09,24);s+=`<path d="M${f[0]} ${f[1]-10}q7 8 0 12q-7-4 0-12z" fill="#ff9b2f"/><circle cx="${f[0]}" cy="${f[1]-1}" r="3" fill="#ffe14d"/>`;});}
-  if(id==="fuente"){s+=box(x,y,w,d,0,7,"#bcb6aa")+poly([iso(x+.15,y+.15,7),iso(x+w-.15,y+.15,7),iso(x+w-.15,y+d-.15,7),iso(x+.15,y+d-.15,7)],"#5ab4e8")+box(x+.65,y+.65,.3,.3,7,14,"#d8d2c4");const f=iso(x+.8,y+.8,24);s+=`<path d="M${f[0]} ${f[1]}q-14 6-16 18M${f[0]} ${f[1]}q14 6 16 18" stroke="#bfe6ff" stroke-width="3" fill="none"/>`;}
-  if(id==="estatua"){s+=box(x+.1,y+.1,.8,.8,0,10,"#bcb6aa")+box(x+.35,y+.35,.3,.3,10,16,"#d9a92a");const h=iso(x+.5,y+.5,32);s+=`<circle cx="${h[0]}" cy="${h[1]}" r="5" fill="#d9a92a" ${OL}/><rect x="${h[0]+4}" y="${h[1]+8}" width="9" height="7" fill="#fff8e0" ${OL}/>`;}
-  if(id==="estandarte"){s+=box(x,y,.15,.15,0,40,"#6b4220");const p=iso(x+.07,y+.07,40);s+=`<path d="M${p[0]} ${p[1]}h22v26l-11-6-11 6z" fill="#7a4fd1" ${OL}/><text x="${p[0]+11}" y="${p[1]+15}" text-anchor="middle" font-family="Lilita One,Arial Black" font-size="11" fill="#ffcf3a">21</text>`;}
-  if(id==="arco"){s+=box(x,y,.35,.35,0,34,"#d8d2c4")+box(x+2.25,y,.35,.35,0,34,"#d8d2c4")+box(x-.05,y-.02,2.7,.4,34,8,"#c9b98a")+flag(x+1.3,y+.2,42,"#ffcf3a");}
-  if(id==="pozo"){s+=box(x+.15,y+.15,.7,.7,0,9,"#a59f93")+ellipseAt(x+.5,y+.5,9,10,5,"#2b3550")+box(x+.15,y+.45,.08,.08,9,14,"#6b4220")+box(x+.77,y+.45,.08,.08,9,14,"#6b4220")+gable(x+.1,y+.25,.8,.5,23,8,roofC(),.05);}
-  if(id==="dragon"){s+=box(x,y,w,d,0,8,"#a59f93");const p=iso(x+.6,y+.6,8);s+=`<path d="M${p[0]-16} ${p[1]}q-2-20 10-24q-6-8 4-14q2 6 8 6q10 2 8 12l-8 2q6 6 4 18z" fill="#7d786e" ${OL}/><path d="M${p[0]-4} ${p[1]-26}l-14-10 4 14z" fill="#8f8a80" ${OL}/><circle cx="${p[0]+6}" cy="${p[1]-30}" r="2" fill="#ff5a3a"/>`;}
+  if(id==="antorchas"){s+=toro(7.0,15.2,1.1)+toro(10.6,15.2,1.1);}
+  if(id==="fuente"){const c=iso(x+.7,y+.8);s+=rock(x+.3,y+.4,1)+`<ellipse cx="${N1(c[0])}" cy="${N1(c[1])}" rx="13" ry="6.5" fill="#3f8fb0" stroke="#8f8a80" stroke-width="2.5"/>`;
+    const p=iso(x+.5,y+.6,10);s+=box(x+.42,y+.52,.1,.1,0,10,"#6a9634")+`<g transform="translate(${N1(p[0])} ${N1(p[1])})"><g><animateTransform attributeName="transform" type="rotate" values="-20;-20;18;-20" keyTimes="0;.7;.75;1" dur="4s" repeatCount="indefinite"/><rect x="-2" y="-2" width="20" height="4" rx="2" fill="#8cae4a" stroke="#4f7428" stroke-width=".8"/></g></g>`;}
+  if(id==="estatua"){s+=ishi(x+.1,y+.1,.8,.8,0,9,.06);const p=iso(x+.5,y+.5,9),X=p[0],Y=p[1];
+    s+=`<path d="M${N1(X-6)} ${N1(Y)}l2-14h8l2 14z" fill="#3a3a44" ${OL}/><path d="M${N1(X-9)} ${N1(Y-12)}h18l-2 4h-14z" fill="#2c2c36" ${OL}/><circle cx="${N1(X)}" cy="${N1(Y-17)}" r="4" fill="#3a3a44" ${OL}/><path d="M${N1(X-8)} ${N1(Y-21)}q8-6 16 0l-2 1q-6-3-12 0z" fill="${GOLD}"/><line x1="${N1(X+7)}" y1="${N1(Y-4)}" x2="${N1(X+14)}" y2="${N1(Y-20)}" stroke="#c9c2b2" stroke-width="1.6"/><rect x="${N1(X-5)}" y="${N1(Y-10)}" width="7" height="5" fill="#f4ecd9" ${OL}/>`;}
+  if(id==="estandarte"){s+=nobori(x+.2,y+.2,0,"#5b3a7a","廿一",7);}
+  if(id==="arco"){s+=torii(x,x+w,y+.15,32,GOLD,"#1b140c");}
+  if(id==="pozo"){s+=box(x+.2,y+.2,.6,.6,0,4,"#9b958a")+box(x+.3,y+.25,.08,.08,4,20,SHU)+box(x+.62,y+.25,.08,.08,4,20,SHU);const tp=iso(x+.5,y+.3,22);
+    s+=`<path d="M${N1(tp[0]-5)} ${N1(tp[1]+11)}c0-7 1-10 5-10s5 3 5 10l1 2h-12z" fill="${GOLD}" ${OL}/>`+gableJ(x+.25,y+.15,.5,.3,24,6,.08,rc(Math.max(5,TH())),{gold:true});}
+  if(id==="dragon"){s+=ishi(x,y,w,d,0,7,.05);const p=iso(x+.6,y+.6,7),X=p[0],Y=p[1];
+    s+=`<path d="M${N1(X-18)} ${N1(Y)}q-4-14 6-20q-8-6 2-14q4 2 6 7q6-8 14-4q-4 4-2 8q8 2 6 10l-8 1q6 8 0 12z" fill="#4f9a76" ${OL}/><path d="M${N1(X-6)} ${N1(Y-26)}l-12-10 4 13z" fill="#3f8060" ${OL}/><circle cx="${N1(X+8)}" cy="${N1(Y-32)}" r="2" fill="${GOLD}"/><path d="M${N1(X-10)} ${N1(Y-8)}q6-3 12 0" stroke="#2f6048" fill="none"/>`;}
+  if(id==="koinobori"){const p=iso(x+.15,y+.15,0),X=p[0],Y=p[1];s+=box(x,y,.3,.3,0,3,"#9b958a")+`<line x1="${N1(X)}" y1="${N1(Y)}" x2="${N1(X)}" y2="${N1(Y-78)}" stroke="#4a3420" stroke-width="2.6"/><circle cx="${N1(X)}" cy="${N1(Y-80)}" r="4" fill="${GOLD}" stroke="#1b140c"/>`;
+    ["#1b140c","#c8352b","#2f78d0"].forEach((c,k)=>{s+=`<g transform="translate(${N1(X)} ${N1(Y-72+k*15)})"><g><animateTransform attributeName="transform" type="skewY" values="0;7;0;-6;0" dur="${2.2+k*.35}s" repeatCount="indefinite"/><path d="M0 0q16-6 ${32-k*4} 0l6-5-2 7 2 7-6-5q-${16-k*2} 6-${32-k*4} 0z" fill="${c}" stroke="#1b140c" stroke-width=".8"/><circle cx="5" cy="1" r="2.2" fill="#fff"/><path d="M12 -2q3 3 0 6M19 -2q3 3 0 6" stroke="#f4ecd9" fill="none" stroke-width=".9"/></g></g>`;});}
+  if(id==="farol"){s+=box(x,y+.15,.1,.1,0,34,DWOOD)+box(x+.42,y+.15,.1,.1,0,34,DWOOD)+box(x-.05,y+.1,.62,.2,34,3,DWOOD);const p=iso(x+.26,y+.25,31),X=p[0],Y=p[1];
+    s+=`<line x1="${N1(X)}" y1="${N1(Y)}" x2="${N1(X)}" y2="${N1(Y+4)}" stroke="#1b140c" stroke-width="1.5"/><rect x="${N1(X-9)}" y="${N1(Y+3)}" width="18" height="3" fill="#1b140c"/><ellipse cx="${N1(X)}" cy="${N1(Y+16)}" rx="11" ry="12" fill="${SHU}" stroke="#1b140c" stroke-width="1"><animate attributeName="fill" values="#c8352b;#e2563c;#c8352b" dur="2s" repeatCount="indefinite"/></ellipse><rect x="${N1(X-9)}" y="${N1(Y+26)}" width="18" height="3" fill="#1b140c"/><text x="${N1(X)}" y="${N1(Y+20)}" text-anchor="middle" font-family="Shippori Mincho B1,serif" font-weight="800" font-size="10" fill="#f4ecd9">学</text>`;}
   return s;}
+const SCEN=[["sakura",6.3,4.45,.85,3],["sakura",10.65,4.45,.85,3],["sakura",6.3,8.7,.75,3],["sakura",10.75,9.0,.75,3],
+  ["sakura",1.0,9.2,1.1,1],["sakura",1.1,12.8,1,1],["sakura",16.0,15.9,1.1,5],["sakura",18.6,8.6,1.1,5],["sakura",5.9,16.8,1,5],["sakura",12.0,16.9,.9,5],["sakura",18.8,3.0,1,5],
+  ["pine",16.3,2.0,1.1,5],["pine",1.0,5.6,1.1,1],["bamboo",18.6,13.8,6,5],["bamboo",19.0,5.8,5,5],["bamboo",0.7,15.6,5,1],
+  ["rock",3.9,17.2,1,5],["rock",14.0,17.2,1.1,5],["rock",19.3,16.2,1,5],["rock",2.0,19.6,.8,5],["rock",11.5,19.7,.9,5]];
+function drawScen([k,x,y,s]){return k==="sakura"?sakura(x,y,s):k==="pine"?pine(x,y,s):k==="bamboo"?bamboo(x,y,s):rock(x,y,s);}
 function blockedSpot(cx,cy){
-  if(cx>7.2&&cx<10.6&&cy>14.4)return true;
-  const m=BY.mina;if(cx>m.x-.6&&cx<m.x+2.6&&cy>m.y-.6&&cy<m.y+2.6)return true;
-  for(const k in DSPOT){const [x,y,w,d]=DSPOT[k];if(cx>x-.7&&cx<x+w+.7&&cy>y-.7&&cy<y+d+.7)return true;}
+  if(cy>17.3&&cy<19.6)return true;
+  if(cx<2.8&&cy<2.8)return true;
+  if(cx>7.2&&cx<10.8&&cy>14.4)return true;
+  const m=BY.mina;if(cx>m.x-.6&&cx<m.x+2.6&&cy>m.y-.6&&cy<m.y+3.2)return true;
+  for(const k in DSPOT){const [x,y,w,d]=DSPOT[k];if(cx>x-.8&&cx<x+w+.8&&cy>y-.8&&cy<y+d+.8)return true;}
+  for(const q of SCEN){if(Math.abs(q[1]-cx)<.9&&Math.abs(q[2]-cy)<.9)return true;}
   return false;}
-const SPOTS=(()=>{const a=[];for(let gx=.6;gx<17.6;gx+=1.1)for(let gy=.6;gy<17.6;gy+=1.1){if(gx>1.6&&gx<15.4&&gy>1.6&&gy<15.4)continue;if(blockedSpot(gx,gy))continue;a.push([gx,gy]);}
-  let seed=7;const r=()=>(seed=(seed*9301+49297)%233280)/233280;for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;})();
+const SPOTS=(()=>{const a=[];for(let gx=.5;gx<19.6;gx+=1.05)for(let gy=.5;gy<19.6;gy+=1.05){if(gx>1.6&&gx<15.3&&gy>1.6&&gy<15.3)continue;if(blockedSpot(gx,gy))continue;a.push([gx,gy]);}
+  let sd=7;const r=()=>(sd=(sd*9301+49297)%233280)/233280;for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;})();
 
 function renderMap(){
-  const T=TH(),wt=Math.min(5,Math.ceil(T/4));let g="";
-  g+=`<defs><radialGradient id="aura"><stop offset="0" stop-color="#c9a6ff" stop-opacity=".8"/><stop offset="1" stop-color="#c9a6ff" stop-opacity="0"/></radialGradient></defs>`;
-  // suelo
-  g+=poly([iso(0,18,-18),iso(18,18,-18),iso(18,18,0),iso(0,18,0)],"#8a5a2b")+poly([iso(18,0,-18),iso(18,18,-18),iso(18,18,0),iso(18,0,0)],"#6b4220");
-  for(let i=0;i<18;i++)for(let j=0;j<18;j++){const path=(i===8||i===9)&&j>=10;
-    const c=path?((i+j)%2?"#d9b47a":"#cfa86d"):((i+j)%2?"#86c94f":"#7cc04b");
-    g+=`<polygon points="${pt([iso(i,j),iso(i+1,j),iso(i+1,j+1),iso(i,j+1)])}" fill="${c}"/>`;}
+  const T=TH(),wt=Math.min(5,Math.ceil(T/4)),N=20;let g="";SEED=11;
+  g+=`<defs><radialGradient id="aura"><stop offset="0" stop-color="#f2c76a" stop-opacity=".75"/><stop offset="1" stop-color="#f2c76a" stop-opacity="0"/></radialGradient></defs>`;
+  g+=poly([iso(0,N,-22),iso(N,N,-22),iso(N,N,0),iso(0,N,0)],"#6b4a2c")+poly([iso(N,0,-22),iso(N,N,-22),iso(N,N,0),iso(N,0,0)],"#4f3420");
+  for(let k=0;k<6;k++)g+=pl([iso(0,N,-4-k*3.2),iso(N,N,-4-k*3.2),iso(N,0,-4-k*3.2)],"#3a2716",.7,'opacity=".5"');
+  g+=poly([iso(N,18,-22),iso(N,19,-22),iso(N,19,0),iso(N,18,0)],"#4f9fc4");
+  g+=`<path d="M${F(iso(N,18.3,0))}V${N1(iso(N,18.3,-22)[1])}M${F(iso(N,18.7,0))}V${N1(iso(N,18.7,-22)[1])}" stroke="#e6f4fb" stroke-width="2" stroke-dasharray="5 7" opacity=".85"><animate attributeName="stroke-dashoffset" values="0;-24" dur="1s" repeatCount="indefinite"/></path>`;
+  const isPath=(i,j)=>((i>=6&&i<=10)&&(j===6||j===10))||((j>=6&&j<=10)&&(i===6||i===10))||((i===8||i===9)&&j>=10&&j!==18);
+  const GR=["#8bbd52","#84b64c","#90c257","#7fb048","#88ba50"];
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++){let c;
+    if(j===18)c=(i+j)%2?"#4f9fc4":"#4a98bd";else if(isPath(i,j))c=(i+j)%2?"#ddd2b6":"#d5c9aa";else c=GR[Math.floor(rnd()*GR.length)];
+    g+=`<polygon points="${PT([iso(i,j),iso(i+1,j),iso(i+1,j+1),iso(i,j+1)])}" fill="${c}"/>`;}
+  g+=pl([iso(0,18),iso(N,18)],"#7d776c",3,'stroke-dasharray="3 3"')+pl([iso(0,19),iso(N,19)],"#7d776c",3,'stroke-dasharray="3 3"');
+  for(let k=0;k<7;k++){const a=iso(1+k*2.7,18.5);g+=`<path d="M${N1(a[0]-10)} ${N1(a[1])}h20" stroke="#dff2fb" stroke-width="1.4" stroke-linecap="round" opacity="0"><animate attributeName="opacity" values="0;.9;0" dur="${2.5+k%3}s" begin="${-k*.7}s" repeatCount="indefinite"/></path>`;}
+  for(let k=0;k<70;k++){const x=rnd()*N,y=rnd()*N;if((x>6&&x<11&&y>6&&y<11)||(y>17.6&&y<19.2))continue;const p=iso(x,y);
+    g+=k%3?`<path d="M${N1(p[0])} ${N1(p[1])}l-1.5-4M${N1(p[0])} ${N1(p[1])}l1.5-4" stroke="#5f8f33" stroke-width="1"/>`:`<circle cx="${N1(p[0])}" cy="${N1(p[1])}" r="1.4" fill="${k%2?"#fff6f0":"#f5b8ca"}"/>`;}
   const objs=[];const add=(layer,cx,cy,svg)=>objs.push({layer,k:cx+cy,svg});
-  // bosque (modelo Forest): cada sesión deja un árbol, vivo o seco
-  S.forest.slice(-SPOTS.length).forEach((alive,i)=>{const [x,y]=SPOTS[i];const back=x<2.3||y<2.3;add(back?1:5,x,y,alive?tree(x,y,1,["#2f8f2a","#3fa832","#2a7d3a"][i%3],i%3===1):deadTree(x,y));});
-  // murallas según nivel del ayuntamiento
-  const WCOL=["#9a6a3a","#9a6a3a","#a9a397","#d6cfbf","#e9e1ce","#5d5578"][wt];const wh=8+wt*3;
-  const seg=(x,y,w,d)=>box(x,y,w,d,0,wh,WCOL)+(wt>=4?box(x,y,w,d,wh,2,wt>=5?"#b48cff":"#ffcf3a"):"");
-  for(let i=0;i<12;i++){const a=2.3+i;
-    add(2,a+.5,2.5,seg(a,2.3,1,.4));add(2,2.5,a+.5,seg(2.3,a,.4,1));
-    if(!(a>=7.3&&a<10.3)) add(4,a+.5,14.5,seg(a,14.3,1,.4));
-    add(4,14.5,a+.5,seg(14.3,a,.4,1));}
-  // edificios y decoración
+  add(1,1,1,pyrRock(.1,.2,1.8,1.6,46,"#8b8378")+pyrRock(1.3,0,1.2,1.1,30,"#958e83")+pyrRock(0,1.5,1.2,1.1,26,"#7f786e")+pine(1.6,.5,.9));
+  let br="";const by=t=>17.7+t*1.6,bz=t=>Math.sin(Math.PI*t)*11;
+  for(let k=0;k<8;k++){const t0=k/8,t1=(k+1)/8;br+=poly([iso(8.15,by(t0),bz(t0)),iso(9.85,by(t0),bz(t0)),iso(9.85,by(t1),bz(t1)),iso(8.15,by(t1),bz(t1))],k%2?"#9b6a3e":"#a87446");}
+  const side=[];for(let k=0;k<=8;k++)side.push(iso(9.85,by(k/8),bz(k/8)));for(let k=8;k>=0;k--)side.push(iso(9.85,by(k/8),bz(k/8)-3));br+=poly(side,"#7a4a24");
+  const rail=xx=>{let o="",pts=[];for(let k=0;k<=8;k++){const t=k/8,p=iso(xx,by(t),bz(t));pts.push([p[0],p[1]-8]);o+=pl([p,[p[0],p[1]-8]],SHU,2);}return o+pl(pts,SHU,2.4)+`<circle cx="${N1(pts[0][0])}" cy="${N1(pts[0][1]-1)}" r="2" fill="${GOLD}"/><circle cx="${N1(pts[8][0])}" cy="${N1(pts[8][1]-1)}" r="2" fill="${GOLD}"/>`;};
+  add(5,9,18.5,rail(8.2)+br+rail(9.8));
+  S.forest.slice(-SPOTS.length).forEach((alive,i)=>{const [x,y]=SPOTS[i],back=x<2.3||y<2.3,kind=i%5;
+    add(back?1:5,x,y,alive?(kind===1?pine(x,y,.85):kind===3?momiji(x,y,.85):sakura(x,y,.85)):dead(x,y,.9));});
+  SCEN.forEach(q=>add(q[4],q[1],q[2],drawScen(q)));
+  const cap=wt>=5?"#24222e":rc(Math.max(5,T)),WL=T;
+  add(2,8.5,2.5,wallRun(WL,2.7,14.3,2.3,false,0));add(2,2.5,8.5,wallRun(WL,2.7,14.3,2.3,true,1));
+  add(4,14.5,8.5,wallRun(WL,2.7,14.3,14.3,true,2));add(4,5,14.5,wallRun(WL,2.7,7.3,14.3,false,3));add(4,12.3,14.5,wallRun(WL,10.3,14.3,14.3,false,4));
+  add(2,99,99,wallCorner(WL,2.3,2.3));add(4,99,99,wallCorner(WL,14.3,2.3));add(4,99,99,wallCorner(WL,2.3,14.3));add(4,99,99,wallCorner(WL,14.3,14.3));
+  {const pc=WL>=15?GOLD:WL>=7?SHU:WOOD;let gt=box(7.3,14.3,.3,.45,0,30,pc)+box(10.0,14.3,.3,.45,0,30,pc)+pl([iso(7.4,14.75,25),iso(10.2,14.75,25)],pc,3)+roofJ(7.15,14.25,3.3,.55,30,9,.25,WL<5?"#a8865a":cap,{gold:WL>=13,up:5,thatch:WL<5,shachi:WL>=13});
+   gt+=lanternRed(7.6,14.9,20)+lanternRed(10.0,14.9,20);add(4,8.8,14.6,gt);}
   BUILD.forEach(b=>{const l=lv(b.id);const [s,top]=unlocked(b)?(l?drawB(b,l):site(b)):locked(b);
     const inside=b.x>2.5&&b.x<14.5&&b.y>2.5&&b.y<14.5;
     add(inside?3:5,b.x+b.w/2,b.y+b.d/2,`<g class="b${S.sel===b.id?" sel":""}" data-id="${b.id}">${s}${badge(b,l,top)}</g>`);});
   S.decor.forEach(id=>{const [x,y,w,d]=DSPOT[id];add(5,x+w/2,y+d/2,drawDecor(id));});
   objs.sort((a,b)=>a.layer-b.layer||a.k-b.k);
-  $("map").innerHTML=g+objs.map(o=>o.svg).join("");
-  $("mapTag").textContent=`Ayuntamiento nivel ${T} · ${(n=>`${n} árbol${n===1?"":"es"}`)(S.forest.filter(Boolean).length)}`;
+  let pet="";for(let k=0;k<18;k++){const sx=-520+((k*137)%1000),sy=-40+((k*61)%220),dur=11+(k%5)*2.5;
+    pet+=`<ellipse rx="2.6" ry="1.5" fill="${k%3?"#f7c3d2":"#fbe0e8"}" opacity=".9"><animateMotion dur="${dur}s" begin="${-k*1.7}s" repeatCount="indefinite" rotate="auto" path="M${sx} ${sy}c90 60 40 140 170 200s60 160 190 240"/></ellipse>`;}
+  $("map").innerHTML=g+objs.map(o=>o.svg).join("")+`<g pointer-events="none">${pet}</g>`;
+  const n=S.forest.filter(Boolean).length;$("mapTag").textContent=`Palacio Feudal nivel ${T} · ${n} cerezo${n===1?"":"s"} en el bosque`;
   applyVB();
 }
 
-/* --- cámara del mapa: arrastrar, pellizcar, rueda --- */
-const VB={cx:0,cy:300,z:1};
-function fitDefault(){const w=$("map").clientWidth||360;VB.cx=0;VB.cy=w<600?285:290;VB.z=w<600?1.55:1.05;}
+/* --- cámara del mapa --- */
+const VB={cx:0,cy:310,z:1};
+function fitDefault(){const w=$("map").clientWidth||360;VB.cx=0;VB.cy=w<600?300:320;VB.z=w<600?1.4:.92;}
 function applyVB(){const el=$("map"),W=el.clientWidth||360,H=el.clientHeight||360;const vw=1000/VB.z,vh=vw*H/W;
-  VB.cx=Math.max(-480,Math.min(480,VB.cx));VB.cy=Math.max(40,Math.min(560,VB.cy));
-  el.setAttribute("viewBox",`${VB.cx-vw/2} ${VB.cy-vh/2} ${vw} ${vh}`);}
+  VB.cx=Math.max(-560,Math.min(560,VB.cx));VB.cy=Math.max(40,Math.min(660,VB.cy));
+  el.setAttribute("viewBox",`${N1(VB.cx-vw/2)} ${N1(VB.cy-vh/2)} ${N1(vw)} ${N1(vh)}`);}
 (function(){const el=$("map"),P=new Map();let moved=0,startD=0,startZ=1;
   el.addEventListener("pointerdown",e=>{el.setPointerCapture(e.pointerId);P.set(e.pointerId,[e.clientX,e.clientY]);moved=0;
     if(P.size===2){const [a,b]=[...P.values()];startD=Math.hypot(a[0]-b[0],a[1]-b[1]);startZ=VB.z;}});
   el.addEventListener("pointermove",e=>{if(!P.has(e.pointerId))return;const prev=P.get(e.pointerId);P.set(e.pointerId,[e.clientX,e.clientY]);
-    if(P.size===2){const [a,b]=[...P.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);VB.z=Math.max(.8,Math.min(3.2,startZ*d/startD));moved=99;applyVB();return;}
+    if(P.size===2){const [a,b]=[...P.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);VB.z=Math.max(.75,Math.min(3.4,startZ*d/startD));moved=99;applyVB();return;}
     const dx=e.clientX-prev[0],dy=e.clientY-prev[1];moved+=Math.abs(dx)+Math.abs(dy);const k=1000/VB.z/el.clientWidth;VB.cx-=dx*k;VB.cy-=dy*k;applyVB();});
   const up=e=>{if(P.size===1&&moved<8){const t=document.elementFromPoint(e.clientX,e.clientY);const g=t&&t.closest&&t.closest("[data-id]");if(g){S.sel=g.dataset.id;save();renderMap();renderDetail();}}P.delete(e.pointerId);};
   el.addEventListener("pointerup",up);el.addEventListener("pointercancel",e=>P.delete(e.pointerId));
-  el.addEventListener("wheel",e=>{e.preventDefault();VB.z=Math.max(.8,Math.min(3.2,VB.z*(e.deltaY<0?1.12:.89)));applyVB();},{passive:false});
-  $("zin").onclick=()=>{VB.z=Math.min(3.2,VB.z*1.25);applyVB();};
-  $("zout").onclick=()=>{VB.z=Math.max(.8,VB.z/1.25);applyVB();};
+  el.addEventListener("wheel",e=>{e.preventDefault();VB.z=Math.max(.75,Math.min(3.4,VB.z*(e.deltaY<0?1.12:.89)));applyVB();},{passive:false});
+  $("zin").onclick=()=>{VB.z=Math.min(3.4,VB.z*1.25);applyVB();};
+  $("zout").onclick=()=>{VB.z=Math.max(.75,VB.z/1.25);applyVB();};
   $("zfit").onclick=()=>{fitDefault();applyVB();};
   addEventListener("resize",applyVB);})();
 
 /* ================== Paneles ================== */
 const ICO={
- coin:'<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#ffc83d" stroke="#000" stroke-width="2.5"/><circle cx="16" cy="16" r="8.5" fill="none" stroke="#c28a12" stroke-width="2"/><text x="16" y="21" text-anchor="middle" font-family="Lilita One,Arial Black" font-size="13" fill="#8a5a0a">C</text></svg>',
- flame:'<svg viewBox="0 0 32 32"><path d="M16 3c2 6 9 8 9 17a9 9 0 0 1-18 0c0-5 3-7 4-11 1 3 3 4 3 4 0-4 0-7 2-10z" fill="#ff8a2a" stroke="#000" stroke-width="2"/><path d="M16 17c2 2 4 3 4 6a4 4 0 0 1-8 0c0-2 2-3 4-6z" fill="#ffe14d"/></svg>',
- castle:'<svg viewBox="0 0 32 32"><path d="M5 28V12h4v3h3v-3h4v3h3v-3h4v3h0V12h4v16z" fill="#c9c2b2" stroke="#000" stroke-width="2"/><path d="M13 28v-6a3 3 0 0 1 6 0v6z" fill="#5a3518"/><path d="M16 4v8M16 4l6 2-6 2" stroke="#000" stroke-width="1.5" fill="#d8452e"/></svg>',
- star:'<svg viewBox="0 0 32 32"><path d="M16 3l4 8.5 9 1.2-6.6 6.2 1.7 9L16 23.5 7.9 27.9l1.7-9L3 12.7l9-1.2z" fill="#6ab4ff" stroke="#000" stroke-width="2"/></svg>',
- shield:'<svg viewBox="0 0 32 32"><path d="M16 3l11 4v8c0 8-6 12-11 14C11 27 5 23 5 15V7z" fill="#7fc4ff" stroke="#000" stroke-width="2"/></svg>',
- potion:'<svg viewBox="0 0 32 32"><path d="M12 4h8v7l6 10a5 5 0 0 1-4 7H10a5 5 0 0 1-4-7l6-10z" fill="#d86bff" stroke="#000" stroke-width="2"/><text x="16" y="24" text-anchor="middle" font-family="Lilita One" font-size="9" fill="#fff">x2</text></svg>',
- deco:'<svg viewBox="0 0 32 32"><path d="M8 28h16l-2-6H10z" fill="#bcb6aa" stroke="#000" stroke-width="2"/><circle cx="16" cy="14" r="7" fill="#ffcf3a" stroke="#000" stroke-width="2"/></svg>',
- roof:'<svg viewBox="0 0 32 32"><path d="M3 18L16 6l13 12z" fill="#2f6fd6" stroke="#000" stroke-width="2"/><rect x="7" y="18" width="18" height="10" fill="#e9e1ce" stroke="#000" stroke-width="2"/></svg>'
+ coin:'<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#d9b04a" stroke="#1b140c" stroke-width="2"/><circle cx="16" cy="16" r="10" fill="none" stroke="#9c7524" stroke-width="1.2"/><rect x="12.5" y="12.5" width="7" height="7" fill="#1b2440" stroke="#1b140c" stroke-width="1.2"/></svg>',
+ chest:'<svg viewBox="0 0 32 32"><rect x="4" y="13" width="24" height="14" fill="#8a5a2b" stroke="#1b140c" stroke-width="2"/><path d="M4 13q12-10 24 0z" fill="#a8743f" stroke="#1b140c" stroke-width="2"/><rect x="13" y="15" width="6" height="6" fill="#d9b04a" stroke="#1b140c"/></svg>',
+ castle:'<svg viewBox="0 0 32 32"><path d="M6 29l2-7h16l2 7z" fill="#9b958a" stroke="#1b140c" stroke-width="1.5"/><rect x="10" y="15" width="12" height="7" fill="#f3eee2" stroke="#1b140c" stroke-width="1.5"/><path d="M5 16q11-4 22 0l-3-4H8z" fill="#2c3a6b" stroke="#1b140c" stroke-width="1.5"/><rect x="12.5" y="8" width="7" height="5" fill="#f3eee2" stroke="#1b140c" stroke-width="1.5"/><path d="M9 9q7-3 14 0l-3-5h-8z" fill="#2c3a6b" stroke="#1b140c" stroke-width="1.5"/></svg>',
+ star:'<svg viewBox="0 0 32 32"><g fill="#f2b5c7" stroke="#1b140c" stroke-width="1.4">'+[0,72,144,216,288].map(a=>`<ellipse cx="16" cy="9" rx="4.6" ry="7" transform="rotate(${a} 16 16)"/>`).join("")+'</g><circle cx="16" cy="16" r="3" fill="#d9b04a"/></svg>',
+ shield:'<svg viewBox="0 0 32 32"><path d="M16 3l11 4v8c0 8-6 12-11 14C11 27 5 23 5 15V7z" fill="#2c3a6b" stroke="#1b140c" stroke-width="2"/><path d="M16 9v14M10 15h12" stroke="#d9b04a" stroke-width="2"/></svg>',
+ potion:'<svg viewBox="0 0 32 32"><path d="M11 4h10v4c5 2 7 6 7 10a12 12 0 0 1-24 0c0-4 2-8 7-10z" fill="#f4ecd9" stroke="#1b140c" stroke-width="2"/><path d="M5 18h22a11 11 0 0 1-22 0z" fill="#6f8f3e"/><text x="16" y="25" text-anchor="middle" font-family="serif" font-size="8" font-weight="800" fill="#fff">x2</text></svg>',
+ deco:'<svg viewBox="0 0 32 32"><path d="M5 9q11-4 22 0" stroke="#1b140c" stroke-width="3" fill="none"/><path d="M7 12h18" stroke="#c8352b" stroke-width="2.5"/><path d="M9 11v17M23 11v17" stroke="#c8352b" stroke-width="3"/></svg>',
+ roof:'<svg viewBox="0 0 32 32"><path d="M2 17q14-10 28 0l-4-4H6z" fill="#2c3a6b" stroke="#1b140c" stroke-width="1.5"/><rect x="8" y="17" width="16" height="11" fill="#f3eee2" stroke="#1b140c" stroke-width="1.5"/></svg>'
 };
-function rewIcon(r){return r.coins?ICO.coin:r.shield?ICO.shield:r.boost?ICO.potion:r.decor?ICO.deco:r.skin?ICO.roof:ICO.star;}
-function rewText(r){return r.coins?`${r.coins}`:r.shield?"Escudo":r.boost?"Poción x2":r.decor?DECOR[r.decor]:r.skin?`Tejado ${SKINS[r.skin].n}`:"";}
+const flameC=st=>st<3?"#c8352b":st<7?"#e8762a":st<14?"#2f78d0":st<30?"#7a4fd1":"#d9b04a";
+const flameSvg=st=>`<svg viewBox="0 0 32 32"><path d="M16 3c2 6 9 8 9 17a9 9 0 0 1-18 0c0-5 3-7 4-11 1 3 3 4 3 4 0-4 0-7 2-10z" fill="${flameC(st)}" stroke="#1b140c" stroke-width="2"/><path d="M16 17c2 2 4 3 4 6a4 4 0 0 1-8 0c0-2 2-3 4-6z" fill="#f2c76a"/></svg>`;
+function rewIcon(r){return r.mystery?ICO.chest:r.coins&&r.decor?ICO.chest:r.coins?ICO.coin:r.shield?ICO.shield:r.boost?ICO.potion:r.decor?ICO.deco:r.skin?ICO.roof:ICO.star;}
+function rewText(r){return r.mystery?"Misterio":r.coins?`${r.coins}`:r.shield?"Escudo":r.boost?"Poción":r.decor?DECOR[r.decor]:r.skin?`Tejado ${SKINS[r.skin].n}`:"";}
 function bump(id){const e=$(id);e.classList.remove("bump");void e.offsetWidth;e.classList.add("bump");}
-
 function renderHUD(){
-  $("pTH").innerHTML=`${ICO.castle}<div>${TH()}<small>Ayuntamiento</small></div>`;
+  $("pTH").innerHTML=`${ICO.castle}<div>${TH()}<small>Palacio</small></div>`;
   $("pCoins").innerHTML=`${ICO.coin}<div>${S.coins.toLocaleString("es-CL")}<small>ClassCoins</small></div>`;
-  $("pStreak").innerHTML=`${ICO.flame}<div>${S.streak}<small>racha · ${S.shields} escudo${S.shields===1?"":"s"}</small></div>`;
-  $("pPass").innerHTML=`${ICO.star}<div>${Math.min(TIERS,Math.floor(S.xp/XPT))}<small>pase${S.gold?" dorado":""}</small></div>`;
-}
+  $("pStreak").innerHTML=`${flameSvg(S.streak)}<div>${S.streak}<small>racha · ${S.shields} escudo${S.shields===1?"":"s"}</small></div>`;
+  $("rank").textContent=`${rankOf(S.path.step)} · ${S.path.step>=21?"camino completo":`camino día ${S.path.step+1} de 21`}`;
+  $("pPass").innerHTML=`${ICO.star}<div>${Math.min(TIERS,Math.floor(S.xp/XPT))}<small>pase${S.gold?" dorado":""}</small></div>`;}
+const TIERN=["en construcción","madera y paja","teja gris","teja índigo","oro","laca negra legendaria"];
 function renderDetail(){
-  const b=BY[S.sel],l=lv(b.id);let h=`<div class="spread"><h2>${b.name}</h2><span class="tag">${b.pillar}</span></div><p>${b.desc}</p>`;
-  if(!unlocked(b)){h+=`<div class="perk">Se desbloquea con el <b>Ayuntamiento nivel ${b.unlock}</b>. Tu ayuntamiento está en nivel ${TH()}.</div>`;$("detail").innerHTML=h;return;}
-  h+=`<p class="muted"><b>Nivel ${l} de ${maxLv(b)}${b.id==="ayunt"?"":` (máximo actual por tu ayuntamiento; tope 20)`}.</b> Aspecto: ${["en construcción","madera","piedra","piedra clara","mármol con oro","cristal legendario"][tier(l)]}.</p>`;
-  if(b.perk) h+=`<div class="perk"><b>Efecto:</b> ${b.perk(l)}</div>`;
-  if(b.id==="ayunt"&&l<MAX_TH){const nu=BUILD.filter(x=>x.unlock===l+1);h+=`<div class="perk"><b>Nivel ${l+1}:</b> edificios hasta nivel ${l+1}${nu.length?". Desbloquea:":"."}${nu.length?`<div class="unl">${nu.map(x=>`<span>${x.name}</span>`).join("")}</div>`:""}</div>`;}
-  if(b.id==="academia"&&l>0) h+=`<div class="perk"><b>Técnicas:</b> ${TECH.filter(t=>t.lv<=l).map(t=>t.t.split(":")[0]).join(", ")}</div>`;
+  const b=BY[S.sel],l=lv(b.id);let h=`<div class="spread"><div class="brush">${b.name}</div><span class="tag">${b.pillar}</span></div><p>${b.desc}</p>`;
+  if(!unlocked(b)){h+=`<div class="perk">Se desbloquea con el <b>Palacio Feudal nivel ${b.unlock}</b>. Tu palacio está en nivel ${TH()}.</div>`;$("detail").innerHTML=h;return;}
+  h+=`<p class="muted"><b>Nivel ${l} de ${maxLv(b)}${b.id==="ayunt"?"":" (tope actual según tu palacio; máximo 20)"}.</b> Acabado: ${TIERN[tier(l)]}.</p>`;
+  if(b.perk)h+=`<div class="perk"><b>Efecto:</b> ${b.perk(l)}</div>`;
+  if(b.id==="ayunt"&&l<MAX_TH){const nu=BUILD.filter(x=>x.unlock===l+1);h+=`<div class="perk"><b>Nivel ${l+1}:</b> edificios hasta nivel ${l+1}, Muros del Imperio nivel ${l+1}${[4,8,13,17].includes(l+1)?" y un diseño nuevo del palacio":""}${nu.length?". Desbloquea:":"."}${nu.length?`<div class="unl">${nu.map(x=>`<span>${x.name}</span>`).join("")}</div>`:""}</div>`;}
+  if(b.id==="academia"&&l>0)h+=`<div class="perk"><b>Técnicas:</b> ${TECH.filter(t=>t.lv<=l).map(t=>t.t.split(":")[0]).join(", ")}</div>`;
   if(b.id==="taller"&&l>0){const n=Math.min(2+Math.floor(l/2),8);
     h+=`<p class="muted">Color de estandarte</p><div class="row">${FLAGS.slice(0,n).map((c,i)=>`<button class="sw" style="background:${c}" aria-label="Estandarte color ${i+1}" aria-pressed="${S.flag===i}" data-flag="${i}"></button>`).join("")}</div>
-    <p class="muted">Estilo de tejados (se ganan en el pase)</p><div class="row">${Object.entries(SKINS).map(([k,v])=>`<button class="skin" style="background:${v.c}" data-skin="${k}" aria-pressed="${S.skin===k}" ${S.skins.includes(k)?"":"disabled"}>${v.n}</button>`).join("")}</div>`;}
-  if(l>=maxLv(b)) h+=`<p class="muted">${l>=20?"Nivel máximo.":"Sube el Ayuntamiento para seguir mejorando este edificio."}</p>`;
+    <p class="muted">Tejados (se ganan en el pase)</p><div class="row">${Object.entries(SKINS).map(([k,v])=>`<button class="skin" style="background:${v.c}" data-skin="${k}" aria-pressed="${S.skin===k}" ${S.skins.includes(k)?"":"disabled"}>${v.n}</button>`).join("")}</div>`;}
+  if(l>=maxLv(b))h+=`<p class="muted">${l>=20?"Nivel máximo.":"Sube el Palacio para seguir mejorando este edificio."}</p>`;
   else{const c=cost(b,l+1),miss=c-S.coins;
-    h+=`<div class="row" style="margin-top:8px"><button class="btn ${miss>0?"":"go"}" id="up" ${miss>0?"disabled":""}>${l?`Mejorar a nivel ${l+1}`:"Construir"} ${ICO.coin} ${c.toLocaleString("es-CL")}</button>
+    h+=`<div class="row" style="margin-top:8px"><button class="btn ${miss>0?"":"gold"}" id="up" ${miss>0?"disabled":""}>${l?`Mejorar a nivel ${l+1}`:"Construir"} ${ICO.coin} ${c.toLocaleString("es-CL")}</button>
     <span class="muted">≈ ${fmtH(c)} de desconexión${miss>0?` · te faltan ${miss.toLocaleString("es-CL")}`:""}</span></div>`;}
   $("detail").innerHTML=h;
   const u=$("up");if(u)u.onclick=()=>upgrade(b.id);
   $("detail").querySelectorAll("[data-flag]").forEach(e=>e.onclick=()=>{S.flag=+e.dataset.flag;save();renderMap();renderDetail();});
-  $("detail").querySelectorAll("[data-skin]").forEach(e=>e.onclick=()=>{S.skin=e.dataset.skin;save();renderMap();renderDetail();});
-}
+  $("detail").querySelectorAll("[data-skin]").forEach(e=>e.onclick=()=>{S.skin=e.dataset.skin;save();renderMap();renderDetail();});}
+function potentialText(){const min=S.block*15,d=daily();return `${reward(min,!!(lv("tablon")&&S.mission.trim()),S.boosts>0).toLocaleString("es-CL")} ClassCoins${S.boosts>0?" (con poción)":""}${d.streakPaid?"":` + bono de racha`}`;}
+function miniRateText(){const tm=todayMin(),r=rateAt(tm);return `Hoy llevas <b>${tm} min</b> · 1 min = <b>${rateTxt(r)}</b> ClassCoin${r===1?"":"s"}${tm<120?` · ×${tm<60?"1,5":"2"} en ${tm<60?60-tm:120-tm} min`:" (máximo)"}`;}
 function renderLauncher(){
   $("blocks").innerHTML=[1,2,3,4].map(n=>`<button class="blk" aria-pressed="${S.block===n}" data-n="${n}">${n*15}<small>min</small></button>`).join("");
   $("blocks").querySelectorAll(".blk").forEach(e=>e.onclick=()=>{S.block=+e.dataset.n;save();renderLauncher();});
   $("misWrap").hidden=!lv("tablon");$("mission").value=S.mission;
-  const min=S.block*15,has=!!(lv("tablon")&&S.mission.trim());
-  $("potential").textContent=`${reward(min,has,S.boosts>0).toLocaleString("es-CL")} ClassCoins${S.boosts>0?" (con poción x2)":""}`;
-  $("potXp").textContent=xpFor(min);
-  $("demo").checked=S.demo;
-  $("demoTools").innerHTML=S.demo?`<button class="btn small blue" id="dCoins">+1.000 ClassCoins (demo)</button><button class="btn small red" id="dReset">Reiniciar aldea</button>`:"";
+  $("miniRate").innerHTML=miniRateText();$("potential").textContent=potentialText();$("potXp").textContent=xpFor(S.block*15);$("demo").checked=S.demo;
+  $("demoTools").innerHTML=S.demo?`<button class="btn small ai" id="dCoins">+1.000 ClassCoins (demo)</button><button class="btn small ai" id="dDay">Pasar al día siguiente (demo)</button><button class="btn small" id="dReset">Reiniciar aldea</button>`:"";
   if(S.demo){$("dCoins").onclick=()=>{S.coins+=1000;save();renderAll();bump("pCoins");};
-    $("dReset").onclick=e=>{if(e.target.dataset.sure){S=DEF();save();fitDefault();renderAll();toast("Aldea reiniciada");}else{e.target.dataset.sure=1;e.target.textContent="Toca otra vez para confirmar";}};}
-}
-$("mission").oninput=e=>{S.mission=e.target.value;save();const min=S.block*15;$("potential").textContent=`${reward(min,!!(lv("tablon")&&S.mission.trim()),S.boosts>0).toLocaleString("es-CL")} ClassCoins${S.boosts>0?" (con poción x2)":""}`;};
+    $("dDay").onclick=()=>{S.dayOff=(S.dayOff||0)+1;DAYOFF=S.dayOff;save();renderAll();toast(`Ahora es ${now().toLocaleDateString("es-CL",{weekday:"long",day:"numeric",month:"long"})} (demo)`);};
+    $("dReset").onclick=e=>{if(e.target.dataset.sure){S=DEF();S.path.v4=1;DAYOFF=0;save();fitDefault();renderAll();toast("Aldea reiniciada");}else{e.target.dataset.sure=1;e.target.textContent="Toca otra vez para confirmar";}};}}
+$("mission").oninput=e=>{S.mission=e.target.value;save();$("potential").textContent=potentialText();};
 $("demo").onchange=e=>{S.demo=e.target.checked;save();renderLauncher();};
 
 function renderTabs(){
   document.querySelectorAll(".tab").forEach(t=>{t.setAttribute("aria-selected",t.dataset.tab===S.tab);t.onclick=()=>{S.tab=t.dataset.tab;save();renderTabs();};});
-  const T={camino:tabCamino,pase:tabPase,edif:tabEdif,prog:tabProg}[S.tab];$("tabBody").innerHTML=T();
+  $("tabBody").innerHTML=({hoy:tabHoy,camino:tabCamino,pase:tabPase,edif:tabEdif,prog:tabProg}[S.tab]||tabHoy)();
   if(S.tab==="pase"){const g=$("goldBtn");if(g)g.onclick=()=>{S.gold=true;const o=claimPass();save();renderAll();toast(o.length?`Pase Dorado: ${o.length} premios cobrados`:"Pase Dorado activado");};}
-  if(S.tab==="edif") $("tabBody").querySelectorAll("[data-go]").forEach(e=>e.onclick=()=>{S.sel=e.dataset.go;save();renderMap();renderDetail();$("detail").scrollIntoView({behavior:"smooth",block:"nearest"});});
-}
+  if(S.tab==="edif")$("tabBody").querySelectorAll("[data-go]").forEach(e=>e.onclick=()=>{S.sel=e.dataset.go;save();renderMap();renderDetail();$("detail").scrollIntoView({behavior:"smooth",block:"nearest"});});}
+function tabHoy(){
+  const d=daily(),tm=todayMin(),r=rateAt(tm),cl=v=>Math.max(0,Math.min(1,v));
+  let h=`<div class="spread"><div class="brush">Hoy</div><span class="tag">${now().toLocaleDateString("es-CL",{weekday:"long",day:"numeric",month:"long"})}</span></div>`;
+  const y=new Date(now().getTime()-864e5);if(S.streak>0&&S.lastActive===dkey(y)&&!d.sessions)h+=`<div class="alert">Tu racha de ${S.streak} día${S.streak===1?"":"s"} está en riesgo: completa una sesión hoy para mantenerla.</div>`;
+  h+=`<h3>Tasa de ClassCoins</h3><p class="muted">Mientras más estudias en el día, más vale cada minuto. Se reinicia a medianoche.</p>
+  <div class="rateseg">${[cl(tm/60),cl((tm-60)/60),cl((tm-120)/60)].map(f=>`<div><i style="width:${f*100}%"></i></div>`).join("")}</div>
+  <div class="ratelbl"><span>Hora 1 · 1 min = 1</span><span>Hora 2 · 1 min = 1,5</span><span>Hora 3+ · 1 min = 2</span></div>
+  <p>Llevas <b>${tm} min</b> hoy. Cada minuto vale <b>${rateTxt(r)} ClassCoin${r===1?"":"s"}</b>${tm<120?`; en ${tm<60?60-tm:120-tm} min sube a ${tm<60?"1,5":"2"}.`:", el máximo."}</p>`;
+  h+=`<h3>Misiones diarias</h3><ul class="mlist">${d.missions.map(id=>{const m=MBY[id],[v,t]=m.chk(d),ok=d.done.includes(id);return `<li class="${ok?"ok":""}"><span class="ck">${ok?"済":""}</span><span><span class="mt">${m.t}</span><br><span class="pr">${Math.min(v,t)} / ${t}</span></span><span class="rw2">+${m.r}</span></li>`;}).join("")}</ul>
+  <div class="chestline ${d.chest?"ok":""}">${d.chest?"Cofre diario cobrado. Mañana hay misiones nuevas.":`Completa las 3 misiones para abrir el <b>cofre diario</b> (60 a 120 ClassCoins y a veces una poción).`}</div>`;
+  const next=STREAK_MS.find(m=>!S.msPaid.includes(m.d));
+  h+=`<h3>Racha</h3><div class="bigflame">${flameSvg(S.streak)}<div><b>${S.streak} día${S.streak===1?"":"s"}</b><div class="muted">${d.streakPaid?`Bono de racha de hoy cobrado.`:`Tu primera sesión de hoy suma un bono de racha de +${streakBonus(S.lastActive===dkey()||S.lastActive===dkey(y)?S.streak+(S.lastActive===dkey()?0:1):1)}.`} ${S.shields} escudo${S.shields===1?"":"s"} para proteger la racha.</div></div></div>
+  <div class="strk">${STREAK_MS.map(m=>`<div class="${S.msPaid.includes(m.d)?"got":next&&next.d===m.d?"nx":""}"><b>${m.d}</b>${m.rew.decor?({koinobori:"Koinobori",farol:"Farol gigante"}[m.rew.decor]):m.rew.skin?"Tejado "+SKINS[m.rew.skin].n:m.rew.coins}</div>`).join("")}</div>
+  <p class="muted" style="margin-top:6px">${next?`Próximo hito: ${next.d} días seguidos (te faltan ${Math.max(0,next.d-S.streak)}).`:"Completaste todos los hitos de racha."} El bono diario sube +5 por cada día de racha, hasta +110.</p>`;
+  return h;}
 function tabCamino(){
-  const p=S.path,today=dkey();const cur=PATH[Math.min(p.step,20)];
-  const prog=p.progDate===today?p.prog:0,doneToday=!S.demo&&p.lastDay===today&&p.step<21;
-  let h=`<div class="spread"><h2>Camino de 21 días</h2><span class="tag">Día ${Math.min(p.step+1,21)} de 21</span></div>`;
-  if(p.step>=21) h+=`<p><b>¡Completaste el camino!</b> Ya tienes el hábito en marcha, el Pase Dorado y el Estandarte de los 21 días. Ahora el pase de batalla y la aldea te acompañan.</p>`;
-  else if(doneToday) h+=`<p>Meta de hoy cumplida. Vuelve mañana para el día ${p.step+1}: ${PATH[p.step].goal} minutos.</p>`;
-  else h+=`<p>Meta de hoy: <b>${cur.goal} minutos</b> desconectado. Llevas ${prog}.</p><div class="bar"><i style="width:${Math.min(100,100*prog/cur.goal)}%"></i></div>`;
-  h+=`<div class="days">${PATH.map((d,i)=>{const cls=i<p.step?"done":i===p.step?"now":"";return `<div class="day ${cls} ${d.title&&i>0?"chest":""}" title="Día ${d.day}: ${d.goal} min · ${rewText(d.rew)}">${d.day}<small>${i<p.step?"✓":`${d.goal}′`}</small><small>${rewText(d.rew).split(" ")[0]}</small></div>`;}).join("")}</div>
-  <div class="phase"><div><b>Días 1–7</b>Primeras victorias: metas cortas y premios grandes para construir rápido.</div><div><b>Días 8–14</b>Subir la meta a 45 min. La racha y los escudos cuidan el avance.</div><div><b>Días 15–21</b>Una hora diaria. El día 21 activa el Pase Dorado.</div></div>
-  <p class="muted" style="margin-top:8px">Morados = cofres. Solo se avanza un día del camino por día real${S.demo?" (en modo demo se puede avanzar varios seguidos)":""}.</p>`;
+  const p=S.path,today=dkey(),tm=todayMin(),cur=PATH[Math.min(p.step,20)],doneToday=p.lastDay===today&&p.step<21;
+  const nextChest=PATH.find((d,i)=>i>=p.step&&d.kind==="chest");
+  let h=`<div class="spread"><div class="brush">Camino de 21 días</div><span class="tag">Rango: ${rankOf(p.step)}</span></div>`;
+  if(p.step>=21)h+=`<p><b>Completaste el camino y eres Maestro.</b> Ya tienes el hábito en marcha, el Pase Dorado y el Estandarte de los 21 días.</p>`;
+  else if(doneToday)h+=`<p>Día ${p.step} cumplido. Vuelve mañana para el día ${p.step+1}: ${PATH[p.step].goal} minutos${PATH[p.step].kind==="myst"?" y un cofre misterioso":PATH[p.step].kind==="chest"?" y un cofre grande":""}.</p>`;
+  else h+=`<p>Día ${p.step+1}: desconéctate <b>${cur.goal} minutos</b> hoy. Llevas ${Math.min(tm,cur.goal)}.</p><div class="bar"><i style="width:${Math.min(100,100*tm/cur.goal)}%"></i></div>`;
+  h+=`<div class="days">${PATH.map((d,i)=>`<div class="day ${i<p.step?"done":i===p.step?"now":""} ${d.kind}" title="Día ${d.day}: ${d.goal} min · ${rewText(d.rew)}">${d.day}<small>${i<p.step?"済":`${d.goal}′`}</small><small>${d.kind==="myst"?"?":d.kind==="chest"?d.rew.rank:rewText(d.rew).split(" ")[0]}</small></div>`).join("")}</div>`;
+  if(nextChest&&p.step<21)h+=`<p class="muted" style="margin-top:8px">Próximo cofre grande: día ${nextChest.day}, con rango ${nextChest.rew.rank} (${nextChest.day-p.step-(doneToday?0:1)} día${nextChest.day-p.step-(doneToday?0:1)===1?"":"s"} después de hoy).</p>`;
+  h+=`<div class="phase"><div><b>Días 1–7 · Rōnin</b>Metas de 15 a 30 min. El día 1 da lo justo para subir el palacio.</div><div><b>Días 8–14 · Aprendiz</b>Metas de 45 min y pociones de enfoque.</div><div><b>Días 15–21 · Samurái</b>Una hora diaria. El día 21 te nombra Maestro y activa el Pase Dorado.</div></div>
+  <p class="muted" style="margin-top:8px">Los días azules esconden un cofre misterioso; los rosados, un cofre grande con rango nuevo. Avanzas un día del camino por día real. Si fallas un día, no vuelves al inicio: retomas donde quedaste. Lo único que se corta es la racha.</p>`;
   return h;}
 function tabPase(){
-  const t=Math.min(TIERS,Math.floor(S.xp/XPT)),into=S.xp%XPT;
-  const end=new Date(S.season+"T12:00:00");end.setDate(end.getDate()+30);
-  let h=`<div class="spread"><h2>Pase de batalla</h2><span class="tag">Temporada 1 · El Despertar</span></div>
-  <p class="muted">1 minuto desconectado = 1 XP. Cada nivel del pase pide 60 XP. Termina el ${end.toLocaleDateString("es-CL",{day:"numeric",month:"long"})}.</p>
-  <div class="spread"><b>Nivel ${t} de ${TIERS}</b><span class="muted">${t<TIERS?`${into}/${XPT} XP al nivel ${t+1}`:"Pase completo"}</span></div>
-  <div class="bar xp"><i style="width:${t<TIERS?100*into/XPT:100}%"></i></div>`;
-  if(!S.gold) h+=`<div class="perk"><b>Pase Dorado:</b> se gana al completar el Camino de 21 días y duplica los premios. <button class="btn small" id="goldBtn" style="margin-left:6px">Activar (demo)</button></div>`;
+  const t=Math.min(TIERS,Math.floor(S.xp/XPT)),into=S.xp%XPT,end=new Date(S.season+"T12:00:00");end.setDate(end.getDate()+30);
+  let h=`<div class="spread"><div class="brush">Pase de batalla</div><span class="tag">Temporada 1 · El Despertar</span></div>
+  <p class="muted">1 minuto desconectado = 1 XP. Cada nivel pide 60 XP. Termina el ${end.toLocaleDateString("es-CL",{day:"numeric",month:"long"})}.</p>
+  <div class="spread"><b>Nivel ${t} de ${TIERS}</b><span class="muted">${t<TIERS?`${into}/${XPT} XP al nivel ${t+1}`:"Pase completo"}</span></div><div class="bar xp"><i style="width:${t<TIERS?100*into/XPT:100}%"></i></div>`;
+  if(!S.gold)h+=`<div class="perk"><b>Pase Dorado:</b> se gana al completar el Camino de 21 días y duplica los premios. <button class="btn small gold" id="goldBtn" style="margin-left:6px">Activar (demo)</button></div>`;
   h+=`<div class="track"><div class="trk">`;
   for(let i=1;i<=TIERS;i++){const fr=passRew("free",i),go=passRew("gold",i);
-    h+=`<div class="tl ${i<=t?"on":""}">${i}</div>
-    <div class="rw free ${i<=S.passFree?"got":""}">${rewIcon(fr)}${rewText(fr)}</div>
-    <div class="rw gold ${i<=S.passGold?"got":""} ${S.gold?"":"lock"}">${rewIcon(go)}${rewText(go)}</div>`;}
-  h+=`</div></div><div class="lbls"><span>Fila de arriba: gratis</span><span>Fila de abajo: dorado</span></div>`;
-  return h;}
+    h+=`<div class="tl ${i<=t?"on":""}">${i}</div><div class="rw free ${i<=S.passFree?"got":""}">${rewIcon(fr)}${rewText(fr)}</div><div class="rw gold ${i<=S.passGold?"got":""} ${S.gold?"":"lock"}">${rewIcon(go)}${rewText(go)}</div>`;}
+  return h+`</div></div><div class="lbls"><span>Arriba: gratis</span><span>Abajo: dorado</span></div>`;}
 function tabEdif(){
-  let h=`<h2>Edificios y costos</h2><p class="muted">Subir el ayuntamiento pide cada vez más horas de desconexión: 1 h para el nivel 2, luego 2, 4, 6… hasta 60 h para el nivel 20. Los edificios siguen la misma curva, más baratos, y no pueden superar el nivel del ayuntamiento.</p>
-  <div class="blist">${BUILD.map(b=>{const l=lv(b.id),u=unlocked(b);return `<button class="bi ${u?"":"lk"}" data-go="${b.id}"><span class="lv">${u?l:"A"+b.unlock}</span><span><b>${b.name}</b><br>${b.pillar}${u?"":` · Ayto ${b.unlock}`}</span><span>${u&&l<maxLv(b)?`${cost(b,l+1).toLocaleString("es-CL")}`:u?"Máx":"—"}</span></button>`;}).join("")}</div>
-  <h3 style="margin-top:12px">Ruta del ayuntamiento</h3>
-  <div class="tablewrap"><table><thead><tr><th>Nivel</th><th>Horas</th><th>ClassCoins</th><th>Desbloquea</th></tr></thead><tbody>
-  ${TH_H.slice(1).map((hh,i)=>{const n=i+2,nu=BUILD.filter(x=>x.unlock===n).map(x=>x.name).join(", ");return `<tr class="${TH()+1===n?"cur":""}"><td>${n}</td><td>${hh} h</td><td>${(hh*60).toLocaleString("es-CL")}</td><td>${nu||(n%4===0?"Murallas mejores":"")}</td></tr>`;}).join("")}
-  </tbody></table></div><p class="muted">Total para el nivel 20: ${TH_H.reduce((a,b)=>a+b,0)} horas de desconexión.</p>`;
-  return h;}
+  return `<div class="brush">Edificios y costos</div><p class="muted">Subir el palacio pide cada vez más horas de desconexión: 1 h para el nivel 2, luego 2, 4, 6… hasta 60 h para el nivel 20. Los edificios siguen la misma curva, más baratos, y no pueden superar el nivel del palacio.</p>
+  <div class="blist">${BUILD.map(b=>{const l=lv(b.id),u=unlocked(b);return `<button class="bi ${u?"":"lk"}" data-go="${b.id}"><span class="lv">${u?l:"C"+b.unlock}</span><span><b>${b.name}</b><br>${b.pillar}${u?"":` · Palacio ${b.unlock}`}</span><span>${u&&l<maxLv(b)?cost(b,l+1).toLocaleString("es-CL"):u?"Máx":"—"}</span></button>`;}).join("")}</div>
+  <h3>Ruta del Palacio Feudal</h3><div class="tablewrap"><table><thead><tr><th>Nivel</th><th>Horas</th><th>ClassCoins</th><th>Novedad</th></tr></thead><tbody>
+  ${TH_H.slice(1).map((hh,i)=>{const n=i+2,nu=BUILD.filter(x=>x.unlock===n).map(x=>x.name);nu.push(`Muros nivel ${n}`);return `<tr class="${TH()+1===n?"cur":""}"><td>${n}</td><td>${hh} h</td><td>${(hh*60).toLocaleString("es-CL")}</td><td>${nu.join(", ")}</td></tr>`;}).join("")}
+  </tbody></table></div><p class="muted">Total para el nivel 20: ${TH_H.reduce((a,b)=>a+b,0)} horas de desconexión.</p>`;}
 function tabProg(){
-  const wk=[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-6+i);return [d,S.log[dkey(d)]||0];});
-  const wsum=wk.reduce((a,b)=>a+b[1],0);
-  let h=`<h2>Tu progreso</h2><div class="stats"><div class="stat"><b>${S.totalMin}</b><span>min desconectado</span></div><div class="stat"><b>${S.sessions}</b><span>árboles vivos</span></div><div class="stat"><b>${S.failed}</b><span>árboles secos</span></div><div class="stat"><b>${S.boosts}</b><span>pociones x2</span></div></div>`;
+  const wk=[...Array(7)].map((_,i)=>{const d=now();d.setDate(d.getDate()-6+i);return [d,S.log[dkey(d)]||0];}),wsum=wk.reduce((a,b)=>a+b[1],0);
+  let h=`<div class="brush">Tu progreso</div><div class="stats"><div class="stat"><b>${S.totalMin}</b><span>min desconectado</span></div><div class="stat"><b>${S.sessions}</b><span>cerezos vivos</span></div><div class="stat"><b>${S.failed}</b><span>árboles secos</span></div><div class="stat"><b>${S.lost||0}</b><span>ClassCoins perdidas</span></div></div>`;
   if(lv("observ")){const mx=Math.max(60,...wk.map(w=>w[1]));
-    h+=`<h3 style="margin-top:12px">Observatorio · últimos 7 días</h3><svg viewBox="0 0 320 130" style="width:100%;height:auto">${wk.map(([d,m],i)=>{const bh=Math.round(90*m/mx);return `<rect x="${12+i*44}" y="${100-bh}" width="30" height="${bh}" rx="4" fill="#4fa82a"/><text x="${27+i*44}" y="${94-bh}" text-anchor="middle" font-size="11" fill="#2b1a0b">${m||""}</text><text x="${27+i*44}" y="118" text-anchor="middle" font-size="11" fill="#6a5236">${d.toLocaleDateString("es-CL",{weekday:"short"})}</text>`;}).join("")}<line x1="6" y1="100" x2="314" y2="100" stroke="#6a5236"/></svg>`;}
-  else h+=`<p class="muted" style="margin-top:10px">El Observatorio (Ayuntamiento 9) muestra tu semana en un gráfico.</p>`;
-  if(lv("taberna")){const mates=[["Compañero A (ejemplo)",260],["Compañera B (ejemplo)",180],["Compañero C (ejemplo)",95],["Compañera D (ejemplo)",40]];
-    const all=[...mates,["Tú",wsum,1]].sort((a,b)=>b[1]-a[1]);
-    h+=`<h3 style="margin-top:12px">Clan de estudio · esta semana</h3><ul class="clan">${all.map((m,i)=>`<li class="${m[2]?"me":""}"><b>${i+1}</b><span>${m[0]}</span><span>${m[1]} min</span></li>`).join("")}</ul>`;}
-  else h+=`<p class="muted">La Taberna del Clan (Ayuntamiento 7) abre el ranking con tus compañeros.</p>`;
-  if(lv("jardin")) h+=`<h3 style="margin-top:12px">Diario del aldeano</h3>${S.diary.length?`<ul class="diary">${S.diary.slice(-6).reverse().map(d=>`<li><time>${d.date} · ${d.min} min</time>${esc(d.text)}</li>`).join("")}</ul>`:`<p class="muted">Termina una sesión para escribir la primera entrada.</p>`}`;
-  else h+=`<p class="muted">El Jardín de Reflexión (Ayuntamiento 3) activa el diario.</p>`;
+    h+=`<h3>Pagoda de las Estrellas · últimos 7 días</h3><svg viewBox="0 0 320 130" style="width:100%;height:auto">${wk.map(([d,m],i)=>{const bh=Math.round(90*m/mx);return `<rect x="${12+i*44}" y="${100-bh}" width="30" height="${bh}" fill="#b8322a"/><text x="${27+i*44}" y="${94-bh}" text-anchor="middle" font-size="11" fill="#1b140c">${m||""}</text><text x="${27+i*44}" y="118" text-anchor="middle" font-size="11" fill="#6b5a43">${d.toLocaleDateString("es-CL",{weekday:"short"})}</text>`;}).join("")}<line x1="6" y1="100" x2="314" y2="100" stroke="#6b5a43"/></svg>`;}
+  else h+=`<p class="muted" style="margin-top:10px">La Pagoda de las Estrellas (Palacio 9) muestra tu semana en un gráfico.</p>`;
+  if(lv("taberna")){const all=[["Compañero A (ejemplo)",260],["Compañera B (ejemplo)",180],["Compañero C (ejemplo)",95],["Compañera D (ejemplo)",40],["Tú",wsum,1]].sort((a,b)=>b[1]-a[1]);
+    h+=`<h3>Clan de estudio · esta semana</h3><ul class="clan">${all.map((m,i)=>`<li class="${m[2]?"me":""}"><b>${i+1}</b><span>${m[0]}</span><span>${m[1]} min</span></li>`).join("")}</ul>`;}
+  else h+=`<p class="muted">La Casa de Té (Palacio 7) abre el ranking con tus compañeros.</p>`;
+  if(lv("jardin"))h+=`<h3>Diario del aldeano</h3>${S.diary.length?`<ul class="diary">${S.diary.slice(-6).reverse().map(d=>`<li><time>${d.date} · ${d.min} min</time>${esc(d.text)}</li>`).join("")}</ul>`:`<p class="muted">Termina una sesión para escribir la primera entrada.</p>`}`;
+  else h+=`<p class="muted">El Jardín Zen (Palacio 3) activa el diario.</p>`;
   return h;}
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let tt;function toast(m){const t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2600);}
 function renderAll(){renderHUD();renderMap();renderDetail();renderLauncher();renderTabs();}
 
 /* ================== Sesión estilo Forest ================== */
-function treeSvg(p,dead){
-  let s=`<ellipse cx="100" cy="172" rx="62" ry="14" fill="#5a3a1c"/><ellipse cx="100" cy="168" rx="56" ry="10" fill="#6fae3d"/>`;
-  if(dead) return s+`<path d="M100 168v-70m0 26l-24-22m24 6l20-26m-20 46l16-10" stroke="#7a6248" stroke-width="7" stroke-linecap="round" fill="none"/><circle cx="74" cy="150" r="4" fill="#9a8a6a"/><circle cx="128" cy="160" r="3" fill="#9a8a6a"/>`;
-  if(p<.06) return s+`<ellipse cx="100" cy="164" rx="8" ry="6" fill="#8a5a2b"/>`;
-  if(p<.2){const k=(p-.06)/.14;return s+`<path d="M100 168v${-12-14*k}" stroke="#4f8a2e" stroke-width="4"/><path d="M100 ${154-14*k}q-14-6-16 4q10 6 16-4zM100 ${154-14*k}q14-6 16 4q-10 6-16-4z" fill="#6fcf3a"/>`;}
-  const th=30+70*p,r=16+42*p;
-  s+=`<path d="M${100-4-6*p} 168L${100-3} ${168-th}h6L${100+4+6*p} 168z" fill="#7a4a24"/>`;
-  s+=`<circle cx="100" cy="${168-th-r*.3}" r="${r}" fill="#3fa832" stroke="#24150a" stroke-opacity=".5" stroke-width="2"/>`;
-  if(p>.45) s+=`<circle cx="${100-r*.6}" cy="${168-th+r*.15}" r="${r*.6}" fill="#2f8f2a"/><circle cx="${100+r*.6}" cy="${168-th+r*.1}" r="${r*.62}" fill="#35992c"/>`;
-  s+=`<circle cx="${100-r*.35}" cy="${168-th-r*.65}" r="${r*.25}" fill="#fff" opacity=".18"/>`;
-  if(p>.8) s+=[[-.4,-.2],[.3,-.5],[.5,.1]].map(([a,b])=>`<circle cx="${100+a*r}" cy="${168-th+b*r}" r="4" fill="#ff6fae"/>`).join("");
+function treeSvg(p,isDead){
+  let s=`<ellipse cx="100" cy="174" rx="64" ry="14" fill="#2a1d12"/><ellipse cx="100" cy="170" rx="58" ry="10" fill="#4f7a34"/>`;
+  if(isDead)return s+`<path d="M100 170v-72m0 26l-24-22m24 6l20-26m-20 46l16-10m-16-28l-10-16" stroke="#7a6248" stroke-width="7" stroke-linecap="round" fill="none"/><circle cx="74" cy="152" r="4" fill="#9a8a6a"/><circle cx="128" cy="162" r="3" fill="#9a8a6a"/>`;
+  if(p<.06)return s+`<ellipse cx="100" cy="166" rx="8" ry="6" fill="#6b4220"/>`;
+  if(p<.2){const k=(p-.06)/.14;return s+`<path d="M100 170v${N1(-12-14*k)}" stroke="#5f8a3a" stroke-width="4"/><path d="M100 ${N1(156-14*k)}q-14-6-16 4q10 6 16-4zM100 ${N1(156-14*k)}q14-6 16 4q-10 6-16-4z" fill="#7fae4a"/>`;}
+  const th=30+68*p,r=14+40*p,ty=170-th;
+  s+=`<path d="M${N1(95-7*p)} 170C${N1(98-6*p)} ${N1(170-th*.5)} 104 ${N1(170-th*.6)} 98 ${N1(ty)}h5C106 ${N1(170-th*.6)} ${N1(102+6*p)} ${N1(170-th*.5)} ${N1(105+7*p)} 170z" fill="#4a2f22"/>`;
+  s+=`<path d="M100 ${N1(ty+th*.35)}l${N1(-r*.6)} ${N1(-r*.5)}M101 ${N1(ty+th*.25)}l${N1(r*.55)} ${N1(-r*.55)}" stroke="#4a2f22" stroke-width="${N1(3+3*p)}" stroke-linecap="round"/>`;
+  const cl=[[-.6,-.15,.62,"#f4b3c6"],[.6,-.2,.62,"#f0a2b9"],[0,-.55,.7,"#f8c9d6"],[-.25,.15,.5,"#f7c0cf"],[.4,.2,.45,"#f2adc2"]];
+  if(p>.3)cl.forEach(([a,b,k,c])=>s+=`<circle cx="${N1(100+a*r)}" cy="${N1(ty+b*r)}" r="${N1(r*k*Math.min(1,(p-.3)/.4+.4))}" fill="${c}" stroke="#a8566c" stroke-opacity=".5" stroke-width="1.4"/>`);
+  else s+=`<circle cx="100" cy="${N1(ty)}" r="${N1(r*.6)}" fill="#7fae4a"/>`;
+  if(p>.7)for(let i=0;i<8;i++)s+=`<circle cx="${N1(100+((i*23)%40-20)*r/30)}" cy="${N1(ty+((i*17)%30-18)*r/30)}" r="2" fill="#fff" opacity=".85"/>`;
   return s;}
 let run=null,lock=null;
 function tips(){return TIPS.concat(TECH.filter(t=>t.lv<=lv("academia")).map(t=>t.t),lv("templo")?CALM:[]);}
+function makePetals(){let h="";for(let i=0;i<14;i++)h+=`<i class="petal" style="left:${(i*7.3)%100}%;animation-duration:${9+(i%5)*2}s;animation-delay:${-i*1.3}s"></i>`;$("petals").innerHTML=h;}
 $("start").onclick=async()=>{
-  const total=S.block*15;
-  run={start:Date.now(),total,speed:S.demo?60:1,mission:lv("tablon")?S.mission.trim():"",tipI:-1};
-  $("focus").hidden=false;$("breath").hidden=!lv("templo");$("breathLbl").textContent="";
-  $("fmis").textContent=run.mission?`Misión: ${run.mission}`:"";
-  $("giveup").textContent="Rendirse";delete $("giveup").dataset.sure;
+  run={start:Date.now(),total:S.block*15,speed:S.demo?60:1,mission:lv("tablon")?S.mission.trim():"",tipI:-1,m0:todayMin(),boost:S.boosts>0};
+  $("focus").hidden=false;$("breath").hidden=!lv("templo");$("breathLbl").textContent="";makePetals();
+  $("fmis").textContent=run.mission?`Misión: ${run.mission}`:"";$("giveup").textContent="Rendirse";delete $("giveup").dataset.sure;
   try{lock=await navigator.wakeLock?.request("screen");}catch(e){lock=null;}
-  tick();run.iv=setInterval(tick,200);
-};
-function tick(){
-  if(!run||run.ended)return;
+  tick();run.iv=setInterval(tick,200);};
+function tick(){if(!run||run.ended)return;
   const el=(Date.now()-run.start)/1000*run.speed,tot=run.total*60,left=Math.max(0,tot-el),p=Math.min(1,el/tot);
   $("clock").textContent=`${String(Math.floor(left/60)).padStart(2,"0")}:${String(Math.floor(left%60)).padStart(2,"0")}`;
   $("fbar").style.width=(p*100)+"%";$("ftree").innerHTML=treeSvg(p,false);
+  {const done=Math.min(run.total,Math.floor(el/60)),r=run.boost?2:rateAt(run.m0+done);$("fRate").textContent=`1 min = ${rateTxt(r)} ClassCoin${r===1?"":"s"}${run.boost?" (poción)":""} · llevas ${Math.round(minuteCoins(run.m0,done,run.boost))}`;}
   const T=tips(),ti=Math.floor(el/120)%T.length;if(ti!==run.tipI){run.tipI=ti;$("tip").textContent=T[ti];}
   if(lv("templo")){const c=((Date.now()-run.start)/1000)%14;$("breathLbl").textContent=c<4?"Inhala":c<8?"Sostén":"Exhala";}
-  if(left<=0) endSession(true);
-}
-$("giveup").onclick=e=>{const b=e.currentTarget;if(b.dataset.sure)endSession(false,"giveup");else{b.dataset.sure=1;b.textContent="¿Seguro? El árbol se seca";}};
+  if(left<=0)endSession(true);}
+$("giveup").onclick=e=>{const b=e.currentTarget;if(b.dataset.sure)endSession(false,"giveup");else{b.dataset.sure=1;b.textContent="¿Seguro? Pierdes 15 ClassCoins";}};
 document.addEventListener("visibilitychange",()=>{if(document.hidden&&run&&!run.ended)endSession(false,"left");});
 function endSession(ok,why){
-  clearInterval(run.iv);run.ended=true;try{lock&&lock.release();}catch(e){}lock=null;
-  $("focus").hidden=true;const list=[];const min=run.total;
-  if(!ok){
-    S.forest.push(false);S.failed++;save();
-    $("mTitle").textContent="Tu árbol se secó";$("mTree").innerHTML=treeSvg(0,true);$("mGain").textContent="+0 ClassCoins";
-    $("mText").textContent=why==="left"?"Saliste de la app o bloqueaste el teléfono antes de terminar. Esta sesión no da ClassCoins ni XP, y el árbol seco queda en tu bosque como recuerdo.":"Te rendiste antes de terminar. Esta sesión no da ClassCoins ni XP.";
-    $("mList").innerHTML="";$("mReflect").hidden=true;$("modal").hidden=false;renderAll();return;}
+  clearInterval(run.iv);run.ended=true;try{lock&&lock.release();}catch(e){}lock=null;$("focus").hidden=true;$("petals").innerHTML="";
+  const list=[],min=run.total;$("mGain").classList.toggle("neg",!ok);
+  if(!ok){daily().fails++;const pen=Math.min(PENALTY,S.coins);S.coins-=pen;S.lost=(S.lost||0)+pen;S.forest.push(false);S.failed++;save();
+    $("mTitle").textContent="Tu cerezo se secó";$("mTree").innerHTML=treeSvg(0,true);$("mGain").textContent=`−${pen} ClassCoins`;
+    $("mText").textContent=(why==="left"?"Saliste de la app o bloqueaste el teléfono antes de terminar.":"Te rendiste antes de terminar.")+` Pierdes ${pen} ClassCoins, no ganas XP y el árbol seco queda en tu bosque como recuerdo.`;
+    $("mList").innerHTML="";$("mReflect").hidden=true;$("modal").hidden=false;renderAll();bump("pCoins");return;}
   const has=!!run.mission,boost=S.boosts>0;if(boost)S.boosts--;
-  const coins=reward(min,has,boost),xp=xpFor(min);
-  S.coins+=coins;S.xp+=xp;S.totalMin+=min;S.sessions++;S.forest.push(true);
-  const today=dkey();S.log[today]=(S.log[today]||0)+min;
-  // racha (con escudos)
+  const start=todayMin(),base=Math.round(minuteCoins(start,min,boost)),blocks=Math.floor(min/15),bb=blocks*blockBonus(has),fb=flatBonus();
+  const seg=[0,0,0];for(let i=0;i<min;i++){const r=boost?2:rateAt(start+i);seg[r===1?0:r===1.5?1:2]++;}
+  [[0,1],[1,1.5],[2,2]].forEach(([k,r])=>{if(seg[k])list.push(`${seg[k]} min × ${rateTxt(r)} = ${rateTxt(Math.round(seg[k]*r*10)/10)} ClassCoins`);});
+  if(bb)list.push(`Bono por ${blocks} bloque${blocks===1?"":"s"} de 15 min: +${bb}`);
+  if(fb)list.push(`Bono de la Mina y el Santuario: +${fb}`);
+  if(boost)list.unshift("Poción de enfoque: toda la sesión a ×2");
+  let coins=base+bb+fb;const xp=xpFor(min);S.xp+=xp;S.totalMin+=min;S.sessions++;S.forest.push(true);
+  const today=dkey();S.log[today]=start+min;
+  const d=daily();d.sessions++;d.longest=Math.max(d.longest,min);if(has)d.withMission++;if(new Date().getHours()<12)d.morning++;
   if(S.lastActive!==today){const gap=S.lastActive?Math.round((new Date(today+"T12:00")-new Date(S.lastActive+"T12:00"))/864e5):1;
     if(gap===1)S.streak++;else if(gap===2&&S.shields>0){S.shields--;S.streak++;list.push("Un escudo protegió tu racha");}else S.streak=1;S.lastActive=today;}
-  // camino de 21 días
-  const p=S.path;if(p.step<21){if(p.progDate!==today){p.prog=0;p.progDate=today;}
-    if(S.demo||p.lastDay!==today){p.prog+=min;const g=PATH[p.step].goal;
-      if(p.prog>=g){const r=grant(PATH[p.step].rew);p.step++;p.prog=0;p.lastDay=today;list.push(`Día ${p.step} del camino completo: ${r}`);}
-      else list.push(`Camino de 21 días: te faltan ${g-p.prog} min para completar el día ${p.step+1}`);}}
-  claimPass().forEach(x=>list.push(x));
-  if(boost) list.unshift("Poción x2 aplicada");
-  if(has) S.diaryMission=run.mission;
-  save();
-  $("mTitle").textContent="¡Árbol plantado!";$("mTree").innerHTML=treeSvg(1,false);
+  if(!d.streakPaid){d.streakPaid=true;const sb=streakBonus(S.streak);coins+=sb;list.push(`Bono de racha (${S.streak} día${S.streak===1?"":"s"}): +${sb}`);}
+  S.coins+=coins;payStreak(list);
+  const p=S.path;if(p.step<21&&p.lastDay!==today){const g=PATH[p.step].goal,tm=todayMin();
+    if(tm>=g){const r=grant(PATH[p.step].rew);p.step++;p.lastDay=today;list.push(`Camino de 21 días, día ${p.step} cumplido: ${r}`);}
+    else list.push(`Camino de 21 días: te faltan ${g-tm} min hoy para cumplir el día ${p.step+1}`);}
+  checkMissions().forEach(x=>list.push(x));
+  claimPass().forEach(x=>list.push(x));save();
+  $("mTitle").textContent="¡Tu cerezo floreció!";$("mTree").innerHTML=treeSvg(1,false);
   $("mGain").textContent=`+${coins.toLocaleString("es-CL")} ClassCoins · +${xp} XP`;
-  $("mText").textContent=`Estuviste ${min} minutos desconectado${has?` trabajando en "${run.mission}"`:""}. Tu árbol ya está en el bosque.`;
-  $("mList").innerHTML=list.map(x=>`<li>${esc(x)}</li>`).join("");
-  $("mReflect").hidden=!lv("jardin");$("reflect").value="";
-  $("modal").hidden=false;renderAll();bump("pCoins");
-}
-$("mClose").onclick=()=>{
-  const t=$("reflect").value.trim();
-  if(!$("mReflect").hidden&&t&&run){S.diary.push({date:new Date().toLocaleDateString("es-CL",{day:"numeric",month:"short"}),min:run.total,text:t});}
-  run=null;S.mission="";save();$("modal").hidden=true;renderAll();
-};
+  $("mText").textContent=`Estuviste ${min} minutos desconectado${has?` trabajando en "${run.mission}"`:""}. El cerezo ya está en tu bosque.`;
+  $("mList").innerHTML=list.map(x=>`<li>${esc(x)}</li>`).join("");$("mReflect").hidden=!lv("jardin");$("reflect").value="";
+  $("modal").hidden=false;renderAll();bump("pCoins");}
+$("mClose").onclick=()=>{const t=$("reflect").value.trim();
+  let mm=[];if(!$("mReflect").hidden&&t&&run){S.diary.push({date:now().toLocaleDateString("es-CL",{day:"numeric",month:"short"}),min:run.total,text:t});daily().diary++;mm=checkMissions();}
+  run=null;S.mission="";save();$("modal").hidden=true;renderAll();if(mm.length){toast(mm.join(" · "));bump("pCoins");}};
 
 fitDefault();renderAll();
 </script>
